@@ -1,0 +1,191 @@
+## 실무에서 자주 쓰는 Git 명령어
+
+> 관례: origin = 내 포크, upstream = 팀 원본
+
+### 기본 설정
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --global pull.rebase false   # (merge) 또는 true(리베이스)
+git config --global init.defaultBranch main
+```
+
+### 상태/스테이징/디프
+
+```bash
+git status
+git add <path>            # 스테이징
+git restore --staged <p>  # add 취소
+git restore <p>           # 작업내용 되돌리기
+git diff                  # 작업트리 vs 인덱스
+git diff --staged         # 인덱스 vs HEAD
+```
+
+### 커밋/수정
+
+```bash
+git commit -m "msg"
+git commit --amend                   # 마지막 커밋 수정(메시지/파일)
+git commit --fixup <hash>            # fixup(나중에 --autosquash)
+git show [<hash>] [--stat] [--name-only]
+git log --oneline --graph --decorate --all
+```
+
+### 브랜치
+
+```bash
+git branch                   # 목록
+git switch -c feat/x         # 브랜치 생성/이동
+git switch main              # 이동
+git branch -d feat/x         # 병합된 브랜치 삭제
+git branch -D feat/x         # 강제 삭제
+```
+
+### 병합 / 리베이스
+
+```bash
+# (A에 B를 병합)
+git switch A
+git merge B
+
+# (A 브랜치를 main 위로 재배치)
+git switch A
+git rebase main
+# 충돌 해결 후:
+git add .
+git rebase --continue
+# 포기:
+git rebase --abort
+```
+
+### 원격(Remote) / 포크 워크플로우
+
+```bash
+git remote -v
+git remote add upstream git@github.com:<team>/<repo>.git
+git fetch upstream
+
+# 내 main을 원본(upstream)으로 동기화
+git switch main
+git pull --rebase upstream main
+git push origin main
+
+# 작업 브랜치 푸시 & PR
+git switch -c feat/x
+# 작업...
+git push -u origin feat/x
+# GitHub에서 base=upstream/main, compare=origin/feat/x 로 PR
+```
+
+### 되돌리기(Reset/Restore/Revert)
+
+```bash
+# 스테이징만 취소
+git restore --staged <p>
+
+# 커밋 되돌리기(히스토리 유지, "되돌림 커밋" 생성)
+git revert <hash>
+
+# 커밋 되돌리기(히스토리 변경)
+git reset --soft HEAD~1   # 커밋만 취소, 변경은 스테이지에 유지
+git reset HEAD~1          # 커밋 취소, 변경은 작업트리로
+git reset --hard HEAD~1   # 전부 버림 (주의)
+```
+
+### 선택 적용 / 체리픽 / 스쿼시
+
+```bash
+git cherry-pick <hash>                      # 특정 커밋 가져오기
+git rebase -i HEAD~5                        # 최근 5개 스쿼시/리워크
+# fixup 자동 스쿼시
+git rebase -i --autosquash main
+```
+
+### 스태시(임시 보관)
+
+```bash
+git stash push -m "wip"         # 변경 숨기기
+git stash list
+git stash pop                   # 적용+제거
+git stash apply stash@{n}       # 적용만
+```
+
+### 클린업 / 가지치기
+
+```bash
+git fetch -p                     # 원격 추적 브랜치 정리
+git remote prune origin
+git branch --merged              # 병합된 로컬 브랜치 목록
+git branch -d <branch>
+git gc                           # 가비지 컬렉션
+```
+
+### 파일/라인 단위 추적
+
+```bash
+git blame <file>
+git blame -L 10,30 <file>       # 10~30라인
+git log -p -- <file>            # 파일 변경 히스토리
+git show <hash>:path/to/file    # 해당 커밋 시점 파일 내용
+```
+
+### 태그(릴리스)
+
+```bash
+git tag v1.2.0
+git tag -a v1.2.0 -m "release"
+git push origin v1.2.0
+git push origin --tags
+```
+
+### 네트워크/포트 이슈와 관련(서브모듈 제외 시 빈번)
+
+```bash
+git submodule update --init --recursive
+git submodule sync --recursive
+```
+
+## 자주 쓰는 원라이너 시나리오
+
+### 1) 방금 커밋 메시지 오타 수정
+
+```bash
+git commit --amend
+git push -f origin HEAD   # 이미 푸시했다면 강제 푸시(주의, 팀 합의 필요)
+```
+
+### 2) 브랜치를 최신 main 기준으로 리베이스
+
+```bash
+git fetch upstream
+git switch feat/x
+git rebase upstream/main
+git push -f origin feat/x
+```
+
+### 3) PR에서 커밋 5개를 1개로 스쿼시
+
+```bash
+git rebase -i HEAD~5      # pick → squash
+git push -f origin HEAD
+```
+
+### 4) 특정 파일만 이전 커밋 상태로 되돌리기
+
+```bash
+git checkout <hash> -- path/to/file   # 또는
+git restore --source=<hash> path/to/file
+```
+
+### 5) 로컬 쓰레기 파일 정리
+
+```bash
+git clean -nfd   # 미리보기
+git clean -fd    # 실제 삭제 (주의)
+```
+
+### 6) 원격 URL 변경
+
+```bash
+git remote set-url origin git@github.com:<you>/<repo>.git
+```
