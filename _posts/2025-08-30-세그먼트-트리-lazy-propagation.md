@@ -1,6 +1,6 @@
 ---
 title: 세그먼트 트리 / lazy propagtion
-date: 2025-08-30 13:00 +0900
+date: 2025-08-30 16:28 +0900
 categories:
   - Algorithm
 tags:
