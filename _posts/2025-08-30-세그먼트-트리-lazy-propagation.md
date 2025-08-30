@@ -95,9 +95,11 @@ func query(l, r, s, e, idx int) int {
 	return query(l, r, s, mid, idx*2) + query(l, r, mid+1, e, idx*2+1)
 }
 ```
+
 - 현재 위치의 값을 정확히 파악하기 위해서는 `lazy`에 있던 값을 원본 트리 `tree`에 업데이트해주는 `propagtion`을 한 번 진행해야 한다
 
 4. 최종 코드
+
 ```go
 package main
 
@@ -203,4 +205,3 @@ func propagate(s, e, idx int) {
 	}
 }
 ```
-
