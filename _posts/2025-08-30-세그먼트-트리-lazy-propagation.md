@@ -1,5 +1,5 @@
 ---
-title: 세그먼트 트리 / lazy propagtion
+title: 세그먼트 트리와 lazy propagtion
 date: 2025-08-30 16:28 +0900
 categories:
   - Algorithm
@@ -75,6 +75,7 @@ func updateTree(l, r, s, e, idx int) {
 	tree[idx] = tree[idx*2] + tree[idx*2+1]
 }
 ```
+
 - 일반적인 전파 방식과의 차이점은 완전 포함인 케이스 `l <= s && e <= r`에서 `tree`에만 반영하는 것이 아닌 `propagation`을 통해서 `lazy`의 값을 자식 노드에게 전파하는 과정이 있다는 점이다
 - update 시에는 처음에 `propagation`을 한 번 수행해줘야 뒤늦은 전파가 꼬이지 않는다
 
