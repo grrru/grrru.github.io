@@ -2,7 +2,7 @@
 title: 세그먼트 트리와 lazy propagtion
 date: 2025-08-30 16:28 +0900
 categories:
-  - Algorithm
+  - algorithm
 tags:
   - segment tree
   - lazy propagation
