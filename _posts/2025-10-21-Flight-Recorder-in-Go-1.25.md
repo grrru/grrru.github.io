@@ -2,7 +2,7 @@
 title: Flight Recorder in Go 1.25
 date: 2025-10-21 12:59 +0900
 categories:
-  - golang
+  - golang
 tags:
   - monitering
 pin: false
