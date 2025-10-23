@@ -10,6 +10,7 @@ pin: false
 
 # More powerful Go execution traces (2024)
 >[more powerful Go execution traces](https://go.dev/blog/execution-traces-2024)
+
 ## Issues
  `runtime/trace` 패키지는 goroutine의 실행 흐름을 시간 순으로 기록해서 trace를 생성하고 이를 `go tool trace command`로 시각화할 수 있게 도와주는 패키지다. 하지만 기존에 제공하던 `runtime/trace` 패키지에는 excution traces 생성하는 데 네 가지 큰 문제가 있었다.
 - trace는 오버헤드가 크다
