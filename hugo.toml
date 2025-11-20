@@ -1,3 +1,49 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
+baseURL = "https://grrru.github.io/"
+languageCode = "en-US"
+title = "grrru"
+theme = "PaperMod"
+
+[pagination]
+  pagerSize = 10
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[params]
+  author = "grrru"
+  description = "Hugo + PaperMod로 만든 grrru의 기술 블로그"
+  defaultTheme = "auto"
+  disableThemeToggle = false
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+
+  [params.homeInfoParams]
+    Title = "안녕하세요, grrru 블로그입니다"
+    Content = "Hugo와 PaperMod 테마로 만든 깔끔한 정적 블로그입니다. 글을 추가하면서 꾸준히 업데이트해 보세요."
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/grrru"
+
+  [[params.socialIcons]]
+    name = "rss"
+    url = "/index.xml"
+
+[menu]
+  [[menu.main]]
+    name = "home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    name = "posts"
+    url = "/posts/"
+    weight = 2
+
+  [[menu.main]]
+    name = "search"
+    url = "/search/"
+    weight = 3
