@@ -1,0 +1,439 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>23. 채널과 컨텍스트 | grrru</title><meta name=keywords content="channel,context"><meta name=description content='✅ 1. 채널 사용하기
+
+채널(channel)이란 고루틴끼리 메시지를 전달할 수 있는 메시지 큐이다. 메시지 큐에 메시지들이 차례대로 쌓이고 메시지를 읽을 때는 들어온 순서대로 읽게 된다
+
+1.1 채널 인스턴스 생성
+var messages chan string = make(chan string)
+
+채널은 make() 함수로 생성한다
+채널 타입은 chan 키워드와 메시지 타입을 합쳐서 표현한다 chan string
+
+1.2 채널에 데이터 넣기
+messages <- "This is a message"
+
+<- 연산자를 통해 채널에 데이터를 넣는다
+
+1.3 채널에서 데이터 빼기
+var msg string = <- messages
+
+데이터를 넣을 때와 마찬가지로 <- 연산자를 사용한다.
+좌변에 빼낸 데이터를 담을 변수가 오며 우변에 채널이 온다
+
+func square(wg *sync.WaitGroup, ch chan int) {
+	n := <-ch // 5. 데이터가 들어올 때까지 대기
+
+	fmt.Printf("Square: %d\n", n*n)
+	wg.Done() // 6. 작업 수행 후 종료
+}
+
+func main() {
+	var wg sync.WaitGroup
+	ch := make(chan int) // 1. 채널 생성
+	wg.Add(1)
+	go square(&amp;wg, ch) // 2. 고루틴 실행
+	ch <- 9            // 3. 채널에 데이터 넣음
+	wg.Wait()          // 4. 작업 완료 대기
+}
+1.4 채널 크기
+
+make(chan int)와 같이 채널을 생성하면 크기가 0인 채널이 생성된다
+크기가 0인 채널은 데이터가 들어오면 다른 고루틴에서 빼갈 때까지 대기한다
+
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	ch := make(chan int)
+
+	ch <- 7 // 무한 대기 -> deadlock
+	// fatal error: all goroutines are asleep - deadlock!
+	fmt.Println(<-ch)
+}
+1.5 버퍼를 가지는 채널
+var chan string messages = make(chan string, 2)
+
+make() 함수의 두 번째 인자로 버퍼의 크기를 적어준다
+버퍼가 가득 찬 상태로 데이터가 더 들어오면 크기가 0인 채널과 마찬가지로 빈 자리가 생길 때까지 대기한다
+
+1.6 채널에서 데이터 대기
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func square(wg *sync.WaitGroup, ch chan int) {
+	for n := range ch { // 무한 대기
+		fmt.Printf("Square: %d\n", n*n)
+		time.Sleep(time.Second)
+	}
+
+	wg.Done()
+}
+
+func main() {
+	var wg sync.WaitGroup
+	ch := make(chan int)
+
+	wg.Add(1)
+	go square(&amp;wg, ch)
+
+	for i := range 10 {
+		ch <- i * 2
+	}
+	// close(ch)
+	wg.Wait()
+}
+
+for range 구문은 채널에서 데이터를 무한 대기하며 데이터를 빼내서 n에 값을 복사한다
+wg.Wait()이 작업 완료를 기다리지만, 채널에 데이터가 들어오지 않아 무한 대기하게 되고 wg.Done()를 실행하지 못한다고 판단하여 데드락에 걸린다
+close(ch)를 호출하여 채널이 닫혔음을 알려야 한다
+
+
+이렇게 채널을 제때 닫아주지 않아 고루틴이 무한대기하는 경우, 좀비 루틴 또는 고루틴 락이라고 한다. 경량 스레드라고 해도 고루틴 또한 메모리를 사용하기 때문에 좀비 루틴을 조심해야 한다.'><meta name=author content="grrru"><link rel=canonical href=https://grrru.github.io/posts/2025-08-23-23.-%EC%B1%84%EB%84%90%EA%B3%BC-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8/><link crossorigin=anonymous href=/assets/css/stylesheet.343cc480b9ffc8f04ccbe5e968ad674880cab773ec19905e93033065c1e7a804.css integrity="sha256-NDzEgLn/yPBMy+XpaK1nSIDKt3PsGZBekwMwZcHnqAQ=" rel="preload stylesheet" as=style><link rel=icon href=https://grrru.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://grrru.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://grrru.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://grrru.github.io/apple-touch-icon.png><link rel=mask-icon href=https://grrru.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://grrru.github.io/posts/2025-08-23-23.-%EC%B1%84%EB%84%90%EA%B3%BC-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}@media(prefers-color-scheme:light){.list::-webkit-scrollbar-thumb{border-color:var(--code-bg)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://grrru.github.io/posts/2025-08-23-23.-%EC%B1%84%EB%84%90%EA%B3%BC-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8/"><meta property="og:site_name" content="grrru"><meta property="og:title" content="23. 채널과 컨텍스트"><meta property="og:description" content='✅ 1. 채널 사용하기 채널(channel)이란 고루틴끼리 메시지를 전달할 수 있는 메시지 큐이다. 메시지 큐에 메시지들이 차례대로 쌓이고 메시지를 읽을 때는 들어온 순서대로 읽게 된다 1.1 채널 인스턴스 생성 var messages chan string = make(chan string) 채널은 make() 함수로 생성한다 채널 타입은 chan 키워드와 메시지 타입을 합쳐서 표현한다 chan string 1.2 채널에 데이터 넣기 messages <- "This is a message" <- 연산자를 통해 채널에 데이터를 넣는다 1.3 채널에서 데이터 빼기 var msg string = <- messages 데이터를 넣을 때와 마찬가지로 <- 연산자를 사용한다. 좌변에 빼낸 데이터를 담을 변수가 오며 우변에 채널이 온다 func square(wg *sync.WaitGroup, ch chan int) { n := <-ch // 5. 데이터가 들어올 때까지 대기 fmt.Printf("Square: %d\n", n*n) wg.Done() // 6. 작업 수행 후 종료 } func main() { var wg sync.WaitGroup ch := make(chan int) // 1. 채널 생성 wg.Add(1) go square(&amp;wg, ch) // 2. 고루틴 실행 ch <- 9 // 3. 채널에 데이터 넣음 wg.Wait() // 4. 작업 완료 대기 } 1.4 채널 크기 make(chan int)와 같이 채널을 생성하면 크기가 0인 채널이 생성된다 크기가 0인 채널은 데이터가 들어오면 다른 고루틴에서 빼갈 때까지 대기한다 package main import ( "fmt" ) func main() { ch := make(chan int) ch <- 7 // 무한 대기 -> deadlock // fatal error: all goroutines are asleep - deadlock! fmt.Println(<-ch) } 1.5 버퍼를 가지는 채널 var chan string messages = make(chan string, 2) make() 함수의 두 번째 인자로 버퍼의 크기를 적어준다 버퍼가 가득 찬 상태로 데이터가 더 들어오면 크기가 0인 채널과 마찬가지로 빈 자리가 생길 때까지 대기한다 1.6 채널에서 데이터 대기 package main import ( "fmt" "sync" "time" ) func square(wg *sync.WaitGroup, ch chan int) { for n := range ch { // 무한 대기 fmt.Printf("Square: %d\n", n*n) time.Sleep(time.Second) } wg.Done() } func main() { var wg sync.WaitGroup ch := make(chan int) wg.Add(1) go square(&amp;wg, ch) for i := range 10 { ch <- i * 2 } // close(ch) wg.Wait() } for range 구문은 채널에서 데이터를 무한 대기하며 데이터를 빼내서 n에 값을 복사한다 wg.Wait()이 작업 완료를 기다리지만, 채널에 데이터가 들어오지 않아 무한 대기하게 되고 wg.Done()를 실행하지 못한다고 판단하여 데드락에 걸린다 close(ch)를 호출하여 채널이 닫혔음을 알려야 한다 이렇게 채널을 제때 닫아주지 않아 고루틴이 무한대기하는 경우, 좀비 루틴 또는 고루틴 락이라고 한다. 경량 스레드라고 해도 고루틴 또한 메모리를 사용하기 때문에 좀비 루틴을 조심해야 한다.'><meta property="og:locale" content="en-US"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-08-23T16:26:00+09:00"><meta property="article:modified_time" content="2025-08-23T16:26:00+09:00"><meta property="article:tag" content="Channel"><meta property="article:tag" content="Context"><meta name=twitter:card content="summary"><meta name=twitter:title content="23. 채널과 컨텍스트"><meta name=twitter:description content='✅ 1. 채널 사용하기
+
+채널(channel)이란 고루틴끼리 메시지를 전달할 수 있는 메시지 큐이다. 메시지 큐에 메시지들이 차례대로 쌓이고 메시지를 읽을 때는 들어온 순서대로 읽게 된다
+
+1.1 채널 인스턴스 생성
+var messages chan string = make(chan string)
+
+채널은 make() 함수로 생성한다
+채널 타입은 chan 키워드와 메시지 타입을 합쳐서 표현한다 chan string
+
+1.2 채널에 데이터 넣기
+messages <- "This is a message"
+
+<- 연산자를 통해 채널에 데이터를 넣는다
+
+1.3 채널에서 데이터 빼기
+var msg string = <- messages
+
+데이터를 넣을 때와 마찬가지로 <- 연산자를 사용한다.
+좌변에 빼낸 데이터를 담을 변수가 오며 우변에 채널이 온다
+
+func square(wg *sync.WaitGroup, ch chan int) {
+	n := <-ch // 5. 데이터가 들어올 때까지 대기
+
+	fmt.Printf("Square: %d\n", n*n)
+	wg.Done() // 6. 작업 수행 후 종료
+}
+
+func main() {
+	var wg sync.WaitGroup
+	ch := make(chan int) // 1. 채널 생성
+	wg.Add(1)
+	go square(&amp;wg, ch) // 2. 고루틴 실행
+	ch <- 9            // 3. 채널에 데이터 넣음
+	wg.Wait()          // 4. 작업 완료 대기
+}
+1.4 채널 크기
+
+make(chan int)와 같이 채널을 생성하면 크기가 0인 채널이 생성된다
+크기가 0인 채널은 데이터가 들어오면 다른 고루틴에서 빼갈 때까지 대기한다
+
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	ch := make(chan int)
+
+	ch <- 7 // 무한 대기 -> deadlock
+	// fatal error: all goroutines are asleep - deadlock!
+	fmt.Println(<-ch)
+}
+1.5 버퍼를 가지는 채널
+var chan string messages = make(chan string, 2)
+
+make() 함수의 두 번째 인자로 버퍼의 크기를 적어준다
+버퍼가 가득 찬 상태로 데이터가 더 들어오면 크기가 0인 채널과 마찬가지로 빈 자리가 생길 때까지 대기한다
+
+1.6 채널에서 데이터 대기
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func square(wg *sync.WaitGroup, ch chan int) {
+	for n := range ch { // 무한 대기
+		fmt.Printf("Square: %d\n", n*n)
+		time.Sleep(time.Second)
+	}
+
+	wg.Done()
+}
+
+func main() {
+	var wg sync.WaitGroup
+	ch := make(chan int)
+
+	wg.Add(1)
+	go square(&amp;wg, ch)
+
+	for i := range 10 {
+		ch <- i * 2
+	}
+	// close(ch)
+	wg.Wait()
+}
+
+for range 구문은 채널에서 데이터를 무한 대기하며 데이터를 빼내서 n에 값을 복사한다
+wg.Wait()이 작업 완료를 기다리지만, 채널에 데이터가 들어오지 않아 무한 대기하게 되고 wg.Done()를 실행하지 못한다고 판단하여 데드락에 걸린다
+close(ch)를 호출하여 채널이 닫혔음을 알려야 한다
+
+
+이렇게 채널을 제때 닫아주지 않아 고루틴이 무한대기하는 경우, 좀비 루틴 또는 고루틴 락이라고 한다. 경량 스레드라고 해도 고루틴 또한 메모리를 사용하기 때문에 좀비 루틴을 조심해야 한다.'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://grrru.github.io/posts/"},{"@type":"ListItem","position":2,"name":"23. 채널과 컨텍스트","item":"https://grrru.github.io/posts/2025-08-23-23.-%EC%B1%84%EB%84%90%EA%B3%BC-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"23. 채널과 컨텍스트","name":"23. 채널과 컨텍스트","description":"✅ 1. 채널 사용하기 채널(channel)이란 고루틴끼리 메시지를 전달할 수 있는 메시지 큐이다. 메시지 큐에 메시지들이 차례대로 쌓이고 메시지를 읽을 때는 들어온 순서대로 읽게 된다 1.1 채널 인스턴스 생성 var messages chan string = make(chan string) 채널은 make() 함수로 생성한다 채널 타입은 chan 키워드와 메시지 타입을 합쳐서 표현한다 chan string 1.2 채널에 데이터 넣기 messages \u0026lt;- \u0026#34;This is a message\u0026#34; \u0026lt;- 연산자를 통해 채널에 데이터를 넣는다 1.3 채널에서 데이터 빼기 var msg string = \u0026lt;- messages 데이터를 넣을 때와 마찬가지로 \u0026lt;- 연산자를 사용한다. 좌변에 빼낸 데이터를 담을 변수가 오며 우변에 채널이 온다 func square(wg *sync.WaitGroup, ch chan int) { n := \u0026lt;-ch // 5. 데이터가 들어올 때까지 대기 fmt.Printf(\u0026#34;Square: %d\\n\u0026#34;, n*n) wg.Done() // 6. 작업 수행 후 종료 } func main() { var wg sync.WaitGroup ch := make(chan int) // 1. 채널 생성 wg.Add(1) go square(\u0026amp;wg, ch) // 2. 고루틴 실행 ch \u0026lt;- 9 // 3. 채널에 데이터 넣음 wg.Wait() // 4. 작업 완료 대기 } 1.4 채널 크기 make(chan int)와 같이 채널을 생성하면 크기가 0인 채널이 생성된다 크기가 0인 채널은 데이터가 들어오면 다른 고루틴에서 빼갈 때까지 대기한다 package main import ( \u0026#34;fmt\u0026#34; ) func main() { ch := make(chan int) ch \u0026lt;- 7 // 무한 대기 -\u0026gt; deadlock // fatal error: all goroutines are asleep - deadlock! fmt.Println(\u0026lt;-ch) } 1.5 버퍼를 가지는 채널 var chan string messages = make(chan string, 2) make() 함수의 두 번째 인자로 버퍼의 크기를 적어준다 버퍼가 가득 찬 상태로 데이터가 더 들어오면 크기가 0인 채널과 마찬가지로 빈 자리가 생길 때까지 대기한다 1.6 채널에서 데이터 대기 package main import ( \u0026#34;fmt\u0026#34; \u0026#34;sync\u0026#34; \u0026#34;time\u0026#34; ) func square(wg *sync.WaitGroup, ch chan int) { for n := range ch { // 무한 대기 fmt.Printf(\u0026#34;Square: %d\\n\u0026#34;, n*n) time.Sleep(time.Second) } wg.Done() } func main() { var wg sync.WaitGroup ch := make(chan int) wg.Add(1) go square(\u0026amp;wg, ch) for i := range 10 { ch \u0026lt;- i * 2 } // close(ch) wg.Wait() } for range 구문은 채널에서 데이터를 무한 대기하며 데이터를 빼내서 n에 값을 복사한다 wg.Wait()이 작업 완료를 기다리지만, 채널에 데이터가 들어오지 않아 무한 대기하게 되고 wg.Done()를 실행하지 못한다고 판단하여 데드락에 걸린다 close(ch)를 호출하여 채널이 닫혔음을 알려야 한다 이렇게 채널을 제때 닫아주지 않아 고루틴이 무한대기하는 경우, 좀비 루틴 또는 고루틴 락이라고 한다. 경량 스레드라고 해도 고루틴 또한 메모리를 사용하기 때문에 좀비 루틴을 조심해야 한다.\n","keywords":["channel","context"],"articleBody":"✅ 1. 채널 사용하기 채널(channel)이란 고루틴끼리 메시지를 전달할 수 있는 메시지 큐이다. 메시지 큐에 메시지들이 차례대로 쌓이고 메시지를 읽을 때는 들어온 순서대로 읽게 된다 1.1 채널 인스턴스 생성 var messages chan string = make(chan string) 채널은 make() 함수로 생성한다 채널 타입은 chan 키워드와 메시지 타입을 합쳐서 표현한다 chan string 1.2 채널에 데이터 넣기 messages \u003c- \"This is a message\" \u003c- 연산자를 통해 채널에 데이터를 넣는다 1.3 채널에서 데이터 빼기 var msg string = \u003c- messages 데이터를 넣을 때와 마찬가지로 \u003c- 연산자를 사용한다. 좌변에 빼낸 데이터를 담을 변수가 오며 우변에 채널이 온다 func square(wg *sync.WaitGroup, ch chan int) { n := \u003c-ch // 5. 데이터가 들어올 때까지 대기 fmt.Printf(\"Square: %d\\n\", n*n) wg.Done() // 6. 작업 수행 후 종료 } func main() { var wg sync.WaitGroup ch := make(chan int) // 1. 채널 생성 wg.Add(1) go square(\u0026wg, ch) // 2. 고루틴 실행 ch \u003c- 9 // 3. 채널에 데이터 넣음 wg.Wait() // 4. 작업 완료 대기 } 1.4 채널 크기 make(chan int)와 같이 채널을 생성하면 크기가 0인 채널이 생성된다 크기가 0인 채널은 데이터가 들어오면 다른 고루틴에서 빼갈 때까지 대기한다 package main import ( \"fmt\" ) func main() { ch := make(chan int) ch \u003c- 7 // 무한 대기 -\u003e deadlock // fatal error: all goroutines are asleep - deadlock! fmt.Println(\u003c-ch) } 1.5 버퍼를 가지는 채널 var chan string messages = make(chan string, 2) make() 함수의 두 번째 인자로 버퍼의 크기를 적어준다 버퍼가 가득 찬 상태로 데이터가 더 들어오면 크기가 0인 채널과 마찬가지로 빈 자리가 생길 때까지 대기한다 1.6 채널에서 데이터 대기 package main import ( \"fmt\" \"sync\" \"time\" ) func square(wg *sync.WaitGroup, ch chan int) { for n := range ch { // 무한 대기 fmt.Printf(\"Square: %d\\n\", n*n) time.Sleep(time.Second) } wg.Done() } func main() { var wg sync.WaitGroup ch := make(chan int) wg.Add(1) go square(\u0026wg, ch) for i := range 10 { ch \u003c- i * 2 } // close(ch) wg.Wait() } for range 구문은 채널에서 데이터를 무한 대기하며 데이터를 빼내서 n에 값을 복사한다 wg.Wait()이 작업 완료를 기다리지만, 채널에 데이터가 들어오지 않아 무한 대기하게 되고 wg.Done()를 실행하지 못한다고 판단하여 데드락에 걸린다 close(ch)를 호출하여 채널이 닫혔음을 알려야 한다 이렇게 채널을 제때 닫아주지 않아 고루틴이 무한대기하는 경우, 좀비 루틴 또는 고루틴 락이라고 한다. 경량 스레드라고 해도 고루틴 또한 메모리를 사용하기 때문에 좀비 루틴을 조심해야 한다.\n1.7 select문 func square(wg *sync.WaitGroup, ch chan int, quit chan bool) { for { select { case n := \u003c-ch: fmt.Printf(\"Square: %d\\n\", n*n) time.Sleep(time.Second) case \u003c-quit: wg.Done() return } } } func main() { var wg sync.WaitGroup ch := make(chan int) quit := make(chan bool) wg.Add(1) go square(\u0026wg, ch, quit) for i := range 5 { ch \u003c- i * 2 } quit \u003c- true wg.Wait() } select 문은 여러 채널에서 동시에 기다릴 수 있으며, 어떤 채널에서 데이터를 읽어왔다면 해당 구문을 실행하고 select문은 종료된다 하나의 case만 처리하고 종료되기 때문에 반복하고 싶다면 for문과 함께 사용해야 한다 1.8 일정 간격으로 실행 time 패키지의 Tick() 함수로 원하는 시간 간격으로 신호를 보내주는 채널을 만들 수 있다 Tick()으로 생성한 채널은 일정 시간마다 현재 시각을 알려주는 Time 객체를 반환한다 After() 함수로 일정 시간 경과 후에 신호를 보내주는 채널을 생성할 수 있으며 반환된 채널은 Time 객체를 반환한다 var wg sync.WaitGroup tick := time.Tick(time.Second) terminate := time.After(5 * time.Second) for { select { case \u003c-tick: fmt.Println(\"Tick\") case \u003c-terminate: fmt.Println(\"Terminated!\") wg.Done() return } } 1.9 채널로 생산자 소비자 패턴 구현하기 package main import ( \"fmt\" \"sync\" \"time\" ) type Car struct { Body string Tire string Color string } var ( wg sync.WaitGroup startTime = time.Now() ) func main() { tireCh := make(chan *Car) fmt.Println(\"Start Factory\") wg.Add(2) go MakeBody(tireCh) go InstallTire(tireCh) wg.Wait() fmt.Println(\"Finish\") } func MakeBody(tireCh chan *Car) { tick := time.Tick(time.Second) after := time.After(5 * time.Second) for { select { case \u003c-tick: // Make a body car := \u0026Car{} car.Body = \"Sports Car\" tireCh \u003c- car case \u003c-after: close(tireCh) wg.Done() return } } } func InstallTire(tireCh chan *Car) { for car := range tireCh { // Make a Tire time.Sleep(time.Second) car.Tire = \"Winter tire\" duration := time.Since(startTime) fmt.Printf(\"%.6f Complete Car: %v\\n\", duration.Seconds(), car) } wg.Done() } /* Start Factory 2.001219 Complete Car: \u0026{Sports Car Winter tire } 3.001570 Complete Car: \u0026{Sports Car Winter tire } 4.001832 Complete Car: \u0026{Sports Car Winter tire } 5.002079 Complete Car: \u0026{Sports Car Winter tire } 6.002416 Complete Car: \u0026{Sports Car Winter tire } Finish */ 한 쪽에서 데이터를 생성해서 넣어주면 다른 곳에서 데이터를 빼서 사용하는 패턴을 생산자 소비자 패턴이라고 한다. 채널을 여러 개 이용해서 생산자 소비자 패턴을 구현할 수 있다 ✅ 2. 컨텍스트 사용하기 context 패키지에서 제공하는 기능으로, 작업을 지시할 때 작업 가능 시간, 작업 취소 등의 조건을 지시하는 명세서 역할을 한다 2.1 작업 취소가 가능한 컨텍스트 package main import ( \"context\" \"fmt\" \"sync\" \"time\" ) var wg sync.WaitGroup func PrintSecond(ctx context.Context) { tick := time.Tick(time.Second) for { select { case \u003c-ctx.Done(): wg.Done() return case \u003c-tick: fmt.Println(\"Tick\") } } } func main() { wg.Add(1) ctx, cancel := context.WithCancel(context.Background()) go PrintSecond(ctx) time.Sleep(5 * time.Second) cancel() wg.Wait() } context.WithCancel() 함수로 취소 가능한 컨텍스트를 생성한다 상위 컨텍스트를 인수로 넣으면, 그 컨텍스트를 감싼 새로운 컨텍스트를 만들어준다 상위 컨테스트가 없다면 기본 컨텍스트 context.Background()를 넣어준다 context.WithCancel()은 컨텍스트 객체와 cancel() 함수를 반환한다 취소 함수를 이용해서 원할 때 취소할 수 있다 cancel()함수를 호출하면 컨텍스트의 Done() 채널을 닫는다 2.2 작업 시간을 설정한 컨텍스트 ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second) 인자로 넣은 요청 시간이 지나면 컨텍스트의 Done() 채널을 닫는다 cancel()를 호출하면 작업 시간 전에도 취소 가능하다 2.3 특정 값을 설정한 컨텍스트 package main import ( \"context\" \"fmt\" \"sync\" ) var wg sync.WaitGroup func main() { wg.Add(1) ctx := context.WithValue(context.Background(), \"number\", 9) go square(ctx) wg.Wait() } func square(ctx context.Context) { if v := ctx.Value(\"number\"); v != nil { n := v.(int) fmt.Printf(\"Square:%d\\n\", n*n) } wg.Done() } context.WithValue()의 인자로 key, value를 넣을 수 있다 Value() 메서드로 값을 읽어올 수 있으며 반환 타입은 any이다 외부에서 읽어올 때는 값 복사가 이루어진다 ctx, cancel := context.WithCancel(context.Background()) ctx = context.WithValue(ctx, \"number\", 9) ctx = context.WithValue(ctx, \"keyword\", \"Lilly\") 취소와 값 설정 모두 가능한 컨텍스트를 만들기 위해서는 상위 컨텍스트를 취소 가능한 컨텍스트로 넣어줘야 한다 ","wordCount":"974","inLanguage":"en","datePublished":"2025-08-23T16:26:00+09:00","dateModified":"2025-08-23T16:26:00+09:00","author":{"@type":"Person","name":"grrru"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://grrru.github.io/posts/2025-08-23-23.-%EC%B1%84%EB%84%90%EA%B3%BC-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8/"},"publisher":{"@type":"Organization","name":"grrru","logo":{"@type":"ImageObject","url":"https://grrru.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=nav><div class=logo><a href=https://grrru.github.io/ accesskey=h title="grrru (Alt + H)">grrru</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://grrru.github.io/ title=home><span>home</span></a></li><li><a href=https://grrru.github.io/posts/ title=posts><span>posts</span></a></li><li><a href=https://grrru.github.io/search/ title="search (Alt + /)" accesskey=/><span>search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://grrru.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://grrru.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">23. 채널과 컨텍스트</h1><div class=post-meta><span title='2025-08-23 16:26:00 +0900 +0900'>August 23, 2025</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>grrru</span></div></header><div class=post-content><h2 id=-1-채널-사용하기>✅ 1. 채널 사용하기<a hidden class=anchor aria-hidden=true href=#-1-채널-사용하기>#</a></h2><ul><li>채널(channel)이란 고루틴끼리 메시지를 전달할 수 있는 메시지 큐이다. 메시지 큐에 메시지들이 차례대로 쌓이고 메시지를 읽을 때는 들어온 순서대로 읽게 된다</li></ul><h3 id=11-채널-인스턴스-생성>1.1 채널 인스턴스 생성<a hidden class=anchor aria-hidden=true href=#11-채널-인스턴스-생성>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>messages</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span> = make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>)
+</span></span></code></pre></div><ul><li>채널은 <code>make()</code> 함수로 생성한다</li><li>채널 타입은 <code>chan</code> 키워드와 메시지 타입을 합쳐서 표현한다 <code>chan string</code></li></ul><h3 id=12-채널에-데이터-넣기>1.2 채널에 데이터 넣기<a hidden class=anchor aria-hidden=true href=#12-채널에-데이터-넣기>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>messages</span> <span style=color:#f92672>&lt;-</span> <span style=color:#e6db74>&#34;This is a message&#34;</span>
+</span></span></code></pre></div><ul><li><code>&lt;-</code> 연산자를 통해 채널에 데이터를 넣는다</li></ul><h3 id=13-채널에서-데이터-빼기>1.3 채널에서 데이터 빼기<a hidden class=anchor aria-hidden=true href=#13-채널에서-데이터-빼기>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>msg</span> <span style=color:#66d9ef>string</span> = <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>messages</span>
+</span></span></code></pre></div><ul><li>데이터를 넣을 때와 마찬가지로 <code>&lt;-</code> 연산자를 사용한다.</li><li>좌변에 빼낸 데이터를 담을 변수가 오며 우변에 채널이 온다</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>square</span>(<span style=color:#a6e22e>wg</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>, <span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span> <span style=color:#75715e>// 5. 데이터가 들어올 때까지 대기</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Square: %d\n&#34;</span>, <span style=color:#a6e22e>n</span><span style=color:#f92672>*</span><span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>() <span style=color:#75715e>// 6. 작업 수행 후 종료</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>) <span style=color:#75715e>// 1. 채널 생성</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>square</span>(<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>wg</span>, <span style=color:#a6e22e>ch</span>) <span style=color:#75715e>// 2. 고루틴 실행</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>9</span>            <span style=color:#75715e>// 3. 채널에 데이터 넣음</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>()          <span style=color:#75715e>// 4. 작업 완료 대기</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=14-채널-크기>1.4 채널 크기<a hidden class=anchor aria-hidden=true href=#14-채널-크기>#</a></h3><ul><li><code>make(chan int)</code>와 같이 채널을 생성하면 크기가 0인 채널이 생성된다</li><li>크기가 0인 채널은 데이터가 들어오면 다른 고루틴에서 빼갈 때까지 대기한다</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#ae81ff>7</span> <span style=color:#75715e>// 무한 대기 -&gt; deadlock</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// fatal error: all goroutines are asleep - deadlock!</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=15-버퍼를-가지는-채널>1.5 버퍼를 가지는 채널<a hidden class=anchor aria-hidden=true href=#15-버퍼를-가지는-채널>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span> <span style=color:#a6e22e>messages</span> = make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>, <span style=color:#ae81ff>2</span>)
+</span></span></code></pre></div><ul><li><code>make()</code> 함수의 두 번째 인자로 버퍼의 크기를 적어준다</li><li>버퍼가 가득 찬 상태로 데이터가 더 들어오면 크기가 0인 채널과 마찬가지로 빈 자리가 생길 때까지 대기한다</li></ul><h3 id=16-채널에서-데이터-대기>1.6 채널에서 데이터 대기<a hidden class=anchor aria-hidden=true href=#16-채널에서-데이터-대기>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;sync&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;time&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>square</span>(<span style=color:#a6e22e>wg</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>, <span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>ch</span> { <span style=color:#75715e>// 무한 대기</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Square: %d\n&#34;</span>, <span style=color:#a6e22e>n</span><span style=color:#f92672>*</span><span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>square</span>(<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>wg</span>, <span style=color:#a6e22e>ch</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#ae81ff>10</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// close(ch)</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>()
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>for range</code> 구문은 채널에서 데이터를 무한 대기하며 데이터를 빼내서 <code>n</code>에 값을 복사한다</li><li><code>wg.Wait()</code>이 작업 완료를 기다리지만, 채널에 데이터가 들어오지 않아 무한 대기하게 되고 <code>wg.Done()</code>를 실행하지 못한다고 판단하여 데드락에 걸린다</li><li><code>close(ch)</code>를 호출하여 채널이 닫혔음을 알려야 한다</li></ul><blockquote><p>이렇게 채널을 제때 닫아주지 않아 고루틴이 무한대기하는 경우, 좀비 루틴 또는 고루틴 락이라고 한다. 경량 스레드라고 해도 고루틴 또한 메모리를 사용하기 때문에 좀비 루틴을 조심해야 한다.</p></blockquote><h3 id=17-select문>1.7 select문<a hidden class=anchor aria-hidden=true href=#17-select문>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>square</span>(<span style=color:#a6e22e>wg</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>, <span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>quit</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>bool</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>:
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Square: %d\n&#34;</span>, <span style=color:#a6e22e>n</span><span style=color:#f92672>*</span><span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>quit</span>:
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>quit</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>bool</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>square</span>(<span style=color:#f92672>&amp;</span><span style=color:#a6e22e>wg</span>, <span style=color:#a6e22e>ch</span>, <span style=color:#a6e22e>quit</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#ae81ff>5</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>quit</span> <span style=color:#f92672>&lt;-</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>()
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>select</code> 문은 여러 채널에서 동시에 기다릴 수 있으며, 어떤 채널에서 데이터를 읽어왔다면 해당 구문을 실행하고 <code>select</code>문은 종료된다</li><li>하나의 case만 처리하고 종료되기 때문에 반복하고 싶다면 <code>for</code>문과 함께 사용해야 한다</li></ul><h3 id=18-일정-간격으로-실행>1.8 일정 간격으로 실행<a hidden class=anchor aria-hidden=true href=#18-일정-간격으로-실행>#</a></h3><ul><li><code>time</code> 패키지의 <code>Tick()</code> 함수로 원하는 시간 간격으로 신호를 보내주는 채널을 만들 수 있다<ul><li><code>Tick()</code>으로 생성한 채널은 일정 시간마다 현재 시각을 알려주는 <code>Time</code> 객체를 반환한다</li></ul></li><li><code>After()</code> 함수로 일정 시간 경과 후에 신호를 보내주는 채널을 생성할 수 있으며 반환된 채널은 <code>Time</code> 객체를 반환한다<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>tick</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Tick</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>terminate</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>After</span>(<span style=color:#ae81ff>5</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>tick</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Tick&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>terminate</span>:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Terminated!&#34;</span>)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ul><h3 id=19-채널로-생산자-소비자-패턴-구현하기>1.9 채널로 생산자 소비자 패턴 구현하기<a hidden class=anchor aria-hidden=true href=#19-채널로-생산자-소비자-패턴-구현하기>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;sync&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;time&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Car</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Body</span>  <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Tire</span>  <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Color</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> (
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>        <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>startTime</span> = <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>()
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>tireCh</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Car</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Start Factory&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>MakeBody</span>(<span style=color:#a6e22e>tireCh</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>InstallTire</span>(<span style=color:#a6e22e>tireCh</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>()
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Finish&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>MakeBody</span>(<span style=color:#a6e22e>tireCh</span> <span style=color:#66d9ef>chan</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Car</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>tick</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Tick</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>after</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>After</span>(<span style=color:#ae81ff>5</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>tick</span>:
+</span></span><span style=display:flex><span>			<span style=color:#75715e>// Make a body</span>
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>car</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Car</span>{}
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>car</span>.<span style=color:#a6e22e>Body</span> = <span style=color:#e6db74>&#34;Sports Car&#34;</span>
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>tireCh</span> <span style=color:#f92672>&lt;-</span> <span style=color:#a6e22e>car</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>after</span>:
+</span></span><span style=display:flex><span>			close(<span style=color:#a6e22e>tireCh</span>)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>InstallTire</span>(<span style=color:#a6e22e>tireCh</span> <span style=color:#66d9ef>chan</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Car</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>car</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>tireCh</span> {
+</span></span><span style=display:flex><span>		<span style=color:#75715e>// Make a Tire</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>car</span>.<span style=color:#a6e22e>Tire</span> = <span style=color:#e6db74>&#34;Winter tire&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>duration</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Since</span>(<span style=color:#a6e22e>startTime</span>)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;%.6f Complete Car: %v\n&#34;</span>, <span style=color:#a6e22e>duration</span>.<span style=color:#a6e22e>Seconds</span>(), <span style=color:#a6e22e>car</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>Start Factory
+</span></span></span><span style=display:flex><span><span style=color:#75715e>2.001219 Complete Car: &amp;{Sports Car Winter tire }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>3.001570 Complete Car: &amp;{Sports Car Winter tire }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>4.001832 Complete Car: &amp;{Sports Car Winter tire }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>5.002079 Complete Car: &amp;{Sports Car Winter tire }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>6.002416 Complete Car: &amp;{Sports Car Winter tire }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>Finish
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span></code></pre></div><ul><li>한 쪽에서 데이터를 생성해서 넣어주면 다른 곳에서 데이터를 빼서 사용하는 패턴을 <code>생산자 소비자 패턴</code>이라고 한다.</li><li>채널을 여러 개 이용해서 생산자 소비자 패턴을 구현할 수 있다</li></ul><h2 id=-2-컨텍스트-사용하기>✅ 2. 컨텍스트 사용하기<a hidden class=anchor aria-hidden=true href=#-2-컨텍스트-사용하기>#</a></h2><ul><li><code>context</code> 패키지에서 제공하는 기능으로, 작업을 지시할 때 작업 가능 시간, 작업 취소 등의 조건을 지시하는 명세서 역할을 한다</li></ul><h3 id=21-작업-취소가-가능한-컨텍스트>2.1 작업 취소가 가능한 컨텍스트<a hidden class=anchor aria-hidden=true href=#21-작업-취소가-가능한-컨텍스트>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;context&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;sync&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;time&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>PrintSecond</span>(<span style=color:#a6e22e>ctx</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Context</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>tick</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Tick</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ctx</span>.<span style=color:#a6e22e>Done</span>():
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>tick</span>:
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Tick&#34;</span>)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ctx</span>, <span style=color:#a6e22e>cancel</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>WithCancel</span>(<span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Background</span>())
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>PrintSecond</span>(<span style=color:#a6e22e>ctx</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>5</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>cancel</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>()
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>context.WithCancel()</code> 함수로 취소 가능한 컨텍스트를 생성한다<ul><li>상위 컨텍스트를 인수로 넣으면, 그 컨텍스트를 감싼 새로운 컨텍스트를 만들어준다</li><li>상위 컨테스트가 없다면 기본 컨텍스트 <code>context.Background()</code>를 넣어준다</li></ul></li><li><code>context.WithCancel()</code>은 컨텍스트 객체와 <code>cancel()</code> 함수를 반환한다<ul><li>취소 함수를 이용해서 원할 때 취소할 수 있다</li></ul></li><li><code>cancel()</code>함수를 호출하면 컨텍스트의 <code>Done()</code> 채널을 닫는다</li></ul><h3 id=22-작업-시간을-설정한-컨텍스트>2.2 작업 시간을 설정한 컨텍스트<a hidden class=anchor aria-hidden=true href=#22-작업-시간을-설정한-컨텍스트>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>ctx</span>, <span style=color:#a6e22e>cancel</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>WithTimeout</span>(<span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Background</span>(), <span style=color:#ae81ff>3</span><span style=color:#f92672>*</span><span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span></code></pre></div><ul><li>인자로 넣은 요청 시간이 지나면 컨텍스트의 <code>Done()</code> 채널을 닫는다</li><li><code>cancel()</code>를 호출하면 작업 시간 전에도 취소 가능하다</li></ul><h3 id=23-특정-값을-설정한-컨텍스트>2.3 특정 값을 설정한 컨텍스트<a hidden class=anchor aria-hidden=true href=#23-특정-값을-설정한-컨텍스트>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;context&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;sync&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>ctx</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>WithValue</span>(<span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Background</span>(), <span style=color:#e6db74>&#34;number&#34;</span>, <span style=color:#ae81ff>9</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>go</span> <span style=color:#a6e22e>square</span>(<span style=color:#a6e22e>ctx</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>square</span>(<span style=color:#a6e22e>ctx</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Context</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>ctx</span>.<span style=color:#a6e22e>Value</span>(<span style=color:#e6db74>&#34;number&#34;</span>); <span style=color:#a6e22e>v</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>v</span>.(<span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Printf</span>(<span style=color:#e6db74>&#34;Square:%d\n&#34;</span>, <span style=color:#a6e22e>n</span><span style=color:#f92672>*</span><span style=color:#a6e22e>n</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>()
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>context.WithValue()</code>의 인자로 key, value를 넣을 수 있다</li><li><code>Value()</code> 메서드로 값을 읽어올 수 있으며 반환 타입은 <code>any</code>이다</li><li>외부에서 읽어올 때는 값 복사가 이루어진다</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>ctx</span>, <span style=color:#a6e22e>cancel</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>WithCancel</span>(<span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>Background</span>())
+</span></span><span style=display:flex><span><span style=color:#a6e22e>ctx</span> = <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>WithValue</span>(<span style=color:#a6e22e>ctx</span>, <span style=color:#e6db74>&#34;number&#34;</span>, <span style=color:#ae81ff>9</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>ctx</span> = <span style=color:#a6e22e>context</span>.<span style=color:#a6e22e>WithValue</span>(<span style=color:#a6e22e>ctx</span>, <span style=color:#e6db74>&#34;keyword&#34;</span>, <span style=color:#e6db74>&#34;Lilly&#34;</span>)
+</span></span></code></pre></div><ul><li>취소와 값 설정 모두 가능한 컨텍스트를 만들기 위해서는 상위 컨텍스트를 취소 가능한 컨텍스트로 넣어줘야 한다</li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://grrru.github.io/tags/channel/>Channel</a></li><li><a href=https://grrru.github.io/tags/context/>Context</a></li></ul><nav class=paginav><a class=prev href=https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/><span class=title>« Prev</span><br><span>24. 제네릭 프로그래밍</span>
+</a><a class=next href=https://grrru.github.io/posts/2025-08-22-22.-%EA%B3%A0%EB%A3%A8%ED%8B%B4%EA%B3%BC-%EB%8F%99%EC%8B%9C%EC%84%B1-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/><span class=title>Next »</span><br><span>22. 고루틴과 동시성 프로그래밍</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share 23. 채널과 컨텍스트 on x" href="https://x.com/intent/tweet/?text=23.%20%ec%b1%84%eb%84%90%ea%b3%bc%20%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8&amp;url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f&amp;hashtags=channel%2ccontext"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 23. 채널과 컨텍스트 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f&amp;title=23.%20%ec%b1%84%eb%84%90%ea%b3%bc%20%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8&amp;summary=23.%20%ec%b1%84%eb%84%90%ea%b3%bc%20%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8&amp;source=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 23. 채널과 컨텍스트 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f&title=23.%20%ec%b1%84%eb%84%90%ea%b3%bc%20%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 23. 채널과 컨텍스트 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 23. 채널과 컨텍스트 on whatsapp" href="https://api.whatsapp.com/send?text=23.%20%ec%b1%84%eb%84%90%ea%b3%bc%20%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%20-%20https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 23. 채널과 컨텍스트 on telegram" href="https://telegram.me/share/url?text=23.%20%ec%b1%84%eb%84%90%ea%b3%bc%20%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8&amp;url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentColor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 23. 채널과 컨텍스트 on ycombinator" href="https://news.ycombinator.com/submitlink?t=23.%20%ec%b1%84%eb%84%90%ea%b3%bc%20%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8&u=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-23-23.-%25EC%25B1%2584%25EB%2584%2590%25EA%25B3%25BC-%25EC%25BB%25A8%25ED%2585%258D%25EC%258A%25A4%25ED%258A%25B8%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://grrru.github.io/>grrru</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Generic on grrru</title><link>https://grrru.github.io/tags/generic/</link><description>Recent content in Generic on grrru</description><generator>Hugo -- 0.152.2</generator><language>en-US</language><lastBuildDate>Tue, 26 Aug 2025 16:33:00 +0900</lastBuildDate><atom:link href="https://grrru.github.io/tags/generic/index.xml" rel="self" type="application/rss+xml"/><item><title>24. 제네릭 프로그래밍</title><link>https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/</link><pubDate>Tue, 26 Aug 2025 16:33:00 +0900</pubDate><guid>https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/</guid><description>&lt;h2 id="-1-제네릭-프로그래밍-소개"&gt;✅ 1. 제네릭 프로그래밍 소개&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Go 1.18 버전에 추가된 기능으로, 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대응해 동작하도록 하는 프로그래밍 기법&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="-2-제네릭-함수"&gt;✅ 2. 제네릭 함수&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;funcName&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;constraint&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;p&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) {}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;함수명 뒤에 대괄호를 열고 타입 파라미터(파라미터 이름과 타입 제한)를 적는다
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;T&lt;/code&gt; : 파라미터 이름&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;constaint&lt;/code&gt; : 타입 제한&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;타입 파라미터는 &lt;code&gt;,&lt;/code&gt;로 구분하여 여러 개 적을 수 있다&lt;/li&gt;
+&lt;li&gt;타입 파라미터에 사용한 타입 파라미터 이름을 특정 타입 대신에 사용할 수 있다 &lt;code&gt;p T&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Print&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;any&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;Print&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;Print&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;World&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;Print&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt;) &lt;span style="color:#75715e"&gt;// in call to Print, mismatched types untyped int and untyped string (cannot infer T)compilerCannotInferTypeArgs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Print()&lt;/code&gt; 함수는 같은 타입 인자 두 개를 받으면 출력하지만, 서로 다른 타입의 인수를 사용하면 에러를 발생시킨다&lt;/li&gt;
+&lt;li&gt;여러 타입 파라미터를 정의할 수 있다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="21-타입-제한type-constraint"&gt;2.1 타입 제한(type constraint)&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;any&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#75715e"&gt;// invalid operation: operator + not defined on a (variable of type T constrained by any)compilerUndefinedOp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;위 함수에서 &lt;code&gt;any&lt;/code&gt; 타입 &lt;code&gt;T&lt;/code&gt;는 + 연산자가 정의되어 있지 않기 때문에 에러가 발생한다&lt;/li&gt;
+&lt;li&gt;특정 조건을 정의해서 해당 타입이 + 연산자를 지원하고 있음을 알려줘야 한다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="211-타입-제한-예제"&gt;2.1.1 타입 제한 예제&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 1. `|`로 구분&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add1&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int8&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int16&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int32&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int64&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;// 2. 타입 제한 선언&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;type&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Integer&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;int8&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int16&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int32&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int64&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add2&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Integer&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;T&lt;/code&gt; 타입에 여러 타입을 &lt;code&gt;|&lt;/code&gt;로 구분하여 넣어줄 수 있다&lt;/li&gt;
+&lt;li&gt;타입 제한은 Interface 키워드를 사용해서 정의할 수도 있다&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;golang.org/x/exp/constraints&lt;/code&gt; 패키지는 이미 정의된 몇 가지 타입 제한을 제공한다
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;constraints&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Integer&lt;/span&gt; | &lt;span style="color:#a6e22e"&gt;constraints&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Float&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="22-타입-제한-더-알아보기"&gt;2.2 타입 제한 더 알아보기&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;type&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Float&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ~&lt;span style="color:#66d9ef"&gt;float32&lt;/span&gt; | ~&lt;span style="color:#66d9ef"&gt;float64&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;constraints.Float&lt;/code&gt; 타입은 &lt;code&gt;~&lt;/code&gt;가 붙어있는데, 이는 해당 타입을 기본으로 하는 모든 별칭 타입들까지 포함한다는 뜻이다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="221-별칭-타입을-포함하지-않는-예제"&gt;2.2.1 별칭 타입을 포함하지 않는 예제&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;type&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Integer&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int32&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Integer&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt; &lt;span style="color:#f92672"&gt;+&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;type&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyInt&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;var&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyInt&lt;/span&gt; = &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;var&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyInt&lt;/span&gt; = &lt;span style="color:#ae81ff"&gt;4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;add&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt;)) &lt;span style="color:#75715e"&gt;// MyInt does not satisfy Integer (possibly missing ~ for int in Integer)compilerInvalidTypeArg&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;MyInt&lt;/code&gt;는 &lt;code&gt;Integer&lt;/code&gt; 타입에 포함되어 있지 않아 컴파일 에러가 발생한다&lt;/li&gt;
+&lt;li&gt;아래와 같이 &lt;code&gt;~int&lt;/code&gt;로 수정하면 별칭 타입까지 포함되어 에러가 발생하지 않는다
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;type&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Integer&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; ~&lt;span style="color:#66d9ef"&gt;int&lt;/span&gt; | &lt;span style="color:#66d9ef"&gt;int32&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="23-타입-제한에-메서드-조건-더하기"&gt;2.3 타입 제한에 메서드 조건 더하기&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;타입 제한 정의가 &lt;code&gt;interface&lt;/code&gt; 키워드를 사용하기 때문에 일반 인터페이스처럼 메서드 조건을 더할 수 있다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;package&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; (
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;fmt&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;hash/fnv&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;type&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ComparableHasher&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;interface&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;comparable&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;Hash&lt;/span&gt;() &lt;span style="color:#66d9ef"&gt;uint32&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;type&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyString&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; (&lt;span style="color:#a6e22e"&gt;s&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyString&lt;/span&gt;) &lt;span style="color:#a6e22e"&gt;Hash&lt;/span&gt;() &lt;span style="color:#66d9ef"&gt;uint32&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;h&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;fnv&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;New32a&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;h&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Write&lt;/span&gt;([]byte(&lt;span style="color:#a6e22e"&gt;s&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;h&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Sum32&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;Equal&lt;/span&gt;[&lt;span style="color:#a6e22e"&gt;T&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ComparableHasher&lt;/span&gt;](&lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;T&lt;/span&gt;) &lt;span style="color:#66d9ef"&gt;bool&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt; &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;a&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Hash&lt;/span&gt;() &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;b&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Hash&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;var&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;str1&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyString&lt;/span&gt; = &lt;span style="color:#e6db74"&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;var&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;str2&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;MyString&lt;/span&gt; = &lt;span style="color:#e6db74"&gt;&amp;#34;World&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;Equal&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;str1&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;str2&lt;/span&gt;)) &lt;span style="color:#75715e"&gt;// false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ComparableHasher&lt;/code&gt; 타입 제한을 정의한다
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;comparable&lt;/code&gt;은 &lt;code&gt;==&lt;/code&gt;, &lt;code&gt;!=&lt;/code&gt;를 지원하는 타입들을 정의한 Go 내부 타입 제한이다&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Hash() uint32&lt;/code&gt; 메서드를 포함하도록 제한했다&lt;/li&gt;
+&lt;li&gt;즉, &lt;code&gt;ComparableHasher&lt;/code&gt;는 &lt;code&gt;==&lt;/code&gt;와 &lt;code&gt;!=&lt;/code&gt;를 지원하고 &lt;code&gt;Hash() uint32&lt;/code&gt; 메서드를 포함한 타입만 가능하다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MyString&lt;/code&gt;이라는 별칭 타입을 정의하고 &lt;code&gt;Has() uint32&lt;/code&gt; 메서드를 구현한다
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;MyString&lt;/code&gt;은 &lt;code&gt;ComparableHasher&lt;/code&gt; 타입을 만족한다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ComparableHasher&lt;/code&gt; 제한을 사용하는 &lt;code&gt;Equal()&lt;/code&gt; 함수를 정의한다&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;타입 제한은 인터페이스 같지만 서로 다른 개념이다. 타입 제한은 제네릭 프로그래밍의 타입 파라미터에서만 사용될 수 있고, 일반 인터페이스처럼 사용하지 못한다&lt;/p&gt;</description></item></channel></rss>

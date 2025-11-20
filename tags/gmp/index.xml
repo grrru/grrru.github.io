@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>GMP on grrru</title><link>https://grrru.github.io/tags/gmp/</link><description>Recent content in GMP on grrru</description><generator>Hugo -- 0.152.2</generator><language>en-US</language><lastBuildDate>Mon, 20 Oct 2025 19:24:00 +0900</lastBuildDate><atom:link href="https://grrru.github.io/tags/gmp/index.xml" rel="self" type="application/rss+xml"/><item><title>Go의 GMP 모델</title><link>https://grrru.github.io/posts/2025-10-20-go%EC%9D%98-gmp-%EB%AA%A8%EB%8D%B8/</link><pubDate>Mon, 20 Oct 2025 19:24:00 +0900</pubDate><guid>https://grrru.github.io/posts/2025-10-20-go%EC%9D%98-gmp-%EB%AA%A8%EB%8D%B8/</guid><description>&lt;p&gt;좋은 질문입니다! Go의 **논리 프로세서(P, Processor)**와 **고루틴(G, Goroutine)**은 완전히 다른 개념입니다. Go의 스케줄러 모델을 이해하는 핵심 질문이에요!&lt;/p&gt;
+&lt;h2 id="go의-gmp-모델"&gt;Go의 GMP 모델&lt;/h2&gt;
+&lt;p&gt;Go 런타임은 3가지 주요 구성 요소로 이루어져 있습니다:&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;G (Goroutine) - 고루틴
+M (Machine) - OS 스레드
+P (Processor) - 논리 프로세서 (스케줄링 컨텍스트)
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="관계도"&gt;관계도&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;┌─────────────────────────────────────┐
+│ Go 프로그램 │
+├─────────────────────────────────────┤
+│ │
+│ G1 G2 G3 G4 G5 G6 G7 G8 │ ← 수천~수만 개의 고루틴
+│ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ │
+│ ┌───┐ ┌───┐ ┌───┐ ┌───┐ │
+│ │ P0│ │ P1│ │ P2│ │ P3│ │ ← GOMAXPROCS (보통 CPU 코어 수)
+│ └─┬─┘ └─┬─┘ └─┬─┘ └─┬─┘ │
+│ │ │ │ │ │
+│ ┌─▼─┐ ┌─▼─┐ ┌─▼─┐ ┌─▼─┐ │
+│ │M0 │ │M1 │ │M2 │ │M3 │ │ ← OS 스레드
+│ └───┘ └───┘ └───┘ └───┘ │
+└─────────────────────────────────────┘
+↓ ↓ ↓ ↓
+┌─────────────────────────┐
+│ CPU 코어 (물리) │
+│ Core0 Core1 Core2... │
+└─────────────────────────┘
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id="각-요소-설명"&gt;각 요소 설명&lt;/h2&gt;
+&lt;h3 id="g-goroutine---고루틴"&gt;G (Goroutine) - 고루틴&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;개수&lt;/strong&gt;: 수천~수만 개 (제한 거의 없음)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;크기&lt;/strong&gt;: 스택 2KB부터 시작 (매우 가벼움)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;역할&lt;/strong&gt;: 실제 실행될 작업/함수&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;상태&lt;/strong&gt;: Runnable, Running, Waiting 등&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() { &lt;span style="color:#75715e"&gt;// ← 새로운 G 생성&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;Hello&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="p-processor---논리-프로세서"&gt;P (Processor) - 논리 프로세서&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;개수&lt;/strong&gt;: &lt;code&gt;GOMAXPROCS&lt;/code&gt; (기본값: CPU 코어 수)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;역할&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;고루틴 스케줄링 컨텍스트&lt;/li&gt;
+&lt;li&gt;실행 가능한 고루틴 큐(Local Run Queue) 관리&lt;/li&gt;
+&lt;li&gt;리소스(메모리 캐시 등) 보유&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;중요&lt;/strong&gt;: 실제로 실행하지는 않음! 스케줄링만!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;runtime&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;GOMAXPROCS&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;4&lt;/span&gt;) &lt;span style="color:#75715e"&gt;// P를 4개로 설정&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="m-machine---os-스레드"&gt;M (Machine) - OS 스레드&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;개수&lt;/strong&gt;: 필요에 따라 동적으로 생성/제거 (보통 P 개수와 비슷)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;역할&lt;/strong&gt;: 실제로 CPU에서 코드를 실행하는 OS 스레드&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;관계&lt;/strong&gt;: M이 P에 연결되어야 고루틴 실행 가능&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="실제-동작-방식"&gt;실제 동작 방식&lt;/h2&gt;
+&lt;h3 id="1-정상-실행"&gt;1. 정상 실행&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;P0에 연결된 M0가 G1을 실행:
+P0 [G1, G2, G3] ←─ Local Run Queue (실행 대기 중인 고루틴들)
+↓
+M0 (OS Thread)
+↓
+G1 실행 중...
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="2-여러-p가-동시에-동작"&gt;2. 여러 P가 동시에 동작&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;4코어 CPU, GOMAXPROCS=4:
+시간 T:
+P0 → M0 → G1 실행 | CPU Core 0
+P1 → M1 → G5 실행 | CPU Core 1
+P2 → M2 → G9 실행 | CPU Core 2
+P3 → M3 → G13 실행 | CPU Core 3
+P0의 대기열: [G2, G3, G4]
+P1의 대기열: [G6, G7, G8]
+P2의 대기열: [G10, G11, G12]
+P3의 대기열: [G14, G15, G16]
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="3-시스템-콜이나-블로킹-발생-시"&gt;3. 시스템 콜이나 블로킹 발생 시&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;G1이 시스템 콜(파일 I/O 등)을 하면:
+Before:
+P0 → M0 → G1 (실행 중)
+After:
+P0 → M1 → G2 (다른 고루틴 실행) ← 새 M 연결
+M0 → G1 (시스템 콜 대기) ← P에서 분리됨
+G1 완료 후:
+M0는 다시 P를 찾거나, 쉬거나, 종료됨
+&lt;/code&gt;&lt;/pre&gt;</description></item></channel></rss>

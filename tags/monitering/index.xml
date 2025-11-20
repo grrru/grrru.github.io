@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Monitering on grrru</title><link>https://grrru.github.io/tags/monitering/</link><description>Recent content in Monitering on grrru</description><generator>Hugo -- 0.152.2</generator><language>en-US</language><lastBuildDate>Tue, 21 Oct 2025 12:59:00 +0900</lastBuildDate><atom:link href="https://grrru.github.io/tags/monitering/index.xml" rel="self" type="application/rss+xml"/><item><title>Flight Recorder in Go 1.25</title><link>https://grrru.github.io/posts/2025-10-21-flight-recorder-in-go-1.25/</link><pubDate>Tue, 21 Oct 2025 12:59:00 +0900</pubDate><guid>https://grrru.github.io/posts/2025-10-21-flight-recorder-in-go-1.25/</guid><description>&lt;h1 id="more-powerful-go-execution-traces-2024"&gt;More powerful Go execution traces (2024)&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href="https://go.dev/blog/execution-traces-2024"&gt;more powerful Go execution traces&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="issues"&gt;Issues&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;runtime/trace&lt;/code&gt; 패키지는 goroutine의 실행 흐름을 시간 순으로 기록해서 trace를 생성하고 이를 &lt;code&gt;go tool trace command&lt;/code&gt;로 시각화할 수 있게 도와주는 패키지다. 하지만 기존에 제공하던 &lt;code&gt;runtime/trace&lt;/code&gt; 패키지에는 excution traces 생성하는 데 네 가지 큰 문제가 있었다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;trace는 오버헤드가 크다&lt;/li&gt;
+&lt;li&gt;trace는 확장성이 좋지 않아 분석하기에 너무 커질 수 있다&lt;/li&gt;
+&lt;li&gt;특정 문제를 포착하기 위해 언제 tracing을 시작해야할지 불분명하다&lt;/li&gt;
+&lt;li&gt;trace를 파싱하고 해석하는 public package의 부족으로 일부 모험적인 개발자만이 사용 가능하다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="개선-사항"&gt;개선 사항&lt;/h2&gt;
+&lt;h3 id="low-overhead-tracing"&gt;Low-overhead tracing&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://blog.felixge.de/reducing-gos-execution-tracer-overhead-with-frame-pointer-unwinding/"&gt;Felix’s great blog post&lt;/a&gt;&lt;br&gt;
+Go 1.21 이전에는 전체 앱 CPU 사용률의 10~20%를 차지하던 tracing의 런타임 오버헤드가 1~2% 수준으로 크게 줄어들었다. tracing 비용의 대부분이 traceback에 있었고, traceback을 최적화하여 CPU 오버헤드를 크게 줄였다.&lt;/p&gt;</description></item></channel></rss>

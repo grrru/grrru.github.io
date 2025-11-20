@@ -1,0 +1,544 @@
+<!doctype html><html lang=en dir=auto data-theme=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>24. 제네릭 프로그래밍 | grrru</title><meta name=keywords content="generic"><meta name=description content='✅ 1. 제네릭 프로그래밍 소개
+
+Go 1.18 버전에 추가된 기능으로, 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대응해 동작하도록 하는 프로그래밍 기법
+
+✅ 2. 제네릭 함수
+func funcName[T constraint](p T) {}
+
+함수명 뒤에 대괄호를 열고 타입 파라미터(파라미터 이름과 타입 제한)를 적는다
+
+T : 파라미터 이름
+constaint : 타입 제한
+
+
+타입 파라미터는 ,로 구분하여 여러 개 적을 수 있다
+타입 파라미터에 사용한 타입  파라미터 이름을 특정 타입 대신에 사용할 수 있다 p T
+
+func Print[T any](a, b T) {
+	fmt.Println(a, b)
+}
+
+func main() {
+	Print(1, 2)
+	Print("Hello", "World")
+	Print(1, "Hello") // in call to Print, mismatched types untyped int and untyped string (cannot infer T)compilerCannotInferTypeArgs
+}
+
+Print() 함수는 같은 타입 인자 두 개를 받으면 출력하지만, 서로 다른 타입의 인수를 사용하면 에러를 발생시킨다
+여러 타입 파라미터를 정의할 수 있다
+
+2.1 타입 제한(type constraint)
+func add[T any](a, b T) T {
+	return a + b // invalid operation: operator + not defined on a (variable of type T constrained by any)compilerUndefinedOp
+}
+
+위 함수에서 any 타입 T는 + 연산자가 정의되어 있지 않기 때문에 에러가 발생한다
+특정 조건을 정의해서 해당 타입이 + 연산자를 지원하고 있음을 알려줘야 한다
+
+2.1.1 타입 제한 예제
+// 1. `|`로 구분
+func add1[T int8 | int16 | int32 | int64 | int](a, b T) T {
+	return a + b
+}
+
+// 2. 타입 제한 선언
+type Integer interface {
+	int8 | int16 | int32 | int64 | int
+}
+
+func add2[T Integer](a, b T) T {
+	return a + b
+}
+
+T 타입에 여러 타입을 |로 구분하여 넣어줄 수 있다
+타입 제한은 Interface 키워드를 사용해서 정의할 수도 있다
+golang.org/x/exp/constraints 패키지는 이미 정의된 몇 가지 타입 제한을 제공한다
+func add[T constraints.Integer | constraints.Float](a, b T) T {
+	return a + b
+}
+
+
+2.2 타입 제한 더 알아보기
+type Float interface {
+	~float32 | ~float64
+}
+
+constraints.Float 타입은 ~가 붙어있는데, 이는 해당 타입을 기본으로 하는 모든 별칭 타입들까지 포함한다는 뜻이다
+
+2.2.1 별칭 타입을 포함하지 않는 예제
+type Integer interface {
+	int | int32
+}
+
+func add[T Integer](a, b T) T {
+	return a + b
+}
+
+type MyInt int
+
+func main() {
+	var a MyInt = 3
+	var b MyInt = 4
+	fmt.Println(add(a, b)) // MyInt does not satisfy Integer (possibly missing ~ for int in Integer)compilerInvalidTypeArg
+}
+
+MyInt는 Integer 타입에 포함되어 있지 않아 컴파일 에러가 발생한다
+아래와 같이 ~int로 수정하면 별칭 타입까지 포함되어 에러가 발생하지 않는다
+type Integer interface {
+	~int | int32
+}
+
+
+2.3 타입 제한에 메서드 조건 더하기
+
+타입 제한 정의가 interface 키워드를 사용하기 때문에 일반 인터페이스처럼 메서드 조건을 더할 수 있다
+
+package main
+
+import (
+	"fmt"
+	"hash/fnv"
+)
+
+type ComparableHasher interface {
+	comparable
+	Hash() uint32
+}
+
+type MyString string
+
+func (s MyString) Hash() uint32 {
+	h := fnv.New32a()
+	h.Write([]byte(s))
+	return h.Sum32()
+}
+
+func Equal[T ComparableHasher](a, b T) bool {
+	if a == b {
+		return true
+	}
+
+	return a.Hash() == b.Hash()
+}
+
+func main() {
+	var str1 MyString = "Hello"
+	var str2 MyString = "World"
+	fmt.Println(Equal(str1, str2)) // false
+}
+
+ComparableHasher 타입 제한을 정의한다
+
+comparable은 ==, !=를 지원하는 타입들을 정의한 Go 내부 타입 제한이다
+Hash() uint32 메서드를 포함하도록 제한했다
+즉, ComparableHasher는 ==와 !=를 지원하고 Hash() uint32 메서드를 포함한 타입만 가능하다
+
+
+MyString이라는 별칭 타입을 정의하고 Has() uint32 메서드를 구현한다
+
+MyString은 ComparableHasher 타입을 만족한다
+
+
+ComparableHasher 제한을 사용하는 Equal() 함수를 정의한다
+
+
+타입 제한은 인터페이스 같지만 서로 다른 개념이다. 타입 제한은 제네릭 프로그래밍의 타입 파라미터에서만 사용될 수 있고, 일반 인터페이스처럼 사용하지 못한다'><meta name=author content="grrru"><link rel=canonical href=https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/><link crossorigin=anonymous href=/assets/css/stylesheet.343cc480b9ffc8f04ccbe5e968ad674880cab773ec19905e93033065c1e7a804.css integrity="sha256-NDzEgLn/yPBMy+XpaK1nSIDKt3PsGZBekwMwZcHnqAQ=" rel="preload stylesheet" as=style><link rel=icon href=https://grrru.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://grrru.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://grrru.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://grrru.github.io/apple-touch-icon.png><link rel=mask-icon href=https://grrru.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--code-block-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51);color-scheme:dark}.list{background:var(--theme)}.toc{background:var(--entry)}}@media(prefers-color-scheme:light){.list::-webkit-scrollbar-thumb{border-color:var(--code-bg)}}</style></noscript><script>localStorage.getItem("pref-theme")==="dark"?document.querySelector("html").dataset.theme="dark":localStorage.getItem("pref-theme")==="light"?document.querySelector("html").dataset.theme="light":window.matchMedia("(prefers-color-scheme: dark)").matches?document.querySelector("html").dataset.theme="dark":document.querySelector("html").dataset.theme="light"</script><meta property="og:url" content="https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/"><meta property="og:site_name" content="grrru"><meta property="og:title" content="24. 제네릭 프로그래밍"><meta property="og:description" content='✅ 1. 제네릭 프로그래밍 소개 Go 1.18 버전에 추가된 기능으로, 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대응해 동작하도록 하는 프로그래밍 기법 ✅ 2. 제네릭 함수 func funcName[T constraint](p T) {} 함수명 뒤에 대괄호를 열고 타입 파라미터(파라미터 이름과 타입 제한)를 적는다 T : 파라미터 이름 constaint : 타입 제한 타입 파라미터는 ,로 구분하여 여러 개 적을 수 있다 타입 파라미터에 사용한 타입 파라미터 이름을 특정 타입 대신에 사용할 수 있다 p T func Print[T any](a, b T) { fmt.Println(a, b) } func main() { Print(1, 2) Print("Hello", "World") Print(1, "Hello") // in call to Print, mismatched types untyped int and untyped string (cannot infer T)compilerCannotInferTypeArgs } Print() 함수는 같은 타입 인자 두 개를 받으면 출력하지만, 서로 다른 타입의 인수를 사용하면 에러를 발생시킨다 여러 타입 파라미터를 정의할 수 있다 2.1 타입 제한(type constraint) func add[T any](a, b T) T { return a + b // invalid operation: operator + not defined on a (variable of type T constrained by any)compilerUndefinedOp } 위 함수에서 any 타입 T는 + 연산자가 정의되어 있지 않기 때문에 에러가 발생한다 특정 조건을 정의해서 해당 타입이 + 연산자를 지원하고 있음을 알려줘야 한다 2.1.1 타입 제한 예제 // 1. `|`로 구분 func add1[T int8 | int16 | int32 | int64 | int](a, b T) T { return a + b } // 2. 타입 제한 선언 type Integer interface { int8 | int16 | int32 | int64 | int } func add2[T Integer](a, b T) T { return a + b } T 타입에 여러 타입을 |로 구분하여 넣어줄 수 있다 타입 제한은 Interface 키워드를 사용해서 정의할 수도 있다 golang.org/x/exp/constraints 패키지는 이미 정의된 몇 가지 타입 제한을 제공한다 func add[T constraints.Integer | constraints.Float](a, b T) T { return a + b } 2.2 타입 제한 더 알아보기 type Float interface { ~float32 | ~float64 } constraints.Float 타입은 ~가 붙어있는데, 이는 해당 타입을 기본으로 하는 모든 별칭 타입들까지 포함한다는 뜻이다 2.2.1 별칭 타입을 포함하지 않는 예제 type Integer interface { int | int32 } func add[T Integer](a, b T) T { return a + b } type MyInt int func main() { var a MyInt = 3 var b MyInt = 4 fmt.Println(add(a, b)) // MyInt does not satisfy Integer (possibly missing ~ for int in Integer)compilerInvalidTypeArg } MyInt는 Integer 타입에 포함되어 있지 않아 컴파일 에러가 발생한다 아래와 같이 ~int로 수정하면 별칭 타입까지 포함되어 에러가 발생하지 않는다 type Integer interface { ~int | int32 } 2.3 타입 제한에 메서드 조건 더하기 타입 제한 정의가 interface 키워드를 사용하기 때문에 일반 인터페이스처럼 메서드 조건을 더할 수 있다 package main import ( "fmt" "hash/fnv" ) type ComparableHasher interface { comparable Hash() uint32 } type MyString string func (s MyString) Hash() uint32 { h := fnv.New32a() h.Write([]byte(s)) return h.Sum32() } func Equal[T ComparableHasher](a, b T) bool { if a == b { return true } return a.Hash() == b.Hash() } func main() { var str1 MyString = "Hello" var str2 MyString = "World" fmt.Println(Equal(str1, str2)) // false } ComparableHasher 타입 제한을 정의한다 comparable은 ==, !=를 지원하는 타입들을 정의한 Go 내부 타입 제한이다 Hash() uint32 메서드를 포함하도록 제한했다 즉, ComparableHasher는 ==와 !=를 지원하고 Hash() uint32 메서드를 포함한 타입만 가능하다 MyString이라는 별칭 타입을 정의하고 Has() uint32 메서드를 구현한다 MyString은 ComparableHasher 타입을 만족한다 ComparableHasher 제한을 사용하는 Equal() 함수를 정의한다 타입 제한은 인터페이스 같지만 서로 다른 개념이다. 타입 제한은 제네릭 프로그래밍의 타입 파라미터에서만 사용될 수 있고, 일반 인터페이스처럼 사용하지 못한다'><meta property="og:locale" content="en-US"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-08-26T16:33:00+09:00"><meta property="article:modified_time" content="2025-08-26T16:33:00+09:00"><meta property="article:tag" content="Generic"><meta name=twitter:card content="summary"><meta name=twitter:title content="24. 제네릭 프로그래밍"><meta name=twitter:description content='✅ 1. 제네릭 프로그래밍 소개
+
+Go 1.18 버전에 추가된 기능으로, 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대응해 동작하도록 하는 프로그래밍 기법
+
+✅ 2. 제네릭 함수
+func funcName[T constraint](p T) {}
+
+함수명 뒤에 대괄호를 열고 타입 파라미터(파라미터 이름과 타입 제한)를 적는다
+
+T : 파라미터 이름
+constaint : 타입 제한
+
+
+타입 파라미터는 ,로 구분하여 여러 개 적을 수 있다
+타입 파라미터에 사용한 타입  파라미터 이름을 특정 타입 대신에 사용할 수 있다 p T
+
+func Print[T any](a, b T) {
+	fmt.Println(a, b)
+}
+
+func main() {
+	Print(1, 2)
+	Print("Hello", "World")
+	Print(1, "Hello") // in call to Print, mismatched types untyped int and untyped string (cannot infer T)compilerCannotInferTypeArgs
+}
+
+Print() 함수는 같은 타입 인자 두 개를 받으면 출력하지만, 서로 다른 타입의 인수를 사용하면 에러를 발생시킨다
+여러 타입 파라미터를 정의할 수 있다
+
+2.1 타입 제한(type constraint)
+func add[T any](a, b T) T {
+	return a + b // invalid operation: operator + not defined on a (variable of type T constrained by any)compilerUndefinedOp
+}
+
+위 함수에서 any 타입 T는 + 연산자가 정의되어 있지 않기 때문에 에러가 발생한다
+특정 조건을 정의해서 해당 타입이 + 연산자를 지원하고 있음을 알려줘야 한다
+
+2.1.1 타입 제한 예제
+// 1. `|`로 구분
+func add1[T int8 | int16 | int32 | int64 | int](a, b T) T {
+	return a + b
+}
+
+// 2. 타입 제한 선언
+type Integer interface {
+	int8 | int16 | int32 | int64 | int
+}
+
+func add2[T Integer](a, b T) T {
+	return a + b
+}
+
+T 타입에 여러 타입을 |로 구분하여 넣어줄 수 있다
+타입 제한은 Interface 키워드를 사용해서 정의할 수도 있다
+golang.org/x/exp/constraints 패키지는 이미 정의된 몇 가지 타입 제한을 제공한다
+func add[T constraints.Integer | constraints.Float](a, b T) T {
+	return a + b
+}
+
+
+2.2 타입 제한 더 알아보기
+type Float interface {
+	~float32 | ~float64
+}
+
+constraints.Float 타입은 ~가 붙어있는데, 이는 해당 타입을 기본으로 하는 모든 별칭 타입들까지 포함한다는 뜻이다
+
+2.2.1 별칭 타입을 포함하지 않는 예제
+type Integer interface {
+	int | int32
+}
+
+func add[T Integer](a, b T) T {
+	return a + b
+}
+
+type MyInt int
+
+func main() {
+	var a MyInt = 3
+	var b MyInt = 4
+	fmt.Println(add(a, b)) // MyInt does not satisfy Integer (possibly missing ~ for int in Integer)compilerInvalidTypeArg
+}
+
+MyInt는 Integer 타입에 포함되어 있지 않아 컴파일 에러가 발생한다
+아래와 같이 ~int로 수정하면 별칭 타입까지 포함되어 에러가 발생하지 않는다
+type Integer interface {
+	~int | int32
+}
+
+
+2.3 타입 제한에 메서드 조건 더하기
+
+타입 제한 정의가 interface 키워드를 사용하기 때문에 일반 인터페이스처럼 메서드 조건을 더할 수 있다
+
+package main
+
+import (
+	"fmt"
+	"hash/fnv"
+)
+
+type ComparableHasher interface {
+	comparable
+	Hash() uint32
+}
+
+type MyString string
+
+func (s MyString) Hash() uint32 {
+	h := fnv.New32a()
+	h.Write([]byte(s))
+	return h.Sum32()
+}
+
+func Equal[T ComparableHasher](a, b T) bool {
+	if a == b {
+		return true
+	}
+
+	return a.Hash() == b.Hash()
+}
+
+func main() {
+	var str1 MyString = "Hello"
+	var str2 MyString = "World"
+	fmt.Println(Equal(str1, str2)) // false
+}
+
+ComparableHasher 타입 제한을 정의한다
+
+comparable은 ==, !=를 지원하는 타입들을 정의한 Go 내부 타입 제한이다
+Hash() uint32 메서드를 포함하도록 제한했다
+즉, ComparableHasher는 ==와 !=를 지원하고 Hash() uint32 메서드를 포함한 타입만 가능하다
+
+
+MyString이라는 별칭 타입을 정의하고 Has() uint32 메서드를 구현한다
+
+MyString은 ComparableHasher 타입을 만족한다
+
+
+ComparableHasher 제한을 사용하는 Equal() 함수를 정의한다
+
+
+타입 제한은 인터페이스 같지만 서로 다른 개념이다. 타입 제한은 제네릭 프로그래밍의 타입 파라미터에서만 사용될 수 있고, 일반 인터페이스처럼 사용하지 못한다'><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://grrru.github.io/posts/"},{"@type":"ListItem","position":2,"name":"24. 제네릭 프로그래밍","item":"https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"24. 제네릭 프로그래밍","name":"24. 제네릭 프로그래밍","description":"✅ 1. 제네릭 프로그래밍 소개 Go 1.18 버전에 추가된 기능으로, 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대응해 동작하도록 하는 프로그래밍 기법 ✅ 2. 제네릭 함수 func funcName[T constraint](p T) {} 함수명 뒤에 대괄호를 열고 타입 파라미터(파라미터 이름과 타입 제한)를 적는다 T : 파라미터 이름 constaint : 타입 제한 타입 파라미터는 ,로 구분하여 여러 개 적을 수 있다 타입 파라미터에 사용한 타입 파라미터 이름을 특정 타입 대신에 사용할 수 있다 p T func Print[T any](a, b T) { fmt.Println(a, b) } func main() { Print(1, 2) Print(\u0026#34;Hello\u0026#34;, \u0026#34;World\u0026#34;) Print(1, \u0026#34;Hello\u0026#34;) // in call to Print, mismatched types untyped int and untyped string (cannot infer T)compilerCannotInferTypeArgs } Print() 함수는 같은 타입 인자 두 개를 받으면 출력하지만, 서로 다른 타입의 인수를 사용하면 에러를 발생시킨다 여러 타입 파라미터를 정의할 수 있다 2.1 타입 제한(type constraint) func add[T any](a, b T) T { return a + b // invalid operation: operator + not defined on a (variable of type T constrained by any)compilerUndefinedOp } 위 함수에서 any 타입 T는 + 연산자가 정의되어 있지 않기 때문에 에러가 발생한다 특정 조건을 정의해서 해당 타입이 + 연산자를 지원하고 있음을 알려줘야 한다 2.1.1 타입 제한 예제 // 1. `|`로 구분 func add1[T int8 | int16 | int32 | int64 | int](a, b T) T { return a + b } // 2. 타입 제한 선언 type Integer interface { int8 | int16 | int32 | int64 | int } func add2[T Integer](a, b T) T { return a + b } T 타입에 여러 타입을 |로 구분하여 넣어줄 수 있다 타입 제한은 Interface 키워드를 사용해서 정의할 수도 있다 golang.org/x/exp/constraints 패키지는 이미 정의된 몇 가지 타입 제한을 제공한다 func add[T constraints.Integer | constraints.Float](a, b T) T { return a + b } 2.2 타입 제한 더 알아보기 type Float interface { ~float32 | ~float64 } constraints.Float 타입은 ~가 붙어있는데, 이는 해당 타입을 기본으로 하는 모든 별칭 타입들까지 포함한다는 뜻이다 2.2.1 별칭 타입을 포함하지 않는 예제 type Integer interface { int | int32 } func add[T Integer](a, b T) T { return a + b } type MyInt int func main() { var a MyInt = 3 var b MyInt = 4 fmt.Println(add(a, b)) // MyInt does not satisfy Integer (possibly missing ~ for int in Integer)compilerInvalidTypeArg } MyInt는 Integer 타입에 포함되어 있지 않아 컴파일 에러가 발생한다 아래와 같이 ~int로 수정하면 별칭 타입까지 포함되어 에러가 발생하지 않는다 type Integer interface { ~int | int32 } 2.3 타입 제한에 메서드 조건 더하기 타입 제한 정의가 interface 키워드를 사용하기 때문에 일반 인터페이스처럼 메서드 조건을 더할 수 있다 package main import ( \u0026#34;fmt\u0026#34; \u0026#34;hash/fnv\u0026#34; ) type ComparableHasher interface { comparable Hash() uint32 } type MyString string func (s MyString) Hash() uint32 { h := fnv.New32a() h.Write([]byte(s)) return h.Sum32() } func Equal[T ComparableHasher](a, b T) bool { if a == b { return true } return a.Hash() == b.Hash() } func main() { var str1 MyString = \u0026#34;Hello\u0026#34; var str2 MyString = \u0026#34;World\u0026#34; fmt.Println(Equal(str1, str2)) // false } ComparableHasher 타입 제한을 정의한다 comparable은 ==, !=를 지원하는 타입들을 정의한 Go 내부 타입 제한이다 Hash() uint32 메서드를 포함하도록 제한했다 즉, ComparableHasher는 ==와 !=를 지원하고 Hash() uint32 메서드를 포함한 타입만 가능하다 MyString이라는 별칭 타입을 정의하고 Has() uint32 메서드를 구현한다 MyString은 ComparableHasher 타입을 만족한다 ComparableHasher 제한을 사용하는 Equal() 함수를 정의한다 타입 제한은 인터페이스 같지만 서로 다른 개념이다. 타입 제한은 제네릭 프로그래밍의 타입 파라미터에서만 사용될 수 있고, 일반 인터페이스처럼 사용하지 못한다\n","keywords":["generic"],"articleBody":"✅ 1. 제네릭 프로그래밍 소개 Go 1.18 버전에 추가된 기능으로, 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대응해 동작하도록 하는 프로그래밍 기법 ✅ 2. 제네릭 함수 func funcName[T constraint](p T) {} 함수명 뒤에 대괄호를 열고 타입 파라미터(파라미터 이름과 타입 제한)를 적는다 T : 파라미터 이름 constaint : 타입 제한 타입 파라미터는 ,로 구분하여 여러 개 적을 수 있다 타입 파라미터에 사용한 타입 파라미터 이름을 특정 타입 대신에 사용할 수 있다 p T func Print[T any](a, b T) { fmt.Println(a, b) } func main() { Print(1, 2) Print(\"Hello\", \"World\") Print(1, \"Hello\") // in call to Print, mismatched types untyped int and untyped string (cannot infer T)compilerCannotInferTypeArgs } Print() 함수는 같은 타입 인자 두 개를 받으면 출력하지만, 서로 다른 타입의 인수를 사용하면 에러를 발생시킨다 여러 타입 파라미터를 정의할 수 있다 2.1 타입 제한(type constraint) func add[T any](a, b T) T { return a + b // invalid operation: operator + not defined on a (variable of type T constrained by any)compilerUndefinedOp } 위 함수에서 any 타입 T는 + 연산자가 정의되어 있지 않기 때문에 에러가 발생한다 특정 조건을 정의해서 해당 타입이 + 연산자를 지원하고 있음을 알려줘야 한다 2.1.1 타입 제한 예제 // 1. `|`로 구분 func add1[T int8 | int16 | int32 | int64 | int](a, b T) T { return a + b } // 2. 타입 제한 선언 type Integer interface { int8 | int16 | int32 | int64 | int } func add2[T Integer](a, b T) T { return a + b } T 타입에 여러 타입을 |로 구분하여 넣어줄 수 있다 타입 제한은 Interface 키워드를 사용해서 정의할 수도 있다 golang.org/x/exp/constraints 패키지는 이미 정의된 몇 가지 타입 제한을 제공한다 func add[T constraints.Integer | constraints.Float](a, b T) T { return a + b } 2.2 타입 제한 더 알아보기 type Float interface { ~float32 | ~float64 } constraints.Float 타입은 ~가 붙어있는데, 이는 해당 타입을 기본으로 하는 모든 별칭 타입들까지 포함한다는 뜻이다 2.2.1 별칭 타입을 포함하지 않는 예제 type Integer interface { int | int32 } func add[T Integer](a, b T) T { return a + b } type MyInt int func main() { var a MyInt = 3 var b MyInt = 4 fmt.Println(add(a, b)) // MyInt does not satisfy Integer (possibly missing ~ for int in Integer)compilerInvalidTypeArg } MyInt는 Integer 타입에 포함되어 있지 않아 컴파일 에러가 발생한다 아래와 같이 ~int로 수정하면 별칭 타입까지 포함되어 에러가 발생하지 않는다 type Integer interface { ~int | int32 } 2.3 타입 제한에 메서드 조건 더하기 타입 제한 정의가 interface 키워드를 사용하기 때문에 일반 인터페이스처럼 메서드 조건을 더할 수 있다 package main import ( \"fmt\" \"hash/fnv\" ) type ComparableHasher interface { comparable Hash() uint32 } type MyString string func (s MyString) Hash() uint32 { h := fnv.New32a() h.Write([]byte(s)) return h.Sum32() } func Equal[T ComparableHasher](a, b T) bool { if a == b { return true } return a.Hash() == b.Hash() } func main() { var str1 MyString = \"Hello\" var str2 MyString = \"World\" fmt.Println(Equal(str1, str2)) // false } ComparableHasher 타입 제한을 정의한다 comparable은 ==, !=를 지원하는 타입들을 정의한 Go 내부 타입 제한이다 Hash() uint32 메서드를 포함하도록 제한했다 즉, ComparableHasher는 ==와 !=를 지원하고 Hash() uint32 메서드를 포함한 타입만 가능하다 MyString이라는 별칭 타입을 정의하고 Has() uint32 메서드를 구현한다 MyString은 ComparableHasher 타입을 만족한다 ComparableHasher 제한을 사용하는 Equal() 함수를 정의한다 타입 제한은 인터페이스 같지만 서로 다른 개념이다. 타입 제한은 제네릭 프로그래밍의 타입 파라미터에서만 사용될 수 있고, 일반 인터페이스처럼 사용하지 못한다\nfunc Equal(a, b ComparableHasher) bool {} // Error func Equal[T ComparableHasher](a, b T) bool {} // OK 2.4 제네릭 함수 예시 package main import ( \"fmt\" \"strconv\" \"strings\" ) func Map[F, T any](s []F, f func(F) T) []T { rst := make([]T, len(s)) for i, v := range s { rst[i] = f(v) } return rst } func main() { // 1. 값을 두 배 증가 doubled := Map([]int{1, 2, 3}, func(v int) int { return v * 2 }) // 2. 대문자로 변경 uppered := Map([]string{\"Hello\", \"World\"}, func(v string) string { return strings.ToUpper(v) }) // 3. 문자열로 변경 toString := Map([]int{1, 2, 3}, func(v int) string { return strconv.Itoa(v) }) fmt.Println(doubled) fmt.Println(uppered) fmt.Println(toString) } ✅ 3. 제네릭 타입 타입 파라미터는 함수뿐 아니라 타입 선언 시에도 사용 가능하다 아래 예시에서 Node 구조체는 타입 파라미터를 사용해서 val 필드 타입이 어떤 타입이든 가능하도록 정의하고 있다 package main import \"fmt\" type Node[T any] struct { val T next *Node[T] } func NewNode[T any](v T) *Node[T] { return \u0026Node[T]{val: v} } func (n *Node[T]) Push(v T) *Node[T] { node := NewNode(v) n.next = node return node } func main() { node1 := NewNode(1) node1.Push(2).Push(3).Push(4) for node1 != nil { fmt.Print(node1.val, \" - \") // 1 - 2 - 3 - 4 - node1 = node1.next } fmt.Println() node2 := NewNode(\"Hi\") node2.Push(\"Hello\").Push(\"Wow\") for node2 != nil { fmt.Print(node2.val, \" - \") // Hi - Hello - Wow - node2 = node2.next } fmt.Println() } 3.1 인터페이스와 제네릭은 무엇이 다른가? package main import \"fmt\" type Node1 struct { val any next *Node1 } type Node2[T any] struct { val T next *Node2[T] } func main() { node1 := \u0026Node1{val: 1} node2 := \u0026Node2[int]{val: 2} var v1 int = node1.val.(int) var v2 int = node2.val fmt.Println(v1, v2) } Node1은 내부 필드를 any로 정의했고 Node2는 제네릭 타입으로 정의했다 빈 인터페이스를 이용하면 모든 타입값을 가질 수 있으나 그 값을 사용할 때 실제 타입값으로 Type assertion 수행해야하고, 넣을 때의 타입과 뺼 때의 타입을 정확히 알고 있어야 한다는 문제가 있다. 반면 제네릭 타입은 타입 파라미터에 의해 필드 타입이 결정되므로 assertion이 필요하지 않다 3.2 성능 차이 var v1 int = 3 var v2 any = v1 // boxing var v3 int = v2.(int) // unboxing 위와 같이 기본 타입값을 빈 인터페이스 변수에 대입할 때, Go에서는 빈 인터페이스를 만들어서 기본 타입값을 가리키도록 하는데 이를 boxing이라고 하며 값을 다시 꺼내는 것을 unboxing이라고 한다 박싱은 값을 감싸는 빈 인터페이스 객체를 생성해야하기 때문에 성능 비용이 발생하지만 제네릭 프로그래밍을 사용하면 타입 파라미터에 의해 타입이 고정되기 때문에 박싱, 언박싱 비용이 발생하지 않는다. 그렇다면 제네릭을 사용하느 게 무조건 이득일까? → 꼭 그렇지는 않다 3.2.1 예제 func add[T constraints.Integer | constraints.Float](a, b T) T { return a + b } add(1, 3) add(1.1, 3.3) 위 예제에서 하나의 함수를 서로 다른 타입으로 호출한 것처럼 보이지만, 사실은 add[int](1, 3)과 add[float64](1.1, 3.3) 함수를 각각 호출한 것이다 제네릭 함수, 타입은 컴파일 타임에 사용한 타입 파라미터 별로 새로운 함수나 타입을 생성한다. 따라서 제네릭을 많이 사용하면 컴파일 타임에 생성해야 할 함수와 타입 개수가 늘어나며 컴파일 시간이 길어지고 실행 파일 크기가 늘어난다. ✅ 4. 언제 제네릭을 사용해야 하는가? “동작하는 코드 먼저, 제네릭은 나중에”\n제네릭을 사용하면 코드 재사용성에 도움이 되지만 가독성이 떨어진다 동작하는 코드를 먼저 작성하고, 그 다음에 최적화나 개선을 해도 늦지않다. 일반적인 타입이나 구조체를 사용해서 동작하는 코드에 먼저 집중하고, 나중에 제네릭을 사용해서 도움이 되는 부분이 있다면 그 때 적용해도 늦지 않다. 트리, 그래프, 리스트, 맵과 같은 일반적인 타입에 대해서 같은 동작을 보장해야 하는 경우 제네릭이 잘 어울린다. ✅ 5. 제네릭을 사용하는 유용한 기본 패키지 Go 1.21 버전에서 제네릭을 사용해 만든 slices와 maps라는 기본 패키지가 추가되었다 5.1 slices slices 패키지는 슬라이스를 다룰 때 사용할 수 있는 유용한 기능들을 제공한다. 제네릭을 사용해서 만들었기 때문에 타입 제한만 만족한다면 어떤 타입의 slice에서도 사용 가능하다 5.1.1 Binary Search func BinarySearch[S ~[]E, E cmp.Ordered](x S, target E) (int, bool) BinarySearch()는 정렬된 슬라이스에서 target값의 위치를 찾는 함수로, target을 찾으면 인덱스와 true를 반환하고 찾지 못했다면 target값이 위치해야 할 index와 false를 반환한다 제네릭 타입 ~[]E로 슬라이스를 만들고 cmp.Ordered 타입으로 대소비교가 가능한 E 타입들만 사용하도록 했다. names := []string{\"Alice\", \"Bob\", \"Vera\"} n, found := slices.BinarySearch(names, \"Vera\") fmt.Println(\"Vera: \", n, found) // Vera: 2 true n, found = slices.BinarySearch(names, \"Bill\") fmt.Println(\"Vera: \", n, found) // Vera: 1 false func BinarySearchFunc[S ~[]E, E, T any](x S, target T, cmp func(E, T) int) (int, bool) 만약 cmp.Ordered 타입 조건을 만족하지 못하는 구조체 슬라이스일 때는 BinarySearchFunc()를 이용할 수 있다 []E 타입 슬라이스에서 any 타입 T를 찾을 수 있다. 대소 비교는 함수 리터럴을 인수로 받아 처리한다 type Person struct { Name string Age int } func main() { people := []Person{ {\"Alice\", 55}, {\"Bob\", 24}, {\"Gopher\", 13}, } n, found := slices.BinarySearchFunc(people, \"Bob\", func(p Person, s string) int { return cmp.Compare(p.Name, s) }) fmt.Println(\"Bob: \", n, found) // Bob: 1 true } 5.1.2 Clone func Clone[S ~[]E, E any](s S) S { if s == nil { return nil } return append(S{}, s...) } slices.Clone() 함수는 같은 값을 가지는 다른 슬라이스를 생성하는 함수로 내부에 append()로 구현되어 있다 5.1.3 Compare func Compare[S ~[]E, E cmp.Ordered](s1, s2 S) int { for i, v1 := range s1 { if i \u003e= len(s2) { return +1 } v2 := s2[i] if c := cmp.Compare(v1, v2); c != 0 { return c } } if len(s1) \u003c len(s2) { return -1 } return 0 } 앞 요소값부터 비교해서 s1의 원소가 더 작으면 -1, 더 크면 1을 반환한다. 모든 요소가 같다면 길이를 비교해서 s1이 더 작다면 -1을 반환하고 길이도 똑같으면 0을 반환한다 slices.Compare()는 E가 cmp.Ordered로 타입 제한이 걸려있다. func CompareFunc[S1 ~[]E1, S2 ~[]E2, E1, E2 any](s1 S1, s2 S2, cmp func(E1, E2) int) int cmp.Ordered 타입이 아닌 구조체 슬라이스는 slices.CompareFunc()를 통해 비교해야 한다 5.1.4 Concat func Concat[S ~[]E, E any](slices ...S) S 여러 슬라이스를 하나의 슬라이스로 합치는 함수 5.1.5 Contains func Contains[S ~[]E, E comparable](s S, v E) bool 슬라이스에 원소가 포함되어 있는지 여부를 반환하는 함수 ==, !=이 가능한 comparable타입 제한이 있다 func ContainsFunc[S ~[]E, E any](s S, f func(E) bool) bool 비교가 되지 않는 타입들도 ContainsFunc를 통해서 포함 여부를 확인할 수 있다 5.2 maps map을 다룰 때 유용한 기능을 제공한다 5.2.1 Clone func Clone[M ~map[K]V, K comparable, V any](m M) M map은 내부에 포인터를 가지고 있기 때문에 단순 대입으로는 맵이 복제되지 않는다 5.2.2 Copy func Copy[M1 ~map[K]V, M2 ~map[K]V, K comparable, V any](dst M1, src M2) 두 번째 인수인 src의 모든 값을 dst로 복사하며 키가 같을 경우 src값으로 덮어쓰게 된다 5.2.3 Equal func Equal[M1, M2 ~map[K]V, K, V comparable](m1 M1, m2 M2) bool func EqualFunc[M1 ~map[K]V1, M2 ~map[K]V2, K comparable, V1, V2 any](m1 M1, m2 M2, eq func(V1, V2) bool) bool 두 맵의 K, V값이 모두 같은지 여부를 판단할 떄 maps.Equal() 함수를 사용한다 V가 comparable 타입이 아니라면 EqualFunc() 함수를 사용해서 두 맵을 비교할 수 있다 EqualFunc()는 두 맵의 V의 타입이 다르더라도 비교할 수 있다 ","wordCount":"1650","inLanguage":"en","datePublished":"2025-08-26T16:33:00+09:00","dateModified":"2025-08-26T16:33:00+09:00","author":{"@type":"Person","name":"grrru"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://grrru.github.io/posts/2025-08-26-24.-%EC%A0%9C%EB%84%A4%EB%A6%AD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/"},"publisher":{"@type":"Organization","name":"grrru","logo":{"@type":"ImageObject","url":"https://grrru.github.io/favicon.ico"}}}</script></head><body id=top><header class=header><nav class=nav><div class=logo><a href=https://grrru.github.io/ accesskey=h title="grrru (Alt + H)">grrru</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)" aria-label="Toggle theme">
+<svg id="moon" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg id="sun" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://grrru.github.io/ title=home><span>home</span></a></li><li><a href=https://grrru.github.io/posts/ title=posts><span>posts</span></a></li><li><a href=https://grrru.github.io/search/ title="search (Alt + /)" accesskey=/><span>search</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://grrru.github.io/>Home</a>&nbsp;»&nbsp;<a href=https://grrru.github.io/posts/>Posts</a></div><h1 class="post-title entry-hint-parent">24. 제네릭 프로그래밍</h1><div class=post-meta><span title='2025-08-26 16:33:00 +0900 +0900'>August 26, 2025</span>&nbsp;·&nbsp;<span>8 min</span>&nbsp;·&nbsp;<span>grrru</span></div></header><div class=post-content><h2 id=-1-제네릭-프로그래밍-소개>✅ 1. 제네릭 프로그래밍 소개<a hidden class=anchor aria-hidden=true href=#-1-제네릭-프로그래밍-소개>#</a></h2><ul><li>Go 1.18 버전에 추가된 기능으로, 타입 파라미터를 통해서 하나의 함수나 타입이 여러 타입에 대응해 동작하도록 하는 프로그래밍 기법</li></ul><h2 id=-2-제네릭-함수>✅ 2. 제네릭 함수<a hidden class=anchor aria-hidden=true href=#-2-제네릭-함수>#</a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>funcName</span>[<span style=color:#a6e22e>T</span> <span style=color:#a6e22e>constraint</span>](<span style=color:#a6e22e>p</span> <span style=color:#a6e22e>T</span>) {}
+</span></span></code></pre></div><ul><li>함수명 뒤에 대괄호를 열고 타입 파라미터(파라미터 이름과 타입 제한)를 적는다<ul><li><code>T</code> : 파라미터 이름</li><li><code>constaint</code> : 타입 제한</li></ul></li><li>타입 파라미터는 <code>,</code>로 구분하여 여러 개 적을 수 있다</li><li>타입 파라미터에 사용한 타입 파라미터 이름을 특정 타입 대신에 사용할 수 있다 <code>p T</code></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Print</span>[<span style=color:#a6e22e>T</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Print</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Print</span>(<span style=color:#e6db74>&#34;Hello&#34;</span>, <span style=color:#e6db74>&#34;World&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Print</span>(<span style=color:#ae81ff>1</span>, <span style=color:#e6db74>&#34;Hello&#34;</span>) <span style=color:#75715e>// in call to Print, mismatched types untyped int and untyped string (cannot infer T)compilerCannotInferTypeArgs</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>Print()</code> 함수는 같은 타입 인자 두 개를 받으면 출력하지만, 서로 다른 타입의 인수를 사용하면 에러를 발생시킨다</li><li>여러 타입 파라미터를 정의할 수 있다</li></ul><h3 id=21-타입-제한type-constraint>2.1 타입 제한(type constraint)<a hidden class=anchor aria-hidden=true href=#21-타입-제한type-constraint>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add</span>[<span style=color:#a6e22e>T</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>T</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span> <span style=color:#75715e>// invalid operation: operator + not defined on a (variable of type T constrained by any)compilerUndefinedOp</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>위 함수에서 <code>any</code> 타입 <code>T</code>는 + 연산자가 정의되어 있지 않기 때문에 에러가 발생한다</li><li>특정 조건을 정의해서 해당 타입이 + 연산자를 지원하고 있음을 알려줘야 한다</li></ul><h4 id=211-타입-제한-예제>2.1.1 타입 제한 예제<a hidden class=anchor aria-hidden=true href=#211-타입-제한-예제>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// 1. `|`로 구분</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add1</span>[<span style=color:#a6e22e>T</span> <span style=color:#66d9ef>int8</span> | <span style=color:#66d9ef>int16</span> | <span style=color:#66d9ef>int32</span> | <span style=color:#66d9ef>int64</span> | <span style=color:#66d9ef>int</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>T</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 2. 타입 제한 선언</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Integer</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int8</span> | <span style=color:#66d9ef>int16</span> | <span style=color:#66d9ef>int32</span> | <span style=color:#66d9ef>int64</span> | <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add2</span>[<span style=color:#a6e22e>T</span> <span style=color:#a6e22e>Integer</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>T</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>T</code> 타입에 여러 타입을 <code>|</code>로 구분하여 넣어줄 수 있다</li><li>타입 제한은 Interface 키워드를 사용해서 정의할 수도 있다</li><li><code>golang.org/x/exp/constraints</code> 패키지는 이미 정의된 몇 가지 타입 제한을 제공한다<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add</span>[<span style=color:#a6e22e>T</span> <span style=color:#a6e22e>constraints</span>.<span style=color:#a6e22e>Integer</span> | <span style=color:#a6e22e>constraints</span>.<span style=color:#a6e22e>Float</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>T</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ul><h3 id=22-타입-제한-더-알아보기>2.2 타입 제한 더 알아보기<a hidden class=anchor aria-hidden=true href=#22-타입-제한-더-알아보기>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Float</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>	~<span style=color:#66d9ef>float32</span> | ~<span style=color:#66d9ef>float64</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>constraints.Float</code> 타입은 <code>~</code>가 붙어있는데, 이는 해당 타입을 기본으로 하는 모든 별칭 타입들까지 포함한다는 뜻이다</li></ul><h4 id=221-별칭-타입을-포함하지-않는-예제>2.2.1 별칭 타입을 포함하지 않는 예제<a hidden class=anchor aria-hidden=true href=#221-별칭-타입을-포함하지-않는-예제>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Integer</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> | <span style=color:#66d9ef>int32</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add</span>[<span style=color:#a6e22e>T</span> <span style=color:#a6e22e>Integer</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>T</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>MyInt</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>a</span> <span style=color:#a6e22e>MyInt</span> = <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>MyInt</span> = <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>add</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span>)) <span style=color:#75715e>// MyInt does not satisfy Integer (possibly missing ~ for int in Integer)compilerInvalidTypeArg</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>MyInt</code>는 <code>Integer</code> 타입에 포함되어 있지 않아 컴파일 에러가 발생한다</li><li>아래와 같이 <code>~int</code>로 수정하면 별칭 타입까지 포함되어 에러가 발생하지 않는다<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Integer</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>	~<span style=color:#66d9ef>int</span> | <span style=color:#66d9ef>int32</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ul><h3 id=23-타입-제한에-메서드-조건-더하기>2.3 타입 제한에 메서드 조건 더하기<a hidden class=anchor aria-hidden=true href=#23-타입-제한에-메서드-조건-더하기>#</a></h3><ul><li>타입 제한 정의가 <code>interface</code> 키워드를 사용하기 때문에 일반 인터페이스처럼 메서드 조건을 더할 수 있다</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;hash/fnv&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>ComparableHasher</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>comparable</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Hash</span>() <span style=color:#66d9ef>uint32</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>MyString</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>s</span> <span style=color:#a6e22e>MyString</span>) <span style=color:#a6e22e>Hash</span>() <span style=color:#66d9ef>uint32</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>h</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>fnv</span>.<span style=color:#a6e22e>New32a</span>()
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>h</span>.<span style=color:#a6e22e>Write</span>([]byte(<span style=color:#a6e22e>s</span>))
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>h</span>.<span style=color:#a6e22e>Sum32</span>()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Equal</span>[<span style=color:#a6e22e>T</span> <span style=color:#a6e22e>ComparableHasher</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#66d9ef>bool</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>b</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span>.<span style=color:#a6e22e>Hash</span>() <span style=color:#f92672>==</span> <span style=color:#a6e22e>b</span>.<span style=color:#a6e22e>Hash</span>()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>str1</span> <span style=color:#a6e22e>MyString</span> = <span style=color:#e6db74>&#34;Hello&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>str2</span> <span style=color:#a6e22e>MyString</span> = <span style=color:#e6db74>&#34;World&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>Equal</span>(<span style=color:#a6e22e>str1</span>, <span style=color:#a6e22e>str2</span>)) <span style=color:#75715e>// false</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ol><li><code>ComparableHasher</code> 타입 제한을 정의한다<ul><li><code>comparable</code>은 <code>==</code>, <code>!=</code>를 지원하는 타입들을 정의한 Go 내부 타입 제한이다</li><li><code>Hash() uint32</code> 메서드를 포함하도록 제한했다</li><li>즉, <code>ComparableHasher</code>는 <code>==</code>와 <code>!=</code>를 지원하고 <code>Hash() uint32</code> 메서드를 포함한 타입만 가능하다</li></ul></li><li><code>MyString</code>이라는 별칭 타입을 정의하고 <code>Has() uint32</code> 메서드를 구현한다<ul><li><code>MyString</code>은 <code>ComparableHasher</code> 타입을 만족한다</li></ul></li><li><code>ComparableHasher</code> 제한을 사용하는 <code>Equal()</code> 함수를 정의한다</li></ol><blockquote><p>타입 제한은 인터페이스 같지만 서로 다른 개념이다. 타입 제한은 제네릭 프로그래밍의 타입 파라미터에서만 사용될 수 있고, 일반 인터페이스처럼 사용하지 못한다</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Equal</span>(<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>ComparableHasher</span>) <span style=color:#66d9ef>bool</span> {} <span style=color:#75715e>// Error</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Equal</span>[<span style=color:#a6e22e>T</span> <span style=color:#a6e22e>ComparableHasher</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#66d9ef>bool</span> {} <span style=color:#75715e>// OK</span>
+</span></span></code></pre></div></blockquote><h3 id=24-제네릭-함수-예시>2.4 제네릭 함수 예시<a hidden class=anchor aria-hidden=true href=#24-제네릭-함수-예시>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> (
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;strconv&#34;</span>
+</span></span><span style=display:flex><span>	<span style=color:#e6db74>&#34;strings&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Map</span>[<span style=color:#a6e22e>F</span>, <span style=color:#a6e22e>T</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>s</span> []<span style=color:#a6e22e>F</span>, <span style=color:#a6e22e>f</span> <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>F</span>) <span style=color:#a6e22e>T</span>) []<span style=color:#a6e22e>T</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>rst</span> <span style=color:#f92672>:=</span> make([]<span style=color:#a6e22e>T</span>, len(<span style=color:#a6e22e>s</span>))
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>s</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>rst</span>[<span style=color:#a6e22e>i</span>] = <span style=color:#a6e22e>f</span>(<span style=color:#a6e22e>v</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>rst</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 1. 값을 두 배 증가</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>doubled</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Map</span>([]<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>}, <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>v</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>v</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 2. 대문자로 변경</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>uppered</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Map</span>([]<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;Hello&#34;</span>, <span style=color:#e6db74>&#34;World&#34;</span>}, <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>v</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>strings</span>.<span style=color:#a6e22e>ToUpper</span>(<span style=color:#a6e22e>v</span>)
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>// 3. 문자열로 변경</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>toString</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>Map</span>([]<span style=color:#66d9ef>int</span>{<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>}, <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>v</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>strconv</span>.<span style=color:#a6e22e>Itoa</span>(<span style=color:#a6e22e>v</span>)
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>doubled</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>uppered</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>toString</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=-3-제네릭-타입>✅ 3. 제네릭 타입<a hidden class=anchor aria-hidden=true href=#-3-제네릭-타입>#</a></h2><ul><li>타입 파라미터는 함수뿐 아니라 타입 선언 시에도 사용 가능하다</li><li>아래 예시에서 <code>Node</code> 구조체는 타입 파라미터를 사용해서 <code>val</code> 필드 타입이 어떤 타입이든 가능하도록 정의하고 있다</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Node</span>[<span style=color:#a6e22e>T</span> <span style=color:#66d9ef>any</span>] <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>val</span>  <span style=color:#a6e22e>T</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>next</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Node</span>[<span style=color:#a6e22e>T</span>]
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>NewNode</span>[<span style=color:#a6e22e>T</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>v</span> <span style=color:#a6e22e>T</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>Node</span>[<span style=color:#a6e22e>T</span>] {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Node</span>[<span style=color:#a6e22e>T</span>]{<span style=color:#a6e22e>val</span>: <span style=color:#a6e22e>v</span>}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>n</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Node</span>[<span style=color:#a6e22e>T</span>]) <span style=color:#a6e22e>Push</span>(<span style=color:#a6e22e>v</span> <span style=color:#a6e22e>T</span>) <span style=color:#f92672>*</span><span style=color:#a6e22e>Node</span>[<span style=color:#a6e22e>T</span>] {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>node</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>NewNode</span>(<span style=color:#a6e22e>v</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>n</span>.<span style=color:#a6e22e>next</span> = <span style=color:#a6e22e>node</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>node</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>node1</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>NewNode</span>(<span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>node1</span>.<span style=color:#a6e22e>Push</span>(<span style=color:#ae81ff>2</span>).<span style=color:#a6e22e>Push</span>(<span style=color:#ae81ff>3</span>).<span style=color:#a6e22e>Push</span>(<span style=color:#ae81ff>4</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>node1</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Print</span>(<span style=color:#a6e22e>node1</span>.<span style=color:#a6e22e>val</span>, <span style=color:#e6db74>&#34; - &#34;</span>) <span style=color:#75715e>// 1 - 2 - 3 - 4 -</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>node1</span> = <span style=color:#a6e22e>node1</span>.<span style=color:#a6e22e>next</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>node2</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>NewNode</span>(<span style=color:#e6db74>&#34;Hi&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>node2</span>.<span style=color:#a6e22e>Push</span>(<span style=color:#e6db74>&#34;Hello&#34;</span>).<span style=color:#a6e22e>Push</span>(<span style=color:#e6db74>&#34;Wow&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>node2</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Print</span>(<span style=color:#a6e22e>node2</span>.<span style=color:#a6e22e>val</span>, <span style=color:#e6db74>&#34; - &#34;</span>) <span style=color:#75715e>// Hi - Hello - Wow -</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>node2</span> = <span style=color:#a6e22e>node2</span>.<span style=color:#a6e22e>next</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>()
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=31-인터페이스와-제네릭은-무엇이-다른가>3.1 인터페이스와 제네릭은 무엇이 다른가?<a hidden class=anchor aria-hidden=true href=#31-인터페이스와-제네릭은-무엇이-다른가>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;fmt&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Node1</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>val</span>  <span style=color:#66d9ef>any</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>next</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Node1</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Node2</span>[<span style=color:#a6e22e>T</span> <span style=color:#66d9ef>any</span>] <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>val</span>  <span style=color:#a6e22e>T</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>next</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Node2</span>[<span style=color:#a6e22e>T</span>]
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>node1</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Node1</span>{<span style=color:#a6e22e>val</span>: <span style=color:#ae81ff>1</span>}
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>node2</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>Node2</span>[<span style=color:#66d9ef>int</span>]{<span style=color:#a6e22e>val</span>: <span style=color:#ae81ff>2</span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>v1</span> <span style=color:#66d9ef>int</span> = <span style=color:#a6e22e>node1</span>.<span style=color:#a6e22e>val</span>.(<span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>v2</span> <span style=color:#66d9ef>int</span> = <span style=color:#a6e22e>node2</span>.<span style=color:#a6e22e>val</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>v1</span>, <span style=color:#a6e22e>v2</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>Node1</code>은 내부 필드를 <code>any</code>로 정의했고 <code>Node2</code>는 제네릭 타입으로 정의했다</li><li>빈 인터페이스를 이용하면 모든 타입값을 가질 수 있으나 그 값을 사용할 때 실제 타입값으로 Type assertion 수행해야하고, 넣을 때의 타입과 뺼 때의 타입을 정확히 알고 있어야 한다는 문제가 있다.</li><li>반면 제네릭 타입은 타입 파라미터에 의해 필드 타입이 결정되므로 assertion이 필요하지 않다</li></ul><h3 id=32-성능-차이>3.2 성능 차이<a hidden class=anchor aria-hidden=true href=#32-성능-차이>#</a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>v1</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>v2</span> <span style=color:#66d9ef>any</span> = <span style=color:#a6e22e>v1</span>       <span style=color:#75715e>// boxing</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>v3</span> <span style=color:#66d9ef>int</span> = <span style=color:#a6e22e>v2</span>.(<span style=color:#66d9ef>int</span>) <span style=color:#75715e>// unboxing</span>
+</span></span></code></pre></div><ul><li>위와 같이 기본 타입값을 빈 인터페이스 변수에 대입할 때, Go에서는 빈 인터페이스를 만들어서 기본 타입값을 가리키도록 하는데 이를 boxing이라고 하며 값을 다시 꺼내는 것을 unboxing이라고 한다</li><li>박싱은 값을 감싸는 빈 인터페이스 객체를 생성해야하기 때문에 성능 비용이 발생하지만 제네릭 프로그래밍을 사용하면 타입 파라미터에 의해 타입이 고정되기 때문에 박싱, 언박싱 비용이 발생하지 않는다.</li><li>그렇다면 제네릭을 사용하느 게 무조건 이득일까?
+→ 꼭 그렇지는 않다</li></ul><h4 id=321-예제>3.2.1 예제<a hidden class=anchor aria-hidden=true href=#321-예제>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>add</span>[<span style=color:#a6e22e>T</span> <span style=color:#a6e22e>constraints</span>.<span style=color:#a6e22e>Integer</span> | <span style=color:#a6e22e>constraints</span>.<span style=color:#a6e22e>Float</span>](<span style=color:#a6e22e>a</span>, <span style=color:#a6e22e>b</span> <span style=color:#a6e22e>T</span>) <span style=color:#a6e22e>T</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>a</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>b</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>add</span>(<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>3</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>add</span>(<span style=color:#ae81ff>1.1</span>, <span style=color:#ae81ff>3.3</span>)
+</span></span></code></pre></div><ul><li>위 예제에서 하나의 함수를 서로 다른 타입으로 호출한 것처럼 보이지만, 사실은 <code>add[int](1, 3)</code>과 <code>add[float64](1.1, 3.3)</code> 함수를 각각 호출한 것이다</li><li>제네릭 함수, 타입은 컴파일 타임에 사용한 타입 파라미터 별로 새로운 함수나 타입을 생성한다. 따라서 제네릭을 많이 사용하면 컴파일 타임에 생성해야 할 함수와 타입 개수가 늘어나며 컴파일 시간이 길어지고 실행 파일 크기가 늘어난다.</li></ul><h2 id=-4-언제-제네릭을-사용해야-하는가>✅ 4. 언제 제네릭을 사용해야 하는가?<a hidden class=anchor aria-hidden=true href=#-4-언제-제네릭을-사용해야-하는가>#</a></h2><blockquote><p>“동작하는 코드 먼저, 제네릭은 나중에”</p></blockquote><ul><li>제네릭을 사용하면 코드 재사용성에 도움이 되지만 가독성이 떨어진다</li><li>동작하는 코드를 먼저 작성하고, 그 다음에 최적화나 개선을 해도 늦지않다. 일반적인 타입이나 구조체를 사용해서 동작하는 코드에 먼저 집중하고, 나중에 제네릭을 사용해서 도움이 되는 부분이 있다면 그 때 적용해도 늦지 않다.</li><li>트리, 그래프, 리스트, 맵과 같은 일반적인 타입에 대해서 같은 동작을 보장해야 하는 경우 제네릭이 잘 어울린다.</li></ul><h2 id=-5-제네릭을-사용하는-유용한-기본-패키지>✅ 5. 제네릭을 사용하는 유용한 기본 패키지<a hidden class=anchor aria-hidden=true href=#-5-제네릭을-사용하는-유용한-기본-패키지>#</a></h2><ul><li>Go 1.21 버전에서 제네릭을 사용해 만든 <code>slices</code>와 <code>maps</code>라는 기본 패키지가 추가되었다</li></ul><h3 id=51-slices>5.1 slices<a hidden class=anchor aria-hidden=true href=#51-slices>#</a></h3><ul><li><code>slices</code> 패키지는 슬라이스를 다룰 때 사용할 수 있는 유용한 기능들을 제공한다. 제네릭을 사용해서 만들었기 때문에 타입 제한만 만족한다면 어떤 타입의 slice에서도 사용 가능하다</li></ul><h4 id=511-binary-search>5.1.1 Binary Search<a hidden class=anchor aria-hidden=true href=#511-binary-search>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>BinarySearch</span>[<span style=color:#a6e22e>S</span> ~[]<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>E</span> <span style=color:#a6e22e>cmp</span>.<span style=color:#a6e22e>Ordered</span>](<span style=color:#a6e22e>x</span> <span style=color:#a6e22e>S</span>, <span style=color:#a6e22e>target</span> <span style=color:#a6e22e>E</span>) (<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>bool</span>)
+</span></span></code></pre></div><ul><li><code>BinarySearch()</code>는 정렬된 슬라이스에서 target값의 위치를 찾는 함수로, target을 찾으면 인덱스와 true를 반환하고 찾지 못했다면 target값이 위치해야 할 index와 false를 반환한다</li><li>제네릭 타입 <code>~[]E</code>로 슬라이스를 만들고 <code>cmp.Ordered</code> 타입으로 대소비교가 가능한 <code>E</code> 타입들만 사용하도록 했다.<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>names</span> <span style=color:#f92672>:=</span> []<span style=color:#66d9ef>string</span>{<span style=color:#e6db74>&#34;Alice&#34;</span>, <span style=color:#e6db74>&#34;Bob&#34;</span>, <span style=color:#e6db74>&#34;Vera&#34;</span>}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>n</span>, <span style=color:#a6e22e>found</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>slices</span>.<span style=color:#a6e22e>BinarySearch</span>(<span style=color:#a6e22e>names</span>, <span style=color:#e6db74>&#34;Vera&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Vera: &#34;</span>, <span style=color:#a6e22e>n</span>, <span style=color:#a6e22e>found</span>) <span style=color:#75715e>// Vera:  2 true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>n</span>, <span style=color:#a6e22e>found</span> = <span style=color:#a6e22e>slices</span>.<span style=color:#a6e22e>BinarySearch</span>(<span style=color:#a6e22e>names</span>, <span style=color:#e6db74>&#34;Bill&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Vera: &#34;</span>, <span style=color:#a6e22e>n</span>, <span style=color:#a6e22e>found</span>) <span style=color:#75715e>// Vera:  1 false</span>
+</span></span></code></pre></div></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>BinarySearchFunc</span>[<span style=color:#a6e22e>S</span> ~[]<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>T</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>x</span> <span style=color:#a6e22e>S</span>, <span style=color:#a6e22e>target</span> <span style=color:#a6e22e>T</span>, <span style=color:#a6e22e>cmp</span> <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>T</span>) <span style=color:#66d9ef>int</span>) (<span style=color:#66d9ef>int</span>, <span style=color:#66d9ef>bool</span>)
+</span></span></code></pre></div><ul><li>만약 <code>cmp.Ordered</code> 타입 조건을 만족하지 못하는 구조체 슬라이스일 때는 <code>BinarySearchFunc()</code>를 이용할 수 있다</li><li><code>[]E</code> 타입 슬라이스에서 <code>any</code> 타입 T를 찾을 수 있다. 대소 비교는 함수 리터럴을 인수로 받아 처리한다<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Person</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Name</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Age</span>  <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>people</span> <span style=color:#f92672>:=</span> []<span style=color:#a6e22e>Person</span>{
+</span></span><span style=display:flex><span>		{<span style=color:#e6db74>&#34;Alice&#34;</span>, <span style=color:#ae81ff>55</span>},
+</span></span><span style=display:flex><span>		{<span style=color:#e6db74>&#34;Bob&#34;</span>, <span style=color:#ae81ff>24</span>},
+</span></span><span style=display:flex><span>		{<span style=color:#e6db74>&#34;Gopher&#34;</span>, <span style=color:#ae81ff>13</span>},
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>n</span>, <span style=color:#a6e22e>found</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>slices</span>.<span style=color:#a6e22e>BinarySearchFunc</span>(<span style=color:#a6e22e>people</span>, <span style=color:#e6db74>&#34;Bob&#34;</span>, <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>p</span> <span style=color:#a6e22e>Person</span>, <span style=color:#a6e22e>s</span> <span style=color:#66d9ef>string</span>) <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>cmp</span>.<span style=color:#a6e22e>Compare</span>(<span style=color:#a6e22e>p</span>.<span style=color:#a6e22e>Name</span>, <span style=color:#a6e22e>s</span>)
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;Bob: &#34;</span>, <span style=color:#a6e22e>n</span>, <span style=color:#a6e22e>found</span>) <span style=color:#75715e>// Bob:  1 true</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ul><h4 id=512-clone>5.1.2 Clone<a hidden class=anchor aria-hidden=true href=#512-clone>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Clone</span>[<span style=color:#a6e22e>S</span> ~[]<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>E</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>s</span> <span style=color:#a6e22e>S</span>) <span style=color:#a6e22e>S</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>s</span> <span style=color:#f92672>==</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> append(<span style=color:#a6e22e>S</span>{}, <span style=color:#a6e22e>s</span><span style=color:#f92672>...</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>slices.Clone()</code> 함수는 같은 값을 가지는 다른 슬라이스를 생성하는 함수로 내부에 <code>append()</code>로 구현되어 있다</li></ul><h4 id=513-compare>5.1.3 Compare<a hidden class=anchor aria-hidden=true href=#513-compare>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Compare</span>[<span style=color:#a6e22e>S</span> ~[]<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>E</span> <span style=color:#a6e22e>cmp</span>.<span style=color:#a6e22e>Ordered</span>](<span style=color:#a6e22e>s1</span>, <span style=color:#a6e22e>s2</span> <span style=color:#a6e22e>S</span>) <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>v1</span> <span style=color:#f92672>:=</span> <span style=color:#66d9ef>range</span> <span style=color:#a6e22e>s1</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>&gt;=</span> len(<span style=color:#a6e22e>s2</span>) {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> <span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>v2</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>s2</span>[<span style=color:#a6e22e>i</span>]
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>c</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>cmp</span>.<span style=color:#a6e22e>Compare</span>(<span style=color:#a6e22e>v1</span>, <span style=color:#a6e22e>v2</span>); <span style=color:#a6e22e>c</span> <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>c</span>
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> len(<span style=color:#a6e22e>s1</span>) &lt; len(<span style=color:#a6e22e>s2</span>) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>앞 요소값부터 비교해서 s1의 원소가 더 작으면 -1, 더 크면 1을 반환한다. 모든 요소가 같다면 길이를 비교해서 s1이 더 작다면 -1을 반환하고 길이도 똑같으면 0을 반환한다</li><li><code>slices.Compare()</code>는 <code>E</code>가 <code>cmp.Ordered</code>로 타입 제한이 걸려있다.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>CompareFunc</span>[<span style=color:#a6e22e>S1</span> ~[]<span style=color:#a6e22e>E1</span>, <span style=color:#a6e22e>S2</span> ~[]<span style=color:#a6e22e>E2</span>, <span style=color:#a6e22e>E1</span>, <span style=color:#a6e22e>E2</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>s1</span> <span style=color:#a6e22e>S1</span>, <span style=color:#a6e22e>s2</span> <span style=color:#a6e22e>S2</span>, <span style=color:#a6e22e>cmp</span> <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>E1</span>, <span style=color:#a6e22e>E2</span>) <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span>
+</span></span></code></pre></div><ul><li><code>cmp.Ordered</code> 타입이 아닌 구조체 슬라이스는 <code>slices.CompareFunc()</code>를 통해 비교해야 한다</li></ul><h4 id=514-concat>5.1.4 Concat<a hidden class=anchor aria-hidden=true href=#514-concat>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Concat</span>[<span style=color:#a6e22e>S</span> ~[]<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>E</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>slices</span> <span style=color:#f92672>...</span><span style=color:#a6e22e>S</span>) <span style=color:#a6e22e>S</span>
+</span></span></code></pre></div><ul><li>여러 슬라이스를 하나의 슬라이스로 합치는 함수</li></ul><h4 id=515-contains>5.1.5 Contains<a hidden class=anchor aria-hidden=true href=#515-contains>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Contains</span>[<span style=color:#a6e22e>S</span> ~[]<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>E</span> <span style=color:#a6e22e>comparable</span>](<span style=color:#a6e22e>s</span> <span style=color:#a6e22e>S</span>, <span style=color:#a6e22e>v</span> <span style=color:#a6e22e>E</span>) <span style=color:#66d9ef>bool</span>
+</span></span></code></pre></div><ul><li>슬라이스에 원소가 포함되어 있는지 여부를 반환하는 함수</li><li><code>==</code>, <code>!=</code>이 가능한 <code>comparable</code>타입 제한이 있다</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>ContainsFunc</span>[<span style=color:#a6e22e>S</span> ~[]<span style=color:#a6e22e>E</span>, <span style=color:#a6e22e>E</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>s</span> <span style=color:#a6e22e>S</span>, <span style=color:#a6e22e>f</span> <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>E</span>) <span style=color:#66d9ef>bool</span>) <span style=color:#66d9ef>bool</span>
+</span></span></code></pre></div><ul><li>비교가 되지 않는 타입들도 <code>ContainsFunc</code>를 통해서 포함 여부를 확인할 수 있다</li></ul><h3 id=52-maps>5.2 maps<a hidden class=anchor aria-hidden=true href=#52-maps>#</a></h3><ul><li>map을 다룰 때 유용한 기능을 제공한다</li></ul><h4 id=521-clone>5.2.1 Clone<a hidden class=anchor aria-hidden=true href=#521-clone>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Clone</span>[<span style=color:#a6e22e>M</span> ~<span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>K</span>]<span style=color:#a6e22e>V</span>, <span style=color:#a6e22e>K</span> <span style=color:#a6e22e>comparable</span>, <span style=color:#a6e22e>V</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>m</span> <span style=color:#a6e22e>M</span>) <span style=color:#a6e22e>M</span>
+</span></span></code></pre></div><ul><li>map은 내부에 포인터를 가지고 있기 때문에 단순 대입으로는 맵이 복제되지 않는다</li></ul><h4 id=522-copy>5.2.2 Copy<a hidden class=anchor aria-hidden=true href=#522-copy>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Copy</span>[<span style=color:#a6e22e>M1</span> ~<span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>K</span>]<span style=color:#a6e22e>V</span>, <span style=color:#a6e22e>M2</span> ~<span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>K</span>]<span style=color:#a6e22e>V</span>, <span style=color:#a6e22e>K</span> <span style=color:#a6e22e>comparable</span>, <span style=color:#a6e22e>V</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>dst</span> <span style=color:#a6e22e>M1</span>, <span style=color:#a6e22e>src</span> <span style=color:#a6e22e>M2</span>)
+</span></span></code></pre></div><ul><li>두 번째 인수인 src의 모든 값을 dst로 복사하며 키가 같을 경우 src값으로 덮어쓰게 된다</li></ul><h4 id=523-equal>5.2.3 Equal<a hidden class=anchor aria-hidden=true href=#523-equal>#</a></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Equal</span>[<span style=color:#a6e22e>M1</span>, <span style=color:#a6e22e>M2</span> ~<span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>K</span>]<span style=color:#a6e22e>V</span>, <span style=color:#a6e22e>K</span>, <span style=color:#a6e22e>V</span> <span style=color:#a6e22e>comparable</span>](<span style=color:#a6e22e>m1</span> <span style=color:#a6e22e>M1</span>, <span style=color:#a6e22e>m2</span> <span style=color:#a6e22e>M2</span>) <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>EqualFunc</span>[<span style=color:#a6e22e>M1</span> ~<span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>K</span>]<span style=color:#a6e22e>V1</span>, <span style=color:#a6e22e>M2</span> ~<span style=color:#66d9ef>map</span>[<span style=color:#a6e22e>K</span>]<span style=color:#a6e22e>V2</span>, <span style=color:#a6e22e>K</span> <span style=color:#a6e22e>comparable</span>, <span style=color:#a6e22e>V1</span>, <span style=color:#a6e22e>V2</span> <span style=color:#66d9ef>any</span>](<span style=color:#a6e22e>m1</span> <span style=color:#a6e22e>M1</span>, <span style=color:#a6e22e>m2</span> <span style=color:#a6e22e>M2</span>, <span style=color:#a6e22e>eq</span> <span style=color:#66d9ef>func</span>(<span style=color:#a6e22e>V1</span>, <span style=color:#a6e22e>V2</span>) <span style=color:#66d9ef>bool</span>) <span style=color:#66d9ef>bool</span>
+</span></span></code></pre></div><ul><li>두 맵의 K, V값이 모두 같은지 여부를 판단할 떄 <code>maps.Equal()</code> 함수를 사용한다</li><li><code>V</code>가 <code>comparable</code> 타입이 아니라면 <code>EqualFunc()</code> 함수를 사용해서 두 맵을 비교할 수 있다<ul><li><code>EqualFunc()</code>는 두 맵의 <code>V</code>의 타입이 다르더라도 비교할 수 있다</li></ul></li></ul></div><footer class=post-footer><ul class=post-tags><li><a href=https://grrru.github.io/tags/generic/>Generic</a></li></ul><nav class=paginav><a class=prev href=https://grrru.github.io/posts/2025-08-28-25.-%EB%8B%A8%EC%96%B4-%EA%B2%80%EC%83%89-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%EB%A7%8C%EB%93%A4%EA%B8%B0/><span class=title>« Prev</span><br><span>25. 단어 검색 프로그램 만들기</span>
+</a><a class=next href=https://grrru.github.io/posts/2025-08-23-23.-%EC%B1%84%EB%84%90%EA%B3%BC-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8/><span class=title>Next »</span><br><span>23. 채널과 컨텍스트</span></a></nav><ul class=share-buttons><li><a target=_blank rel="noopener noreferrer" aria-label="share 24. 제네릭 프로그래밍 on x" href="https://x.com/intent/tweet/?text=24.%20%ec%a0%9c%eb%84%a4%eb%a6%ad%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%98%eb%b0%8d&amp;url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f&amp;hashtags=generic"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446C483.971.0 512 28.03 512 62.554zM269.951 190.75 182.567 75.216H56L207.216 272.95 63.9 436.783h61.366L235.9 310.383l96.667 126.4H456L298.367 228.367l134-153.151H371.033zM127.633 110h36.468l219.38 290.065H349.5z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 24. 제네릭 프로그래밍 on linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f&amp;title=24.%20%ec%a0%9c%eb%84%a4%eb%a6%ad%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%98%eb%b0%8d&amp;summary=24.%20%ec%a0%9c%eb%84%a4%eb%a6%ad%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%98%eb%b0%8d&amp;source=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM160.461 423.278V197.561h-75.04v225.717h75.04zm270.539.0V293.839c0-69.333-37.018-101.586-86.381-101.586-39.804.0-57.634 21.891-67.617 37.266v-31.958h-75.021c.995 21.181.0 225.717.0 225.717h75.02V297.222c0-6.748.486-13.492 2.474-18.315 5.414-13.475 17.767-27.434 38.494-27.434 27.135.0 38.007 20.707 38.007 51.037v120.768H431zM123.448 88.722C97.774 88.722 81 105.601 81 127.724c0 21.658 16.264 39.002 41.455 39.002h.484c26.165.0 42.452-17.344 42.452-39.002-.485-22.092-16.241-38.954-41.943-39.002z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 24. 제네릭 프로그래밍 on reddit" href="https://reddit.com/submit?url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f&title=24.%20%ec%a0%9c%eb%84%a4%eb%a6%ad%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%98%eb%b0%8d"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zM446 265.638c0-22.964-18.616-41.58-41.58-41.58-11.211.0-21.361 4.457-28.841 11.666-28.424-20.508-67.586-33.757-111.204-35.278l18.941-89.121 61.884 13.157c.756 15.734 13.642 28.29 29.56 28.29 16.407.0 29.706-13.299 29.706-29.701.0-16.403-13.299-29.702-29.706-29.702-11.666.0-21.657 6.792-26.515 16.578l-69.105-14.69c-1.922-.418-3.939-.042-5.585 1.036-1.658 1.073-2.811 2.761-3.224 4.686l-21.152 99.438c-44.258 1.228-84.046 14.494-112.837 35.232-7.468-7.164-17.589-11.591-28.757-11.591-22.965.0-41.585 18.616-41.585 41.58.0 16.896 10.095 31.41 24.568 37.918-.639 4.135-.99 8.328-.99 12.576.0 63.977 74.469 115.836 166.33 115.836s166.334-51.859 166.334-115.836c0-4.218-.347-8.387-.977-12.493 14.564-6.47 24.735-21.034 24.735-38.001zM326.526 373.831c-20.27 20.241-59.115 21.816-70.534 21.816-11.428.0-50.277-1.575-70.522-21.82-3.007-3.008-3.007-7.882.0-10.889 3.003-2.999 7.882-3.003 10.885.0 12.777 12.781 40.11 17.317 59.637 17.317 19.522.0 46.86-4.536 59.657-17.321 3.016-2.999 7.886-2.995 10.885.008 3.008 3.011 3.003 7.882-.008 10.889zm-5.23-48.781c-16.373.0-29.701-13.324-29.701-29.698.0-16.381 13.328-29.714 29.701-29.714 16.378.0 29.706 13.333 29.706 29.714.0 16.374-13.328 29.698-29.706 29.698zM160.91 295.348c0-16.381 13.328-29.71 29.714-29.71 16.369.0 29.689 13.329 29.689 29.71.0 16.373-13.32 29.693-29.689 29.693-16.386.0-29.714-13.32-29.714-29.693z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 24. 제네릭 프로그래밍 on facebook" href="https://facebook.com/sharer/sharer.php?u=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H342.978V319.085h66.6l12.672-82.621h-79.272v-53.617c0-22.603 11.073-44.636 46.58-44.636H425.6v-70.34s-32.71-5.582-63.982-5.582c-65.288.0-107.96 39.569-107.96 111.204v62.971h-72.573v82.621h72.573V512h-191.104c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 24. 제네릭 프로그래밍 on whatsapp" href="https://api.whatsapp.com/send?text=24.%20%ec%a0%9c%eb%84%a4%eb%a6%ad%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%98%eb%b0%8d%20-%20https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f"><svg viewBox="0 0 512 512" height="30" width="30" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554v386.892C512 483.97 483.97 512 449.446 512H62.554c-34.524.0-62.554-28.03-62.554-62.554V62.554c0-34.524 28.029-62.554 62.554-62.554h386.892zm-58.673 127.703c-33.842-33.881-78.847-52.548-126.798-52.568-98.799.0-179.21 80.405-179.249 179.234-.013 31.593 8.241 62.428 23.927 89.612l-25.429 92.884 95.021-24.925c26.181 14.28 55.659 21.807 85.658 21.816h.074c98.789.0 179.206-80.413 179.247-179.243.018-47.895-18.61-92.93-52.451-126.81zM263.976 403.485h-.06c-26.734-.01-52.954-7.193-75.828-20.767l-5.441-3.229-56.386 14.792 15.05-54.977-3.542-5.637c-14.913-23.72-22.791-51.136-22.779-79.287.033-82.142 66.867-148.971 149.046-148.971 39.793.014 77.199 15.531 105.329 43.692 28.128 28.16 43.609 65.592 43.594 105.4-.034 82.149-66.866 148.983-148.983 148.984zm81.721-111.581c-4.479-2.242-26.499-13.075-30.604-14.571-4.105-1.495-7.091-2.241-10.077 2.241-2.986 4.483-11.569 14.572-14.182 17.562-2.612 2.988-5.225 3.364-9.703 1.12-4.479-2.241-18.91-6.97-36.017-22.23C231.8 264.15 222.81 249.484 220.198 245s-.279-6.908 1.963-9.14c2.016-2.007 4.48-5.232 6.719-7.847 2.24-2.615 2.986-4.484 4.479-7.472 1.493-2.99.747-5.604-.374-7.846-1.119-2.241-10.077-24.288-13.809-33.256-3.635-8.733-7.327-7.55-10.077-7.688-2.609-.13-5.598-.158-8.583-.158-2.986.0-7.839 1.121-11.944 5.604-4.105 4.484-15.675 15.32-15.675 37.364.0 22.046 16.048 43.342 18.287 46.332 2.24 2.99 31.582 48.227 76.511 67.627 10.685 4.615 19.028 7.371 25.533 9.434 10.728 3.41 20.492 2.929 28.209 1.775 8.605-1.285 26.499-10.833 30.231-21.295 3.732-10.464 3.732-19.431 2.612-21.298-1.119-1.869-4.105-2.99-8.583-5.232z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 24. 제네릭 프로그래밍 on telegram" href="https://telegram.me/share/url?text=24.%20%ec%a0%9c%eb%84%a4%eb%a6%ad%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%98%eb%b0%8d&amp;url=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f"><svg viewBox="2 2 28 28" height="30" width="30" fill="currentColor"><path d="M26.49 29.86H5.5a3.37 3.37.0 01-2.47-1 3.35 3.35.0 01-1-2.47V5.48A3.36 3.36.0 013 3 3.37 3.37.0 015.5 2h21A3.38 3.38.0 0129 3a3.36 3.36.0 011 2.46V26.37a3.35 3.35.0 01-1 2.47 3.38 3.38.0 01-2.51 1.02zm-5.38-6.71a.79.79.0 00.85-.66L24.73 9.24a.55.55.0 00-.18-.46.62.62.0 00-.41-.17q-.08.0-16.53 6.11a.59.59.0 00-.41.59.57.57.0 00.43.52l4 1.24 1.61 4.83a.62.62.0 00.63.43.56.56.0 00.4-.17L16.54 20l4.09 3A.9.9.0 0021.11 23.15zM13.8 20.71l-1.21-4q8.72-5.55 8.78-5.55c.15.0.23.0.23.16a.18.18.0 010 .06s-2.51 2.3-7.52 6.8z"/></svg></a></li><li><a target=_blank rel="noopener noreferrer" aria-label="share 24. 제네릭 프로그래밍 on ycombinator" href="https://news.ycombinator.com/submitlink?t=24.%20%ec%a0%9c%eb%84%a4%eb%a6%ad%20%ed%94%84%eb%a1%9c%ea%b7%b8%eb%9e%98%eb%b0%8d&u=https%3a%2f%2fgrrru.github.io%2fposts%2f2025-08-26-24.-%25EC%25A0%259C%25EB%2584%25A4%25EB%25A6%25AD-%25ED%2594%2584%25EB%25A1%259C%25EA%25B7%25B8%25EB%259E%2598%25EB%25B0%258D%2f"><svg width="30" height="30" viewBox="0 0 512 512" fill="currentColor"><path d="M449.446.0C483.971.0 512 28.03 512 62.554V449.446C512 483.97 483.97 512 449.446 512H62.554C28.03 512 0 483.97.0 449.446V62.554C0 28.03 28.029.0 62.554.0H449.446zM183.8767 87.9921h-62.034L230.6673 292.4508V424.0079h50.6655V292.4508L390.1575 87.9921H328.1233L256 238.2489z"/></svg></a></li></ul></footer></article></main><footer class=footer><span>&copy; 2025 <a href=https://grrru.github.io/>grrru</a></span> ·
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
+</a><script>let menu=document.getElementById("menu");if(menu){const e=localStorage.getItem("menu-scroll-position");e&&(menu.scrollLeft=parseInt(e,10)),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}}document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{const e=document.querySelector("html");e.dataset.theme==="dark"?(e.dataset.theme="light",localStorage.setItem("pref-theme","light")):(e.dataset.theme="dark",localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

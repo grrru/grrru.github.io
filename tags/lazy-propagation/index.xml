@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Lazy Propagation on grrru</title><link>https://grrru.github.io/tags/lazy-propagation/</link><description>Recent content in Lazy Propagation on grrru</description><generator>Hugo -- 0.152.2</generator><language>en-US</language><lastBuildDate>Sat, 30 Aug 2025 16:28:00 +0900</lastBuildDate><atom:link href="https://grrru.github.io/tags/lazy-propagation/index.xml" rel="self" type="application/rss+xml"/><item><title>세그먼트 트리와 lazy propagtion</title><link>https://grrru.github.io/posts/2025-08-30-%EC%84%B8%EA%B7%B8%EB%A8%BC%ED%8A%B8-%ED%8A%B8%EB%A6%AC-lazy-propagation/</link><pubDate>Sat, 30 Aug 2025 16:28:00 +0900</pubDate><guid>https://grrru.github.io/posts/2025-08-30-%EC%84%B8%EA%B7%B8%EB%A8%BC%ED%8A%B8-%ED%8A%B8%EB%A6%AC-lazy-propagation/</guid><description>&lt;h2 id="-1-세그먼트-트리"&gt;✅ 1. 세그먼트 트리&lt;/h2&gt;
+&lt;h3 id="11-기본-개념"&gt;1.1 기본 개념&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;배열 구간의 정보를 빠르게 관리하기 위한 트리 기반 자료구조&lt;/li&gt;
+&lt;li&gt;구간 합, 구간 최솟값 및 최댓값 등 구간 질의(Query)를 &lt;code&gt;O(logN)&lt;/code&gt;에 처리 가능하다&lt;/li&gt;
+&lt;li&gt;세그먼트 트리의 크기는 &lt;code&gt;4 * N&lt;/code&gt; 정도로 잡으면 충분하다
+&lt;ul&gt;
+&lt;li&gt;N보다 크거나 같은 2^(k-1) 를 찾아서 2^K 길이의 트리를 만들면 되는데 이게 &lt;code&gt;4N&lt;/code&gt;보다 작아서 괜찮다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="12-동작"&gt;1.2 동작&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;세그먼트 트리는 트리의 1번 인덱스부터 순차적으로 자식 노드를 탐색한다&lt;/li&gt;
+&lt;li&gt;1번 인덱스는 1 ~ N까지 배열 범위의 정보를 가지고 있고 왼쪽 자식&lt;code&gt;idx*2&lt;/code&gt;는 왼쪽 범위, 오른쪽 자식 &lt;code&gt;idx2+1&lt;/code&gt;은 오르른쪽 범위 정보를 가지게 된다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;쿼리(Query)
+&lt;ul&gt;
+&lt;li&gt;검색을 원하는 구간 &lt;code&gt;[l, r]&lt;/code&gt;과 현재 노드 &lt;code&gt;[s, e]&lt;/code&gt; 범위를 비교한다&lt;/li&gt;
+&lt;li&gt;완전 불일치 &lt;code&gt;r &amp;lt; s || e &amp;lt; l&lt;/code&gt;인 경우
+&lt;ul&gt;
+&lt;li&gt;검색 범위에 속하지 않으므로 무시한다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;완전 포함 &lt;code&gt;l &amp;lt;= s &amp;amp;&amp;amp; e &amp;lt;= r&lt;/code&gt;인 경우
+&lt;ul&gt;
+&lt;li&gt;현재 노드 정보가 검색 범위에 완전히 포함되므로 현재 노드 값을 반환한다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;부분 겹침 (나머지 케이스)
+&lt;ul&gt;
+&lt;li&gt;왼쪽/오른쪽 자식으로 재귀 호출한 후 두 자식의 결과를 합친다&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;업데이트
+&lt;ol&gt;
+&lt;li&gt;특정 원소 하나를 변경하는 경우 리프 노드까지 쭉 전파해서 업데이트한다&lt;/li&gt;
+&lt;li&gt;특정 구간을 업데이트하는 경우 &lt;code&gt;Lazy Propagation&lt;/code&gt;을 통해 효율화한다&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="2--lazy-propagation"&gt;2. ✅ Lazy Propagation&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;지연 전파라고 하며 구간 업데이트 시 매번 자식까지 내려가며 갱신하면 O(N)에 가까워지므로 자식까지 업데이트를 즉시 반영하지 않고 나중에 필요할 때 반영하는 기법&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="21-예시-boj-1395-스위치"&gt;2.1 예시 BOJ 1395. 스위치&lt;/h3&gt;
+&lt;p&gt;&lt;a href="https://www.acmicpc.net/problem/1395"&gt;1395. 스위치&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>
