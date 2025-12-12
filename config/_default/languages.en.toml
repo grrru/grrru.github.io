@@ -9,20 +9,20 @@ title = "Blowfish"
   isoCode = "en"
   rtl = false
   dateFormat = "2 January 2006"
-  logo = "img/avatar.jpeg"
+  # logo = "img/avatar.jpeg"
   # secondaryLogo = "img/secondary-logo.png"
   description = "My awesome website"
   copyright = "Copy, _right?_ :thinking_face:"
 
 [params.author]
-name = "Your name here"
-email = "youremail@example.com"
-image = "img/avatar.png"
-imageQuality = 96
+name = "grrru"
+email = "gruns0989@naver.com"
+# image = "img/avatar.jpeg"
+# imageQuality = 96
 headline = "I'm only human"
 bio = "A little bit about you"
 links = [
-{ email = "mailto:hello@your_domain.com" },
+{ email = "gruns0989@naver.com" },
 #     { link = "https://link-to-some-website.com/" },
 #     { amazon = "https://www.amazon.com/hz/wishlist/ls/wishlist-id" },
 #     { apple = "https://www.apple.com" },
