@@ -10,10 +10,24 @@
 # overridden by providing a weight value. The menu will then be
 # ordered by weight from lowest to highest.
 
+[[main]]
+  name = "Posts"
+  pageRef = "posts"
+  weight = 10
+
 #[[main]]
-#  name = "Blog"
-#  pageRef = "posts"
+#  name = "Tags"
+#  parent = "Blog"
+#  pageRef = "tags" 
 #  weight = 10
+
+
+[[main]]
+  pre = "github"
+  url = "https://github.com/grrru"
+  weight = 30
+
+
 
 #[[main]]
 #  name = "Parent"
@@ -63,7 +77,3 @@
 #   pageRef = "tags"
 #   weight = 10
 
-# [[footer]]
-#   name = "Categories"
-#   pageRef = "categories"
-#   weight = 20

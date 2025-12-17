@@ -18,8 +18,13 @@
         block = [['\[', '\]'], ['$$', '$$']]
         inline = [['\(', '\)']]
 
-[highlight]
-  noClasses = false
+[markup]
+  [markup.highlight]
+    style = "github-dark"
+    lineNos = true
+    lineNumbersInTable = false
+    tabWidth = 4
+    noClasses = false
 
 [tableOfContents]
   startLevel = 2
