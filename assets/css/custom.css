@@ -1,0 +1,7 @@
+/* 사이트 타이틀 폰트 설정 */
+.site-header .site-title,
+.site-title {
+  font-family: "Pretendard", sans-serif; /* 원하는 폰트 */
+  font-size: 100px !important; /* 원하는 크기 (예: 28px) */
+  font-weight: 700; /* 필요 시 굵기 조절 */
+}
