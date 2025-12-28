@@ -63,7 +63,7 @@ disableHeroImageFilter = false # only used when layout equals hero
 
 [article]
 showDate = true
-showViews = false
+showViews = true
 showLikes = false
 showDateOnlyInArticle = false
 showDateUpdated = false
