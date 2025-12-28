@@ -44,8 +44,8 @@ layout = "basic" # valid options: basic, fixed, fixed-fill, fixed-gradient, fixe
 
 [footer]
 showMenu = true
-showCopyright = false
-showThemeAttribution = true
+showCopyright = true
+showThemeAttribution = false
 showAppearanceSwitcher = true
 showScrollToTop = true
 
@@ -53,7 +53,7 @@ showScrollToTop = true
 layout = "profile" # valid options: page, profile, hero, card, background, custom
 #homepageImage = "img/avatar.jpeg" # used in: hero, and card
 showRecent = true
-showRecentItems = 6
+showRecentItems = 9
 showMoreLink = true
 showMoreLinkDest = "/posts/"
 cardView = true

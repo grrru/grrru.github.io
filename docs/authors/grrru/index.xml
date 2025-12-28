@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Grrru on grrru</title>
-    <link>https://grrru.github.io/authors/grrru/</link>
-    <description>Recent content in Grrru on grrru</description>
+    <title>Grrru on grrru blog</title>
+    <link>http://localhost:1313/authors/grrru/</link>
+    <description>Recent content in Grrru on grrru blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
-    
-    <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://grrru.github.io/authors/grrru/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© 2025 grrru</copyright>
+    <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/authors/grrru/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>OverTheWire Bandit(1)</title>
-      <link>https://grrru.github.io/posts/overthewire-bandit-level-0-~-level-11/</link>
+      <link>http://localhost:1313/posts/overthewire-bandit-level-0-~-level-11/</link>
       <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate>
       <author>gruns0989@naver.com (grrru)</author>
-      <guid>https://grrru.github.io/posts/overthewire-bandit-level-0-~-level-11/</guid>
+      <guid>http://localhost:1313/posts/overthewire-bandit-level-0-~-level-11/</guid>
       <description></description>
       
     </item>
