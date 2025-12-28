@@ -63,7 +63,7 @@ disableHeroImageFilter = false # only used when layout equals hero
 
 [article]
 showDate = true
-showViews = true
+showViews = false
 showLikes = false
 showDateOnlyInArticle = false
 showDateUpdated = false
@@ -135,13 +135,13 @@ cardView = false
 cardViewScreenWidth = false
 
 [firebase]
-# apiKey = "XXXXXX"
-# authDomain = "XXXXXX"
-# projectId = "XXXXXX"
-# storageBucket = "XXXXXX"
-# messagingSenderId = "XXXXXX"
-# appId = "XXXXXX"
-# measurementId = "XXXXXX"
+apiKey = "AIzaSyA6Ym9KB5UHpWCZqf7b4iDrv495AmM-5C4"
+authDomain = "grrru-8d4b2.firebaseapp.com"
+projectId = "grrru-8d4b2"
+storageBucket = "grrru-8d4b2.firebasestorage.app"
+messagingSenderId = "283437726504"
+appId = "1:283437726504:web:0b14dd8137e3b145e36e1d"
+measurementId = "G-9NNLD4SXEH"
 
 [fathomAnalytics]
 # site = "ABC12345"
