@@ -11,14 +11,10 @@
             "id": "b8b490a51bfba376",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "about.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "about"
+              "title": "New tab"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "about.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for about"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "about.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from about"
+              "title": "Outgoing links"
             }
           },
           {
@@ -185,11 +179,20 @@
   },
   "active": "1afa0b83380b2972",
   "lastOpenFiles": [
-    "_index.md~",
-    "_index.md",
+    "blog/Templates/Properties Template.md",
+    "blog/Templates/_index.md",
+    "blog/컴파일·인터프리터 실행 과정.md",
+    "blog/scp.md",
+    "blog/Templates",
+    "blog/OverTheWire Bandit (2).md",
+    "blog/OverTheWire Bandit (1).md",
+    "blog",
     "about.md",
+    "_index.md",
+    "posts/hello-world.md",
+    "posts",
+    "_index.md~",
     "about/_index.md",
-    "about",
-    "blog/Templates/_index.md"
+    "about"
   ]
 }
