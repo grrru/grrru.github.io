@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Blogs on Grrru Blog</title>
+    <link>https://grrru.github.io/blog/</link>
+    <description>Recent content in Blogs on Grrru Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
+    <webMaster>gruns0989@naver.com (grrru)</webMaster>
+    <copyright>Grrru (CC BY 4.0)</copyright>
+    <lastBuildDate>Wed, 31 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://grrru.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OverTheWire Bandit(1)</title>
+      <link>https://grrru.github.io/blog/overthewire-bandit-1/</link>
+      <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/blog/overthewire-bandit-1/</guid>
+      <description>&lt;h3 id=&#34;overthewire-bandit&#34;&gt;OverTheWire Bandit&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://overthewire.org/wargames/bandit/&#34;&gt;OverTheWire: Bandit&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;리눅스 연습!&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. &lt;code&gt;bandit1&lt;/code&gt;)에 접속할 수 있다.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h3 id=&#34;level-0&#34;&gt;level 0&lt;/h3&gt;&#xA;&lt;p&gt;ssh를 이용해서 &lt;code&gt;bandit0&lt;/code&gt; 유저로&lt;code&gt;bandit.labs.overthewire.org:2220&lt;/code&gt;에 접속하면 된다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;ssh bandit.labs.overthewire.org -p &lt;span class=&#34;m&#34;&gt;2220&lt;/span&gt; -l bandit0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;ssh bandit10@bandit.labs.overthewire.org -p &lt;span class=&#34;m&#34;&gt;2220&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;## host 앞에 user@를 붙이는 것도 가능하다&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;home directory에 있는 &lt;code&gt;readme&lt;/code&gt;라는 파일을 읽어 &lt;code&gt;bandit1&lt;/code&gt;의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;cat ~/readme&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;level-1&#34;&gt;level 1&lt;/h3&gt;&#xA;&lt;p&gt;home directory의  &lt;code&gt;-&lt;/code&gt; 파일(dashed file)을 읽어야 한다.&#xA;(&lt;code&gt;ls -al&lt;/code&gt;로 home directory의 파일들을 확인)&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;-&lt;/code&gt;라는 이름의 파일은 &lt;code&gt;cat -&lt;/code&gt;로 바로 읽게 되면 아무 반응이 없는데, &lt;code&gt;-&lt;/code&gt;가 표준 입력 &lt;code&gt;stdin&lt;/code&gt;을 의미해서 입력을 기다리는 상태가 되기 때문이다.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h3 id="overthewire-bandit">OverTheWire Bandit</h3>
+<p><a href="https://overthewire.org/wargames/bandit/">OverTheWire: Bandit</a></p>
+<p>리눅스 연습!</p>
+<blockquote>
+<p>각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. <code>bandit1</code>)에 접속할 수 있다.</p>
+</blockquote>
+<h3 id="level-0">level 0</h3>
+<p>ssh를 이용해서 <code>bandit0</code> 유저로<code>bandit.labs.overthewire.org:2220</code>에 접속하면 된다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh bandit.labs.overthewire.org -p <span class="m">2220</span> -l bandit0
+</span></span><span class="line"><span class="ln">2</span><span class="cl">ssh bandit10@bandit.labs.overthewire.org -p <span class="m">2220</span> <span class="c1">## host 앞에 user@를 붙이는 것도 가능하다</span></span></span></code></pre></div><p>home directory에 있는 <code>readme</code>라는 파일을 읽어 <code>bandit1</code>의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat ~/readme</span></span></code></pre></div><h3 id="level-1">level 1</h3>
+<p>home directory의  <code>-</code> 파일(dashed file)을 읽어야 한다.
+(<code>ls -al</code>로 home directory의 파일들을 확인)</p>
+<p><code>-</code>라는 이름의 파일은 <code>cat -</code>로 바로 읽게 되면 아무 반응이 없는데, <code>-</code>가 표준 입력 <code>stdin</code>을 의미해서 입력을 기다리는 상태가 되기 때문이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">bandit1@bandit:~$ cat -
+</span></span><span class="line"><span class="ln">2</span><span class="cl">hello
+</span></span><span class="line"><span class="ln">3</span><span class="cl">hello</span></span></code></pre></div><p>아래와 같이 읽을 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat &lt; - <span class="c1">## dashed file을 읽어 stdin으로 연결</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">cat ./- <span class="c1">## dashed file의 위치를 지정하여 읽음</span></span></span></code></pre></div><h3 id="level-2">level 2</h3>
+<p>파일명에 공백이 있는 파일을 읽어야 한다. 공백 앞에 <code>\</code>를 붙여야 읽을 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat ./--spaces<span class="se">\ </span>in<span class="se">\ </span>this<span class="se">\ </span>filename--</span></span></code></pre></div><h3 id="level-3">level 3</h3>
+<p><code>~/inhere</code> 디렉토리의 숨은 파일을 읽어야 한다. <code>ls</code>는 숨은 파일은 알려주지 않으므로 <code>ls -a</code>를 사용해야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ls -al <span class="c1">## a: all l: long-listing</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">cat ./...Hiding-From-You</span></span></code></pre></div><p>나는 주로 <code>ls -al</code>을 사용하는데, <code>l</code> 옵션은 권한, 소유자, 그룹, 크기, 시간 등을 한 줄씩 출력해줘서 읽기 편한듯,,</p>
+<h3 id="level-4">level 4</h3>
+<p><code>human-readable</code> 파일을 읽어야 한다.
+<code>file</code> 커맨드로 파일의 MIME 타입 등의 정보를 알 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> ~/inhere
+</span></span><span class="line"><span class="ln">2</span><span class="cl">file -i ./*</span></span></code></pre></div><p>파일 하나만 <code>ASCII text</code>으로 사람이 읽을 수 있다.</p>
+<h3 id="level-5">level 5</h3>
+<p><code>inhere</code> 디렉토리에서 아래 조건을 만족하는 파일을 찾아서 읽어야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">- human-readable
+</span></span><span class="line"><span class="ln">2</span><span class="cl">- 1033 bytes in size
+</span></span><span class="line"><span class="ln">3</span><span class="cl">- not executable</span></span></code></pre></div><p><code>find .</code>는 현재 디렉토리 하위의 모든 파일과 디렉토리들을 보여준다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">find . -type f -size 1033c ! -executable</span></span></code></pre></div><p><code>-type</code>: 검색할 타입을 지정한다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>type</th>
+          <th>의미</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>f</code></td>
+          <td>일반 파일</td>
+      </tr>
+      <tr>
+          <td><code>d</code></td>
+          <td>디렉토리</td>
+      </tr>
+      <tr>
+          <td><code>l</code></td>
+          <td>심볼릭 링크</td>
+      </tr>
+      <tr>
+          <td><code>c</code></td>
+          <td>문자 디바이스</td>
+      </tr>
+      <tr>
+          <td><code>b</code></td>
+          <td>블록 디바이스</td>
+      </tr>
+      <tr>
+          <td><code>p</code></td>
+          <td>파이프(FIFO)</td>
+      </tr>
+      <tr>
+          <td><code>s</code></td>
+          <td>소켓</td>
+      </tr>
+  </tbody>
+</table>
+<p><code>-size</code>: 사이즈로 검색한다.</p>
+<table>
+  <thead>
+      <tr>
+          <th>size</th>
+          <th>의미</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>c</code></td>
+          <td>bytes</td>
+      </tr>
+      <tr>
+          <td><code>b</code></td>
+          <td>512-byte blocks</td>
+      </tr>
+      <tr>
+          <td><code>k</code></td>
+          <td>kilobytes (1024B)</td>
+      </tr>
+      <tr>
+          <td><code>M</code></td>
+          <td>megabytes</td>
+      </tr>
+      <tr>
+          <td><code>G</code></td>
+          <td>gigabytes</td>
+      </tr>
+      <tr>
+          <td><code>-executable</code>: 실행 가능한 것을 의미하며 앞에 <code>!</code>을 붙여 부정으로 바꿀 수 있다.</td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="level-6">level 6</h3>
+<p>server 내의 어딘가에 있는 파일 중 아래 조건을 만족하는 파일을 읽어야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">owned by user bandit7
+</span></span><span class="line"><span class="ln">2</span><span class="cl">owned by group bandit6
+</span></span><span class="line"><span class="ln">3</span><span class="cl">33 bytes in size</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">find / -type f -size 33c -user bandit7 -group bandit6 2&gt;/dev/null</span></span></code></pre></div><p><code>-user</code>, <code>-group</code>로 owner 검색이 가능하다.
+<code>2&gt;/dev/null</code>를 쓰지 않으면 <code>find</code> 커맨드 실행 중 권한이 없는 디렉토리/파일을 만날 때 에러 메시지 <code>Permission Denied</code>를 <code>stderr</code>(FD 2)로 출력한다.
+<code>2&gt;/dev/null</code>은 sderr 2를 <code>/dev/null</code>로 리다이렉션(<code>&gt;</code>)하여 에러 출력이 버려지도록 한다.</p>
+<h3 id="level-7">level 7</h3>
+<p>겁나 큰 용량의 <code>data.txt</code> 파일 내에서 <code>millionth</code>라는 단어의 옆에 써있는 password를 읽어야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ls -lh <span class="c1">## h: human 옵션으로 용량 값을 읽기 쉽도록 바꿔준다.</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">cat data.txt <span class="p">|</span> grep millionth</span></span></code></pre></div><h3 id="level-8">level 8</h3>
+<p><code>data.txt</code> 에서 유일한 line을 찾아야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sort data.txt <span class="p">|</span> uniq -iu</span></span></code></pre></div><p><code>sort</code>로 파일의 line들을 정렬한다. 여러 옵션을 추가로 사용할 수 있다.
+<code>uniq</code> 커맨드는 중복되는 line을 제거하고 출력해준다. <code>-d</code>는 중복된 내용만 출력, <code>-u</code>는 고유한 내용만 출력, <code>-i</code>는 대소문자 구분 무시 옵션이다.</p>
+<h3 id="level-9">level 9</h3>
+<p><code>data.txt</code>에서 읽을 수 있는, <code>=</code>가 앞에 있는 문자열만을 출력해야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">file data.txt <span class="c1">## data.txt: data</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">strings data.txt <span class="p">|</span> grep <span class="s1">&#39;=&#39;</span></span></span></code></pre></div><p><code>strings</code>는 파일에 포함된 string을 뽑아낼 수 있다.</p>
+<h3 id="level-10">level 10</h3>
+<p>base64 인코딩된 문자열이 <code>data.txt</code>에 들어있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat data.txt <span class="p">|</span> base64 -d</span></span></code></pre></div><p><code>base64 -d</code> 커맨드로 문자열을 디코딩하여 원래 바이너리를 출력한다.</p>
+<h3 id="level-11">level 11</h3>
+<p><a href="https://www.acmicpc.net/problem/1893">시저 암호</a>가 적용된 <code>data.txt</code> 파일을 해석해야 한다. Rot13이므로 A → N Z→ M으로 치환한다.</p>
+<p>정규식은 아니라고 한다.. (<code>tr</code>에서 쓰인 규칙일 뿐)</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat data.txt <span class="p">|</span> tr <span class="s1">&#39;[A-Za-z]&#39;</span> <span class="s1">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div>]]></content:encoded>
+    </item>
+    <item>
+      <title>scp</title>
+      <link>https://grrru.github.io/blog/scp/</link>
+      <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/blog/scp/</guid>
+      <description>&lt;h2 id=&#34;현재-조건-정리&#34;&gt;현재 조건 정리&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;server1 -&amp;gt; server2 : ssh private key O&lt;/li&gt;&#xA;&lt;li&gt;server2 -&amp;gt; server1 : ssh private key X&lt;/li&gt;&#xA;&lt;li&gt;목표: server2의 파일을 server1로 이동&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;scp&#34;&gt;scp&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;server1에서 실행&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;scp user2@server2:/src/file /dst/   &lt;span class=&#34;c1&#34;&gt;# file&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;scp -r user2@server2:/src/dir /dst/ &lt;span class=&#34;c1&#34;&gt;# directory&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;rsync -av user2@server2:/src/ /dst/ &lt;span class=&#34;c1&#34;&gt;# 대용량 -&amp;gt; test는 안해봄&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+      <content:encoded><![CDATA[<h2 id="현재-조건-정리">현재 조건 정리</h2>
+<ul>
+<li>server1 -&gt; server2 : ssh private key O</li>
+<li>server2 -&gt; server1 : ssh private key X</li>
+<li>목표: server2의 파일을 server1로 이동</li>
+</ul>
+<h2 id="scp">scp</h2>
+<ul>
+<li>server1에서 실행</li>
+</ul>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">scp user2@server2:/src/file /dst/   <span class="c1"># file</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">scp -r user2@server2:/src/dir /dst/ <span class="c1"># directory</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl">rsync -av user2@server2:/src/ /dst/ <span class="c1"># 대용량 -&gt; test는 안해봄</span></span></span></code></pre></div>]]></content:encoded>
+    </item>
+  </channel>
+</rss>

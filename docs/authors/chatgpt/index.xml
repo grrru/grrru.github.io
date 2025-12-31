@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ChatGPT on grrru blog</title>
-    <link>https://grrru.github.io/authors/chatgpt/</link>
+    <link>http://localhost:1313/authors/chatgpt/</link>
     <description>Recent content in ChatGPT on grrru blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>© 2025 grrru</copyright>
-    <lastBuildDate>Wed, 17 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://grrru.github.io/authors/chatgpt/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 17 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/authors/chatgpt/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>컴파일·인터프리터 실행 과정</title>
-      <link>https://grrru.github.io/posts/%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0-%EC%8B%A4%ED%96%89-%EA%B3%BC%EC%A0%95/</link>
+      <link>http://localhost:1313/posts/%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0-%EC%8B%A4%ED%96%89-%EA%B3%BC%EC%A0%95/</link>
       <pubDate>Wed, 17 Dec 2025 00:00:00 +0000</pubDate>
       <author>gruns0989@naver.com (grrru)</author>
-      <guid>https://grrru.github.io/posts/%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0-%EC%8B%A4%ED%96%89-%EA%B3%BC%EC%A0%95/</guid>
+      <guid>http://localhost:1313/posts/%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0-%EC%8B%A4%ED%96%89-%EA%B3%BC%EC%A0%95/</guid>
       <description></description>
       
     </item>
