@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
+<<<<<<< HEAD
     <title>Grrru Blog</title>
     <link>https://grrru.github.io/</link>
     <description>Recent content on Grrru Blog</description>
+=======
+    <title>grrru blog</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on grrru blog</description>
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
+<<<<<<< HEAD
     <copyright>Grrru (CC BY 4.0)</copyright>
     <lastBuildDate>Wed, 31 Dec 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://grrru.github.io/index.xml" rel="self" type="application/rss+xml" />
@@ -246,8 +253,52 @@
 
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat data.txt <span class="p">|</span> tr <span class="s1">&#39;[A-Za-z]&#39;</span> <span class="s1">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div>]]></content:encoded>
+=======
+    <copyright>© 2025 grrru</copyright>
+    <lastBuildDate>Wed, 31 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>OverTheWire Bandit(2)</title>
+      <link>http://localhost:1313/posts/overthewire-bandit-2/</link>
+      <pubDate>Wed, 31 Dec 2025 00:00:00 +0000</pubDate>
+      <author>gruns0989@naver.com (grrru)</author>
+      <guid>http://localhost:1313/posts/overthewire-bandit-2/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://localhost:1313/posts/templates/properties-template/</link>
+      <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate>
+      <author>gruns0989@naver.com (grrru)</author>
+      <guid>http://localhost:1313/posts/templates/properties-template/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>OverTheWire Bandit(1)</title>
+      <link>http://localhost:1313/posts/overthewire-bandit-1/</link>
+      <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate>
+      <author>gruns0989@naver.com (grrru)</author>
+      <guid>http://localhost:1313/posts/overthewire-bandit-1/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>scp</title>
+      <link>http://localhost:1313/posts/scp/</link>
+      <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate>
+      <author>gruns0989@naver.com (grrru)</author>
+      <guid>http://localhost:1313/posts/scp/</guid>
+      <description></description>
+      
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
     </item>
     <item>
+<<<<<<< HEAD
       <title>scp</title>
       <link>https://grrru.github.io/blog/scp/</link>
       <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
@@ -272,6 +323,15 @@
 </span></span><span class="line"><span class="ln">2</span><span class="cl">scp -r user2@server2:/src/dir /dst/ <span class="c1"># directory</span>
 </span></span><span class="line"><span class="ln">3</span><span class="cl">
 </span></span><span class="line"><span class="ln">4</span><span class="cl">rsync -av user2@server2:/src/ /dst/ <span class="c1"># 대용량 -&gt; test는 안해봄</span></span></span></code></pre></div>]]></content:encoded>
+=======
+      <title>컴파일·인터프리터 실행 과정</title>
+      <link>http://localhost:1313/posts/%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0-%EC%8B%A4%ED%96%89-%EA%B3%BC%EC%A0%95/</link>
+      <pubDate>Wed, 17 Dec 2025 00:00:00 +0000</pubDate>
+      <author>gruns0989@naver.com (grrru)</author>
+      <guid>http://localhost:1313/posts/%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0-%EC%8B%A4%ED%96%89-%EA%B3%BC%EC%A0%95/</guid>
+      <description></description>
+      
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
     </item>
   </channel>
 </rss>

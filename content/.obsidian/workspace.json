@@ -11,10 +11,21 @@
             "id": "b8b490a51bfba376",
             "type": "leaf",
             "state": {
+<<<<<<< HEAD
               "type": "empty",
               "state": {},
               "icon": "lucide-file",
               "title": "New tab"
+=======
+              "type": "markdown",
+              "state": {
+                "file": "about.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "about"
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
             }
           }
         ]
@@ -90,6 +101,10 @@
             "state": {
               "type": "backlink",
               "state": {
+<<<<<<< HEAD
+=======
+                "file": "about.md",
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +114,11 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
+<<<<<<< HEAD
               "title": "Backlinks"
+=======
+              "title": "Backlinks for about"
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
             }
           },
           {
@@ -108,11 +127,19 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+<<<<<<< HEAD
+=======
+                "file": "about.md",
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
+<<<<<<< HEAD
               "title": "Outgoing links"
+=======
+              "title": "Outgoing links from about"
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
             }
           },
           {
@@ -177,6 +204,7 @@
       "bases:Create new base": false
     }
   },
+<<<<<<< HEAD
   "active": "1afa0b83380b2972",
   "lastOpenFiles": [
     "blog/Templates/Properties Template.md",
@@ -194,5 +222,14 @@
     "_index.md~",
     "about/_index.md",
     "about"
+=======
+  "active": "b8b490a51bfba376",
+  "lastOpenFiles": [
+    "_index.md",
+    "about.md",
+    "about/_index.md",
+    "about",
+    "blog/Templates/_index.md"
+>>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
   ]
 }
