@@ -11,5 +11,5 @@ I’m a junior engineer with a strong interest in Linux and open-source software
 
 ---
 Below is my contact information.
-- [Github](https://github.com/grrru)  
-- [LinkedIn](https://linkedin.com/grrru)
+- [Github](https://www.github.com/grrru)  
+- [LinkedIn](https://www.linkedin.com/in/grrru/)
