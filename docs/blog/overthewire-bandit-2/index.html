@@ -15,8 +15,8 @@ Level 12부터 ~
 
 Level 12
 The password for the next level is stored in the file data.txt, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work. Use mkdir with a hard to guess directory name. Or better, use the command “mktemp -d”. Then copy the datafile using cp, and rename it using mv (read the manpages!)" />
-<meta name="author" content="" />
-<meta name="keywords" content="" />
+<meta name="author" content="grrru" />
+<meta name="keywords" content="overthewire,bandit," />
 
 
 
@@ -54,7 +54,7 @@ The password for the next level is stored in the file data.txt, which is a hexd
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://grrru.github.io/blog/overthewire-bandit-2/" />
 
-<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_cfe56833e4fdb37.webp"/><meta property="article:section" content="blog" />
+<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_3da1903eb0f2f0d9.webp"/><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2026-01-07T00:00:00+00:00" />
 <meta property="article:modified_time" content="2026-01-07T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
 <meta property="fb:admins" content="0000000000" />
@@ -62,7 +62,7 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_cfe56833e4fdb37.webp"/>
+<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_3da1903eb0f2f0d9.webp"/>
 <meta name="twitter:title" content="OverTheWire Bandit(2)"/>
 <meta name="twitter:description" content="
 OverTheWire: Bandit
@@ -86,10 +86,10 @@ The password for the next level is stored in the file data.txt, which is a hexd
 <meta itemprop="dateModified" content="2026-01-07T00:00:00+00:00" />
 <meta itemprop="wordCount" content="965">
 
-<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_cfe56833e4fdb37.webp"/>
+<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_3da1903eb0f2f0d9.webp"/>
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="overthewire,bandit," />
 
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -115,9 +115,7 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
   <a href="/blog/">Blog</a>
 
-  <a href="/about/">About</a>
 
-<a href='https://grrru.github.io/index.xml'>RSS</a>
 
 
 
@@ -134,7 +132,7 @@ The password for the next level is stored in the file data.txt, which is a hexd
   <time datetime='2026-01-07' pubdate>
     2026-01-07
   </time>
-  
+  · grrru
 </p>
 
 <content>
@@ -151,22 +149,22 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">mktemp -d
-</span></span><span class="line"><span class="ln">2</span><span class="cl">cp ~/data.txt /tmp/<span class="sb">`</span>위에서 만든 디렉토리<span class="sb">`</span></span></span></code></pre></div><p><code>file *</code>로 얻은 파일이 어떤 방식으로 압축된 파일인지 확인 후 이에 맞는 압축 해제 방식을 사용해서 text 파일을 얻을 때까지 반복한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>mktemp -d
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cp ~/data.txt /tmp/<span style="color:#a6d189">`</span>위에서 만든 디렉토리<span style="color:#a6d189">`</span></span></span></code></pre></div><p><code>file *</code>로 얻은 파일이 어떤 방식으로 압축된 파일인지 확인 후 이에 맞는 압축 해제 방식을 사용해서 text 파일을 얻을 때까지 반복한다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">file *
-</span></span><span class="line"><span class="ln">2</span><span class="cl">
-</span></span><span class="line"><span class="ln">3</span><span class="cl">xxd -r data.txt
-</span></span><span class="line"><span class="ln">4</span><span class="cl">
-</span></span><span class="line"><span class="ln">5</span><span class="cl">gzip -dc data &gt; data1
-</span></span><span class="line"><span class="ln">6</span><span class="cl">bzip2 -dc data1 &gt; data2
-</span></span><span class="line"><span class="ln">7</span><span class="cl">
-</span></span><span class="line"><span class="ln">8</span><span class="cl">mv data2 data2.tar
-</span></span><span class="line"><span class="ln">9</span><span class="cl">tar -xf data2.tar</span></span></code></pre></div><p>위 3개만 반복해서 나왔던 듯.. 10번 정도 하면 text 파일이 나온다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>file *
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>xxd -r data.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>gzip -dc data &gt; data1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>bzip2 -dc data1 &gt; data2
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">8</span><span>mv data2 data2.tar
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">9</span><span>tar -xf data2.tar</span></span></code></pre></div><p>위 3개만 반복해서 나왔던 듯.. 10번 정도 하면 text 파일이 나온다.</p>
 <hr>
 <h3 id="level-13">Level 13</h3>
 <p>The password for the next level is stored in <strong>/etc/bandit_pass/bandit14 and can only be read by user bandit14</strong>. For this level, you don’t get the next password, but you get a private SSH key that can be used to log into the next level. Look at the commands that logged you into previous bandit levels, and find out how to use the key for this level.</p>
@@ -176,29 +174,29 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">-r--------   <span class="m">1</span> bandit14 bandit14    <span class="m">33</span> Oct <span class="m">14</span> 09:25 bandit14</span></span></code></pre></div><p>$HOME 디렉토리에 ssh key를 하나 주는데, 이걸로 <code>bandit14</code> 아이디로 접속할 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>-r--------   <span style="color:#ef9f76">1</span> bandit14 bandit14    <span style="color:#ef9f76">33</span> Oct <span style="color:#ef9f76">14</span> 09:25 bandit14</span></span></code></pre></div><p>$HOME 디렉토리에 ssh key를 하나 주는데, 이걸로 <code>bandit14</code> 아이디로 접속할 수 있다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat ~/sshkey.private</span></span></code></pre></div><p>근데 <code>sshkey.private</code>의 권한이 <code>640</code>으로 설정되어 있는데, private key를 ssh 접속에 사용하기 위해선 권한이 <code>600</code>이어야 한다!</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat ~/sshkey.private</span></span></code></pre></div><p>근데 <code>sshkey.private</code>의 권한이 <code>640</code>으로 설정되어 있는데, private key를 ssh 접속에 사용하기 위해선 권한이 <code>600</code>이어야 한다!</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">-rw-r----- <span class="m">1</span> bandit14 bandit13 <span class="m">1679</span> Oct <span class="m">14</span> 09:26 sshkey.private</span></span></code></pre></div><p><code>sshkey.private</code> 내용을 local 머신에 복사해와서 아무 파일에 저장해두고 <code>600</code>으로 바꾸고 <code>bandit14</code>에 접속해서 password를 획득한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>-rw-r----- <span style="color:#ef9f76">1</span> bandit14 bandit13 <span style="color:#ef9f76">1679</span> Oct <span style="color:#ef9f76">14</span> 09:26 sshkey.private</span></span></code></pre></div><p><code>sshkey.private</code> 내용을 local 머신에 복사해와서 아무 파일에 저장해두고 <code>600</code>으로 바꾸고 <code>bandit14</code>에 접속해서 password를 획득한다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">vi key
-</span></span><span class="line"><span class="ln">2</span><span class="cl">~~~ key 적는 중 ~~~
-</span></span><span class="line"><span class="ln">3</span><span class="cl">
-</span></span><span class="line"><span class="ln">4</span><span class="cl">ssh -i key bandit14@bandit.labs.overthewire.org -p <span class="m">2220</span>
-</span></span><span class="line"><span class="ln">5</span><span class="cl">cat /etc/bandit_pass/bandit14</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>vi key
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>~~~ key 적는 중 ~~~
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>ssh -i key bandit14@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>cat /etc/bandit_pass/bandit14</span></span></code></pre></div><hr>
 <h3 id="level-14">Level 14</h3>
 <p>The password for the next level can be retrieved by submitting the password of the current level to <strong>port 30000 on localhost</strong>.</p>
 <p><code>localhost:30000</code>으로 level 14의 passwd를 보내면 된다.</p>
@@ -208,7 +206,7 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">echo</span> MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS <span class="p">|</span> nc localhost <span class="m">30000</span></span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#99d1db">echo</span> MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS | nc localhost <span style="color:#ef9f76">30000</span></span></span></code></pre></div><hr>
 <h3 id="level-15">Level 15</h3>
 <p>The password for the next level can be retrieved by submitting the password of the current level to <strong>port 30001 on localhost</strong> using SSL/TLS encryption.</p>
 <p><strong>Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.</strong></p>
@@ -219,7 +217,7 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">openssl s_client -connect localhost:30001</span></span></code></pre></div><p><code>s_client</code>는 SSL/TLS 세션을 연결하겠다는 뜻이다.<br>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>openssl s_client -connect localhost:30001</span></span></code></pre></div><p><code>s_client</code>는 SSL/TLS 세션을 연결하겠다는 뜻이다.<br>
 세션이 연결되면 level14 password를 붙여넣는다.</p>
 <hr>
 <h3 id="level-16">Level 16</h3>
@@ -231,13 +229,13 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ss -ltnp <span class="p">|</span> grep -E <span class="s1">&#39;:31.*&#39;</span></span></span></code></pre></div><p>후보가 몇 개 없어서 하나하나 해봤다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ss -ltnp | grep -E <span style="color:#a6d189">&#39;:31.*&#39;</span></span></span></code></pre></div><p>후보가 몇 개 없어서 하나하나 해봤다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">openssl s_client -connect localhost:31587 -quiet</span></span></code></pre></div><p><code>openssl s_client</code>는 보내는 문자열 시작이 <code>k</code>이면 데이터가 아니라 제어 명령으로 인식한다고 한다. level 16 password가 <code>k</code>로 시작해서 <code>KEYUPDATE</code>라는 응답을 받게 된다.<br>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>openssl s_client -connect localhost:31587 -quiet</span></span></code></pre></div><p><code>openssl s_client</code>는 보내는 문자열 시작이 <code>k</code>이면 데이터가 아니라 제어 명령으로 인식한다고 한다. level 16 password가 <code>k</code>로 시작해서 <code>KEYUPDATE</code>라는 응답을 받게 된다.<br>
 이를 피하려면 <code>-quiet</code> 옵션을 붙여서 인터렉티브 모드로 들어가지 않도록 해야 한다.
 <code>Correct!</code>가 나오면 RSA private key를 준다. (비밀번호가 아니라 credentials를 준다.)</p>
 <hr>
@@ -250,13 +248,13 @@ The password for the next level is stored in the file data.txt, which is a hexd
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh bandit17@bandit.labs.overthewire.org -p <span class="m">2220</span> -i key</span></span></code></pre></div><p><code>diff</code>로 두 파일을 한 line씩 비교해서 다른 라인을 찾는다. <code>password.new</code>에 있는 라인이 password다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit17@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> -i key</span></span></code></pre></div><p><code>diff</code>로 두 파일을 한 line씩 비교해서 다른 라인을 찾는다. <code>password.new</code>에 있는 라인이 password다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">diff passwords.new passwords.old</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>diff passwords.new passwords.old</span></span></code></pre></div><hr>
 <h3 id="level-18">Level 18</h3>
 <p>The password for the next level is stored in a file <strong>readme</strong> in the homedirectory. Unfortunately, someone has modified <strong>.bashrc</strong> to log you out when you log in with SSH.</p>
 <p>누군가 장난을 쳐서 로그인하자마자 로그아웃된다. <code>readme</code>를 읽으면 되므로 ssh 뒤에 command를 달아서 즉시 출력한다.<br>
@@ -266,7 +264,7 @@ command는 <code>;</code>로 여러 명렁을 구분할 수 있다.</p>
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh bandit18@bandit.labs.overthewire.org -p <span class="m">2220</span> <span class="s1">&#39;ls -al;cat ~/readme&#39;</span></span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit18@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> <span style="color:#a6d189">&#39;ls -al;cat ~/readme&#39;</span></span></span></code></pre></div><hr>
 <h3 id="level-19">Level 19</h3>
 <p>To gain access to the next level, you should use the setuid binary in the homedirectory. Execute it without arguments to find out how to use it. The password for this level can be found in the usual place (/etc/bandit_pass), after you have used the setuid binary.</p>
 <p>homedirectory에 있는 <code>setuid binary</code>를 이용하면 된다. 예시를 보려면 arguments 없이 써보라고 한다.</p>
@@ -275,18 +273,18 @@ command는 <code>;</code>로 여러 명렁을 구분할 수 있다.</p>
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">./bandit20-do
-</span></span><span class="line"><span class="ln">2</span><span class="cl">Run a <span class="nb">command</span> as another user.
-</span></span><span class="line"><span class="ln">3</span><span class="cl">  Example: ./bandit20-do whoami
-</span></span><span class="line"><span class="ln">4</span><span class="cl">
-</span></span><span class="line"><span class="ln">5</span><span class="cl">./bandit20-do whoami
-</span></span><span class="line"><span class="ln">6</span><span class="cl">bandit20</span></span></code></pre></div><p><code>whoami</code>를 실행하니 다음 레벨 유저인 <code>bandit20</code>이 나온다.  <code>setuid binary</code>는 바이너리 파일의 소유자 권한으로 명령을 실행할 수 있는 파일이다. 위험하다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./bandit20-do
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>Run a <span style="color:#99d1db">command</span> as another user.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>  Example: ./bandit20-do whoami
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>./bandit20-do whoami
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>bandit20</span></span></code></pre></div><p><code>whoami</code>를 실행하니 다음 레벨 유저인 <code>bandit20</code>이 나온다.  <code>setuid binary</code>는 바이너리 파일의 소유자 권한으로 명령을 실행할 수 있는 파일이다. 위험하다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">./bandit20-do cat /etc/bandit_pass/bandit20</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./bandit20-do cat /etc/bandit_pass/bandit20</span></span></code></pre></div><hr>
 <h3 id="level-20">Level 20</h3>
 <p>There is a setuid binary in the homedirectory that does the following: it makes a connection to localhost on the port you specify as a commandline argument. It then reads a line of text from the connection and compares it to the password in the previous level (bandit20). If the password is correct, it will transmit the password for the next level (bandit21).</p>
 <p><strong>NOTE:</strong> Try connecting to your own network daemon to see if it works as you think</p>
@@ -297,16 +295,20 @@ ssh 세션 두 개를 열어야 한다.</p>
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 1번 세션</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">nc -l -p <span class="m">1234</span>
-</span></span><span class="line"><span class="ln">3</span><span class="cl">
-</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"># 2번 세션</span>
-</span></span><span class="line"><span class="ln">5</span><span class="cl">./suconnect <span class="m">1234</span>
-</span></span><span class="line"><span class="ln">6</span><span class="cl">
-</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"># 1번 세션</span>
-</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="o">[</span>bandit20 passwd 입력 후 Enter<span class="o">]</span></span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#737994;font-style:italic"># 1번 세션</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>nc -l -p <span style="color:#ef9f76">1234</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#737994;font-style:italic"># 2번 세션</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>./suconnect <span style="color:#ef9f76">1234</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span><span style="color:#737994;font-style:italic"># 1번 세션</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">8</span><span><span style="color:#99d1db;font-weight:bold">[</span>bandit20 passwd 입력 후 Enter<span style="color:#99d1db;font-weight:bold">]</span></span></span></code></pre></div>
 </content>
 <p>
+  
+    <a class="blog-tags" href="/tags/overthewire/">#overthewire</a>
+  
+    <a class="blog-tags" href="/tags/bandit/">#bandit</a>
   
 </p>
 

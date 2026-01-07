@@ -1,14 +1,12 @@
 ---
-date: "2025-12-28"
+date: 2025-12-28
 draft: false
-title: "OverTheWire Bandit(1)"
-category: "Linux"
-tag: 
-  - "overthewire"
-  - "bandit"
-showAuthor: true
-authors:
-  - "grrru"
+title: OverTheWire Bandit(1)
+categories: Linux
+tags:
+  - overthewire
+  - bandit
+author: grrru
 ---
 
 ### OverTheWire Bandit
@@ -95,25 +93,26 @@ find . -type f -size 1033c ! -executable
 
 `-type`: 검색할 타입을 지정한다.
 
-| type | 의미        |
-| ----- | --------- |
+| type  | 의미          |
+| ----- | ------------- |
 | `f`   | 일반 파일     |
 | `d`   | 디렉토리      |
-| `l`   | 심볼릭 링크    |
-| `c`   | 문자 디바이스   |
-| `b`   | 블록 디바이스   |
-| `p`   | 파이프(FIFO) |
-| `s`   | 소켓        |
+| `l`   | 심볼릭 링크   |
+| `c`   | 문자 디바이스 |
+| `b`   | 블록 디바이스 |
+| `p`   | 파이프(FIFO)  |
+| `s`   | 소켓          |
 
 `-size`: 사이즈로 검색한다. 
 
-| size | 의미                |
+| size | 의미               |
 | ----- | ----------------- |
 | `c`   | bytes             |
 | `b`   | 512-byte blocks   |
 | `k`   | kilobytes (1024B) |
 | `M`   | megabytes         |
 | `G`   | gigabytes         |
+
 `-executable`: 실행 가능한 것을 의미하며 앞에 `!`을 붙여 부정으로 바꿀 수 있다.
 
 ---

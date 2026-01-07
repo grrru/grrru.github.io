@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Blogs on Grrru Blog</title>
-    <link>https://grrru.github.io/blog/</link>
-    <description>Recent content in Blogs on Grrru Blog</description>
+    <title>Linux on Grrru Blog</title>
+    <link>https://grrru.github.io/categories/linux/</link>
+    <description>Recent content in Linux on Grrru Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
     <lastBuildDate>Wed, 07 Jan 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://grrru.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://grrru.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>OverTheWire Bandit(2)</title>
       <link>https://grrru.github.io/blog/overthewire-bandit-2/</link>

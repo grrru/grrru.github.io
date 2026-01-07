@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/OverTheWire Bandit (1).md",
+                "file": "_index.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "OverTheWire Bandit (1)"
+              "title": "_index"
             }
           }
         ]
@@ -182,6 +182,11 @@
   },
   "active": "105daee26a8692e7",
   "lastOpenFiles": [
-    "blog/OverTheWire Bandit (2).md"
+    "blog/OverTheWire Bandit (2).md",
+    "blog/OverTheWire Bandit (1).md",
+    "blog/scp.md",
+    "blog/컴파일·인터프리터 실행 과정.md",
+    "blog/Templates/Properties Template.md",
+    "blog/Templates/_index.md"
   ]
 }

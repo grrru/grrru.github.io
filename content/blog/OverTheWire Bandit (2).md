@@ -2,10 +2,11 @@
 date: 2026-01-07
 draft: false
 title: OverTheWire Bandit(2)
-category: Linux
-tag:
+categories: Linux
+tags:
   - overthewire
   - bandit
+author: grrru
 ---
 
 > [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)  

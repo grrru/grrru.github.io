@@ -2,12 +2,10 @@
 date: 2025-12-28
 draft: false
 title: scp
-category: Linux
-tag:
+categories: Linux
+tags:
   - scp
-showAuthor: true
-authors:
-  - grrru
+author: grrru
 ---
 
 ## 현재 조건 정리

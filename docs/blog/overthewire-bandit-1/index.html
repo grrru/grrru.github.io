@@ -33,8 +33,8 @@ ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속�
 level 1
 home directory의  - 파일(dashed file)을 읽어야 한다.
 (ls -al로 home directory의 파일들을 확인)" />
-<meta name="author" content="" />
-<meta name="keywords" content="" />
+<meta name="author" content="grrru" />
+<meta name="keywords" content="overthewire,bandit," />
 
 
 
@@ -90,7 +90,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://grrru.github.io/blog/overthewire-bandit-1/" />
 
-<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_50949dc8043b6df6.webp"/><meta property="article:section" content="blog" />
+<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/><meta property="article:section" content="blog" />
 <meta property="article:published_time" content="2025-12-28T00:00:00+00:00" />
 <meta property="article:modified_time" content="2025-12-28T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
 <meta property="fb:admins" content="0000000000" />
@@ -98,7 +98,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_50949dc8043b6df6.webp"/>
+<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/>
 <meta name="twitter:title" content="OverTheWire Bandit(1)"/>
 <meta name="twitter:description" content="OverTheWire Bandit
 OverTheWire: Bandit
@@ -158,10 +158,10 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 <meta itemprop="dateModified" content="2025-12-28T00:00:00+00:00" />
 <meta itemprop="wordCount" content="516">
 
-<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_50949dc8043b6df6.webp"/>
+<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/>
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="overthewire,bandit," />
 
 <meta name="referrer" content="no-referrer-when-downgrade" />
 
@@ -187,9 +187,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
   <a href="/blog/">Blog</a>
 
-  <a href="/about/">About</a>
 
-<a href='https://grrru.github.io/index.xml'>RSS</a>
 
 
 
@@ -206,7 +204,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
   <time datetime='2025-12-28' pubdate>
     2025-12-28
   </time>
-  
+  · grrru
 </p>
 
 <content>
@@ -224,14 +222,14 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ssh bandit.labs.overthewire.org -p <span class="m">2220</span> -l bandit0
-</span></span><span class="line"><span class="ln">2</span><span class="cl">ssh bandit10@bandit.labs.overthewire.org -p <span class="m">2220</span> <span class="c1">## host 앞에 user@를 붙이는 것도 가능하다</span></span></span></code></pre></div><p>home directory에 있는 <code>readme</code>라는 파일을 읽어 <code>bandit1</code>의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> -l bandit0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>ssh bandit10@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> <span style="color:#737994;font-style:italic">## host 앞에 user@를 붙이는 것도 가능하다</span></span></span></code></pre></div><p>home directory에 있는 <code>readme</code>라는 파일을 읽어 <code>bandit1</code>의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat ~/readme</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat ~/readme</span></span></code></pre></div><hr>
 <h3 id="level-1">level 1</h3>
 <p>home directory의  <code>-</code> 파일(dashed file)을 읽어야 한다.
 (<code>ls -al</code>로 home directory의 파일들을 확인)</p>
@@ -241,16 +239,16 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">bandit1@bandit:~$ cat -
-</span></span><span class="line"><span class="ln">2</span><span class="cl">hello
-</span></span><span class="line"><span class="ln">3</span><span class="cl">hello</span></span></code></pre></div><p>아래와 같이 읽을 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>bandit1@bandit:~$ cat -
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>hello
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>hello</span></span></code></pre></div><p>아래와 같이 읽을 수 있다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat &lt; - <span class="c1">## dashed file을 읽어 stdin으로 연결</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">cat ./- <span class="c1">## dashed file의 위치를 지정하여 읽음</span></span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat &lt; - <span style="color:#737994;font-style:italic">## dashed file을 읽어 stdin으로 연결</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat ./- <span style="color:#737994;font-style:italic">## dashed file의 위치를 지정하여 읽음</span></span></span></code></pre></div><hr>
 <h3 id="level-2">level 2</h3>
 <p>파일명에 공백이 있는 파일을 읽어야 한다. 공백 앞에 <code>\</code>를 붙여야 읽을 수 있다.</p>
 
@@ -258,7 +256,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat ./--spaces<span class="se">\ </span>in<span class="se">\ </span>this<span class="se">\ </span>filename--</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat ./--spaces<span style="color:#8caaee">\ </span>in<span style="color:#8caaee">\ </span>this<span style="color:#8caaee">\ </span>filename--</span></span></code></pre></div><hr>
 <h3 id="level-3">level 3</h3>
 <p><code>~/inhere</code> 디렉토리의 숨은 파일을 읽어야 한다. <code>ls</code>는 숨은 파일은 알려주지 않으므로 <code>ls -a</code>를 사용해야 한다.</p>
 
@@ -266,8 +264,8 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ls -al <span class="c1">## a: all l: long-listing</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">cat ./...Hiding-From-You</span></span></code></pre></div><p>주로 <code>ls -al</code>을 사용하는데, <code>l</code> 옵션은 권한, 소유자, 그룹, 크기, 시간 등을 한 줄씩 출력해줘서 읽기 편한듯,,</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ls -al <span style="color:#737994;font-style:italic">## a: all l: long-listing</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat ./...Hiding-From-You</span></span></code></pre></div><p>주로 <code>ls -al</code>을 사용하는데, <code>l</code> 옵션은 권한, 소유자, 그룹, 크기, 시간 등을 한 줄씩 출력해줘서 읽기 편한듯,,</p>
 <hr>
 <h3 id="level-4">level 4</h3>
 <p><code>human-readable</code> 파일을 읽어야 한다.
@@ -277,8 +275,8 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl"><span class="nb">cd</span> ~/inhere
-</span></span><span class="line"><span class="ln">2</span><span class="cl">file -i ./*</span></span></code></pre></div><p>파일 하나만 <code>ASCII text</code>으로 사람이 읽을 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#99d1db">cd</span> ~/inhere
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>file -i ./*</span></span></code></pre></div><p>파일 하나만 <code>ASCII text</code>으로 사람이 읽을 수 있다.</p>
 <hr>
 <h3 id="level-5">level 5</h3>
 <p><code>inhere</code> 디렉토리에서 아래 조건을 만족하는 파일을 찾아서 읽어야 한다.</p>
@@ -287,19 +285,19 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">- human-readable
-</span></span><span class="line"><span class="ln">2</span><span class="cl">- 1033 bytes in size
-</span></span><span class="line"><span class="ln">3</span><span class="cl">- not executable</span></span></code></pre></div><p><code>find .</code>는 현재 디렉토리 하위의 모든 파일과 디렉토리들을 보여준다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>- human-readable
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>- 1033 bytes in size
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>- not executable</span></span></code></pre></div><p><code>find .</code>는 현재 디렉토리 하위의 모든 파일과 디렉토리들을 보여준다.</p>
 
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">find . -type f -size 1033c ! -executable</span></span></code></pre></div><p><code>-type</code>: 검색할 타입을 지정한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>find . -type f -size 1033c ! -executable</span></span></code></pre></div><p><code>-type</code>: 검색할 타입을 지정한다.</p>
 <table>
   <thead>
       <tr>
-          <th>type</th>
+          <th>type</th>
           <th>의미</th>
       </tr>
   </thead>
@@ -338,7 +336,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 <table>
   <thead>
       <tr>
-          <th>size</th>
+          <th>size</th>
           <th>의미</th>
       </tr>
   </thead>
@@ -363,12 +361,9 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
           <td><code>G</code></td>
           <td>gigabytes</td>
       </tr>
-      <tr>
-          <td><code>-executable</code>: 실행 가능한 것을 의미하며 앞에 <code>!</code>을 붙여 부정으로 바꿀 수 있다.</td>
-          <td></td>
-      </tr>
   </tbody>
 </table>
+<p><code>-executable</code>: 실행 가능한 것을 의미하며 앞에 <code>!</code>을 붙여 부정으로 바꿀 수 있다.</p>
 <hr>
 <h3 id="level-6">level 6</h3>
 <p>server 내의 어딘가에 있는 파일 중 아래 조건을 만족하는 파일을 읽어야 한다.</p>
@@ -377,14 +372,14 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">owned by user bandit7
-</span></span><span class="line"><span class="ln">2</span><span class="cl">owned by group bandit6
-</span></span><span class="line"><span class="ln">3</span><span class="cl">33 bytes in size</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>owned by user bandit7
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>owned by group bandit6
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>33 bytes in size</span></span></code></pre></div>
 
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">find / -type f -size 33c -user bandit7 -group bandit6 2&gt;/dev/null</span></span></code></pre></div><p><code>-user</code>, <code>-group</code>로 owner 검색이 가능하다.
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>find / -type f -size 33c -user bandit7 -group bandit6 2&gt;/dev/null</span></span></code></pre></div><p><code>-user</code>, <code>-group</code>로 owner 검색이 가능하다.
 <code>2&gt;/dev/null</code>를 쓰지 않으면 <code>find</code> 커맨드 실행 중 권한이 없는 디렉토리/파일을 만날 때 에러 메시지 <code>Permission Denied</code>를 <code>stderr</code>(FD 2)로 출력한다.
 <code>2&gt;/dev/null</code>은 sderr 2를 <code>/dev/null</code>로 리다이렉션(<code>&gt;</code>)하여 에러 출력이 버려지도록 한다.</p>
 <hr>
@@ -395,8 +390,8 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">ls -lh <span class="c1">## h: human 옵션으로 용량 값을 읽기 쉽도록 바꿔준다.</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">cat data.txt <span class="p">|</span> grep millionth</span></span></code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ls -lh <span style="color:#737994;font-style:italic">## h: human 옵션으로 용량 값을 읽기 쉽도록 바꿔준다.</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat data.txt | grep millionth</span></span></code></pre></div><hr>
 <h3 id="level-8">level 8</h3>
 <p><code>data.txt</code> 에서 유일한 line을 찾아야 한다.</p>
 
@@ -404,7 +399,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">sort data.txt <span class="p">|</span> uniq -iu</span></span></code></pre></div><p><code>sort</code>로 파일의 line들을 정렬한다. 여러 옵션을 추가로 사용할 수 있다.
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>sort data.txt | uniq -iu</span></span></code></pre></div><p><code>sort</code>로 파일의 line들을 정렬한다. 여러 옵션을 추가로 사용할 수 있다.
 <code>uniq</code> 커맨드는 중복되는 line을 제거하고 출력해준다. <code>-d</code>는 중복된 내용만 출력, <code>-u</code>는 고유한 내용만 출력, <code>-i</code>는 대소문자 구분 무시 옵션이다.</p>
 <hr>
 <h3 id="level-9">level 9</h3>
@@ -414,8 +409,8 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">file data.txt <span class="c1">## data.txt: data</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">strings data.txt <span class="p">|</span> grep <span class="s1">&#39;=&#39;</span></span></span></code></pre></div><p><code>strings</code>는 파일에 포함된 string을 뽑아낼 수 있다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>file data.txt <span style="color:#737994;font-style:italic">## data.txt: data</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>strings data.txt | grep <span style="color:#a6d189">&#39;=&#39;</span></span></span></code></pre></div><p><code>strings</code>는 파일에 포함된 string을 뽑아낼 수 있다.</p>
 <hr>
 <h3 id="level-10">level 10</h3>
 <p>base64 인코딩된 문자열이 <code>data.txt</code>에 들어있다.</p>
@@ -424,7 +419,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat data.txt <span class="p">|</span> base64 -d</span></span></code></pre></div><p><code>base64 -d</code> 커맨드로 문자열을 디코딩하여 원래 바이너리를 출력한다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat data.txt | base64 -d</span></span></code></pre></div><p><code>base64 -d</code> 커맨드로 문자열을 디코딩하여 원래 바이너리를 출력한다.</p>
 <hr>
 <h3 id="level-11">level 11</h3>
 <p><a href="https://www.acmicpc.net/problem/1893">시저 암호</a>가 적용된 <code>data.txt</code> 파일을 해석해야 한다. Rot13이므로 A → N Z→ M으로 치환한다.</p>
@@ -434,9 +429,13 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln">1</span><span class="cl">cat data.txt <span class="p">|</span> tr <span class="s1">&#39;[A-Za-z]&#39;</span> <span class="s1">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat data.txt | tr <span style="color:#a6d189">&#39;[A-Za-z]&#39;</span> <span style="color:#a6d189">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div>
 </content>
 <p>
+  
+    <a class="blog-tags" href="/tags/overthewire/">#overthewire</a>
+  
+    <a class="blog-tags" href="/tags/bandit/">#bandit</a>
   
 </p>
 

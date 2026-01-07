@@ -18,7 +18,8 @@ lineNumbersInTable = false
 # This allows Bear Cub to use a variation of Dracula that is more accessible
 # to people with poor eyesight. For more information about color contrast
 # and accessibility, see https://web.dev/color-and-contrast-accessibility/
-noClasses = false
+noClasses = true
+style = "catppuccin-frappe"
 
 # Multilingual mode config. More for information about how to setup translation,
 # see https://gohugo.io/content-management/multilingual/
@@ -32,6 +33,7 @@ contentDir = "content"
 madeWith = "Made with [Bear Cub](https://github.com/clente/hugo-bearcub)"
 
 [params]
+
 # The description of your website
 description = "Blog Demo"
 
@@ -93,8 +95,3 @@ weight = 1
 name = "Blog"
 url = "/blog/"
 weight = 2
-
-[[menu.main]]
-name = "About"
-url = "/about/"
-weight = 3
