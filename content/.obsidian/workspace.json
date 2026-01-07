@@ -1,31 +1,24 @@
 {
   "main": {
-    "id": "f3e3bbadc6c8fd74",
+    "id": "2ea0dfc406222c1b",
     "type": "split",
     "children": [
       {
-        "id": "63f42d60ff23ea0c",
+        "id": "601b88c307370bd8",
         "type": "tabs",
         "children": [
           {
-            "id": "b8b490a51bfba376",
+            "id": "105daee26a8692e7",
             "type": "leaf",
             "state": {
-<<<<<<< HEAD
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-=======
               "type": "markdown",
               "state": {
-                "file": "about.md",
+                "file": "blog/OverTheWire Bandit (1).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "about"
->>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
+              "title": "OverTheWire Bandit (1)"
             }
           }
         ]
@@ -34,15 +27,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "fc0443358747c7a7",
+    "id": "b6b9b0dd32bc3676",
     "type": "split",
     "children": [
       {
-        "id": "e519d20e5c1afd17",
+        "id": "6c54957c8cca1c61",
         "type": "tabs",
         "children": [
           {
-            "id": "1afa0b83380b2972",
+            "id": "a668bc11916f6e11",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -55,7 +48,7 @@
             }
           },
           {
-            "id": "9f5718fe9c05eb20",
+            "id": "3b54f6a8976b3fff",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -72,7 +65,7 @@
             }
           },
           {
-            "id": "381efc3c411c4297",
+            "id": "f6c8a5e7f329294a",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -88,23 +81,19 @@
     "width": 300
   },
   "right": {
-    "id": "864c04e8f360a010",
+    "id": "b26aa8bc67d370f8",
     "type": "split",
     "children": [
       {
-        "id": "1301bf1f3b5d8cf8",
+        "id": "fec49fe70d26c6f2",
         "type": "tabs",
         "children": [
           {
-            "id": "fd047c09afb60edd",
+            "id": "8998733100a1b2cc",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-<<<<<<< HEAD
-=======
-                "file": "about.md",
->>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,36 +103,24 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-<<<<<<< HEAD
               "title": "Backlinks"
-=======
-              "title": "Backlinks for about"
->>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
             }
           },
           {
-            "id": "fca83a7183a389fb",
+            "id": "26f2755821dd48cc",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-<<<<<<< HEAD
-=======
-                "file": "about.md",
->>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-<<<<<<< HEAD
               "title": "Outgoing links"
-=======
-              "title": "Outgoing links from about"
->>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
             }
           },
           {
-            "id": "15aefe9f0e5a1d7c",
+            "id": "cebd646e27100cc9",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -158,7 +135,7 @@
             }
           },
           {
-            "id": "f153264cb17bcbbb",
+            "id": "d9df863568d0f2eb",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -172,18 +149,17 @@
             }
           },
           {
-            "id": "8b4617cdf2cfd441",
+            "id": "6a0c85052fa778d3",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "about.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of about"
+              "title": "Outline"
             }
           }
         ]
@@ -204,32 +180,8 @@
       "bases:Create new base": false
     }
   },
-<<<<<<< HEAD
-  "active": "1afa0b83380b2972",
+  "active": "105daee26a8692e7",
   "lastOpenFiles": [
-    "blog/Templates/Properties Template.md",
-    "blog/Templates/_index.md",
-    "blog/컴파일·인터프리터 실행 과정.md",
-    "blog/scp.md",
-    "blog/Templates",
-    "blog/OverTheWire Bandit (2).md",
-    "blog/OverTheWire Bandit (1).md",
-    "blog",
-    "about.md",
-    "_index.md",
-    "posts/hello-world.md",
-    "posts",
-    "_index.md~",
-    "about/_index.md",
-    "about"
-=======
-  "active": "b8b490a51bfba376",
-  "lastOpenFiles": [
-    "_index.md",
-    "about.md",
-    "about/_index.md",
-    "about",
-    "blog/Templates/_index.md"
->>>>>>> ffe8a5c0486a511ebde4d9bab93050ac039e2135
+    "blog/OverTheWire Bandit (2).md"
   ]
 }
