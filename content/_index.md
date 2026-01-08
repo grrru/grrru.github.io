@@ -5,9 +5,9 @@ weight: 1
 
 # Grrru
 ---
-I’m a backend developer working in Korea, mainly using Go and Python.
+I’m a backend developer in South Korea, mainly using Go and Python.
 
-I’m a junior engineer with a strong interest in Linux and open-source software. I enjoy learning new technologies, writing clear and efficient code, and improving my development skills step by step.
+This blog is a place where I write down what I learn along the way. Since I’m still a junior developer, there may be mistakes or misunderstandings. If you spot anything incorrect, I’d appreciate it if you let me know. 😊
 
 ---
 Below is my contact information.
