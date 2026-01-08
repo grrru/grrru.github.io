@@ -26,10 +26,18 @@ style = "catppuccin-frappe"
 [languages]
 [languages.en]
 title = "Grrru Blog"
-languageName = "en-US"
+languageName = "en"
 LanguageCode = "en-US"
 contentDir = "content"
 [languages.en.params]
+madeWith = "Made with [Bear Cub](https://github.com/clente/hugo-bearcub)"
+
+[languages.kr]
+title = "Grrru Blog"
+languageName = "kr"
+LanguageCode = "kr-KR"
+contentDir = "content.kr"
+[languages.kr.params]
 madeWith = "Made with [Bear Cub](https://github.com/clente/hugo-bearcub)"
 
 [params]
@@ -57,7 +65,7 @@ dateFormat = "2006-01-02"
 # If your blog is multilingual but you haven't translated a page, this theme
 # will create a disabled link. By setting `hideUntranslated` to true, you can
 # have the theme simply not show any link
-hideUntranslated = true
+hideUntranslated = false
 
 # (EXPERIMENTAL) This theme has two options for its CSS styles: "original" and
 # "herman". The former is what you see on Bear Cub's demo (an optimized

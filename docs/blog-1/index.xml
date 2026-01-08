@@ -1,220 +1,23 @@
-<!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="https://grrru.github.io/images/favicon-32X32.png" />
-<title>OverTheWire Bandit(1) | Grrru Blog</title>
-<meta name="title" content="OverTheWire Bandit(1)" />
-<meta name="description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
-
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
-
-
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)" />
-<meta name="author" content="grrru" />
-<meta name="keywords" content="overthewire,bandit," />
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta property="og:title" content="OverTheWire Bandit(1)" />
-<meta property="og:description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
-
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
-
-
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://grrru.github.io/blog/overthewire-bandit-1/" />
-
-<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2025-12-28T00:00:00+00:00" />
-<meta property="article:modified_time" content="2025-12-28T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
-<meta property="fb:admins" content="0000000000" />
-
-
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/>
-<meta name="twitter:title" content="OverTheWire Bandit(1)"/>
-<meta name="twitter:description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
-
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
-
-
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)"/>
-<meta name="twitter:site" content="@example"/>
-
-
-
-<meta itemprop="name" content="OverTheWire Bandit(1)">
-<meta itemprop="description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
-
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
-
-
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)"><meta itemprop="datePublished" content="2025-12-28T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2025-12-28T00:00:00+00:00" />
-<meta itemprop="wordCount" content="516">
-
-<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/>
-
-
-<meta itemprop="keywords" content="overthewire,bandit," />
-
-<meta name="referrer" content="no-referrer-when-downgrade" />
-
-  
-  <link href="/original.min.css" rel="stylesheet">
-
-  
-    
-    <link href="/syntax.min.css" rel="stylesheet">
-  
-
-  
-
-  
-</head>
-
-<body>
-  <header><a class="skip-link" href="#main-content">Skip to main content</a>
-
-<a href="/" class="title"><h1>Grrru Blog</h1></a>
-<nav>
-  <a href="/">Home</a>
-
-  <a href="/blog/">Blog</a>
-
-
-
-
-
-
-  
-
-
-
-
-  
-    <a href="/kr/blog/overthewire-bandit-1/">kr</a>
-  
-
-</nav>
-</header>
-  <main id="main-content">
-
-<h1>OverTheWire Bandit(1)</h1>
-<p class="byline">
-  <time datetime='2025-12-28' pubdate>
-    2025-12-28
-  </time>
-  · grrru
-</p>
-
-<content>
-  <h3 id="overthewire-bandit">OverTheWire Bandit</h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Blog 1s on Grrru Blog</title>
+    <link>http://localhost:1313/blog-1/</link>
+    <description>Recent content in Blog 1s on Grrru Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
+    <webMaster>gruns0989@naver.com (grrru)</webMaster>
+    <copyright>Grrru (CC BY 4.0)</copyright>
+    <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/blog-1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OverTheWire Bandit(1)</title>
+      <link>http://localhost:1313/blog-1/overthewire-bandit-1/</link>
+      <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>http://localhost:1313/blog-1/overthewire-bandit-1/</guid>
+      <description>&lt;h3 id=&#34;overthewire-bandit&#34;&gt;OverTheWire Bandit&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://overthewire.org/wargames/bandit/&#34;&gt;OverTheWire: Bandit&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;리눅스 연습!&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. &lt;code&gt;bandit1&lt;/code&gt;)에 접속할 수 있다.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;level-0&#34;&gt;level 0&lt;/h3&gt;&#xA;&lt;p&gt;ssh를 이용해서 &lt;code&gt;bandit0&lt;/code&gt; 유저로&lt;code&gt;bandit.labs.overthewire.org:2220&lt;/code&gt;에 접속하면 된다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;ssh bandit.labs.overthewire.org -p &lt;span style=&#34;color:#ef9f76&#34;&gt;2220&lt;/span&gt; -l bandit0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;ssh bandit10@bandit.labs.overthewire.org -p &lt;span style=&#34;color:#ef9f76&#34;&gt;2220&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;## host 앞에 user@를 붙이는 것도 가능하다&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;home directory에 있는 &lt;code&gt;readme&lt;/code&gt;라는 파일을 읽어 &lt;code&gt;bandit1&lt;/code&gt;의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;cat ~/readme&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;&#xA;&lt;h3 id=&#34;level-1&#34;&gt;level 1&lt;/h3&gt;&#xA;&lt;p&gt;home directory의  &lt;code&gt;-&lt;/code&gt; 파일(dashed file)을 읽어야 한다.&#xA;(&lt;code&gt;ls -al&lt;/code&gt;로 home directory의 파일들을 확인)&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h3 id="overthewire-bandit">OverTheWire Bandit</h3>
 <p><a href="https://overthewire.org/wargames/bandit/">OverTheWire: Bandit</a></p>
 <p>리눅스 연습!</p>
 <blockquote>
@@ -435,31 +238,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
 
 
 
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat data.txt | tr <span style="color:#a6d189">&#39;[A-Za-z]&#39;</span> <span style="color:#a6d189">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div>
-</content>
-<p>
-  
-    <a class="blog-tags" href="/tags/overthewire/">#overthewire</a>
-  
-    <a class="blog-tags" href="/tags/bandit/">#bandit</a>
-  
-</p>
-
-
-  <p>
-    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"OverTheWire%20Bandit%281%29"'>
-      Reply to this post by email ↪
-    </a>
-  </p>
-
-
-
-  </main>
-  <footer><small>
-  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
-</small></footer>
-
-    
-</body>
-
-</html>
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat data.txt | tr <span style="color:#a6d189">&#39;[A-Za-z]&#39;</span> <span style="color:#a6d189">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div>]]></content:encoded>
+    </item>
+  </channel>
+</rss>
