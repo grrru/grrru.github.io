@@ -1,7 +1,7 @@
 ---
 date: 2025-12-28
 draft: false
-title: OverTheWire Bandit(1)
+title: OverTheWire Bandit (1)
 categories: Linux
 tags:
   - linux
