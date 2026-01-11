@@ -9,8 +9,343 @@
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
-    <lastBuildDate>Wed, 07 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 10 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://grrru.github.io/tags/overthewire/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OverTheWire Bandit (3)</title>
+      <link>https://grrru.github.io/blog/overthewire-bandit-3/</link>
+      <pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/blog/overthewire-bandit-3/</guid>
+      <description>&lt;h3 id=&#34;level-21&#34;&gt;Level 21&lt;/h3&gt;&#xA;&lt;p&gt;A program is running automatically at regular intervals from &lt;strong&gt;cron&lt;/strong&gt;, the time-based job scheduler. Look in &lt;strong&gt;/etc/cron.d/&lt;/strong&gt; for the configuration and see what command is being executed.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;주기적으로 실행되는 crontab이 힌트를 줄 것이다.&lt;br&gt;&#xA;&lt;code&gt;/etc/cron.d&lt;/code&gt;를 보라니깐 거기로 가본다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;cd&lt;/span&gt; /etc/cron.d/&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;ll&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;3&lt;/span&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;4&lt;/span&gt;&lt;span&gt;-rw-r--r--   &lt;span style=&#34;color:#ef9f76&#34;&gt;1&lt;/span&gt; root root   &lt;span style=&#34;color:#ef9f76&#34;&gt;120&lt;/span&gt; Oct &lt;span style=&#34;color:#ef9f76&#34;&gt;14&lt;/span&gt; 09:26 cronjob_bandit22&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;cronjob_bandit22&lt;/code&gt;를 까본다. (-644로 other이 읽을 수 있다.)&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;cat cronjob_bandit22&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;@reboot bandit22 /usr/bin/cronjob_bandit22.sh &amp;amp;&amp;gt; /dev/null&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;3&lt;/span&gt;&lt;span&gt;* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &amp;amp;&amp;gt; /dev/null&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;cat /usr/bin/cronjob_bandit22.sh&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;3&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;#!/bin/bash&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;4&lt;/span&gt;&lt;span&gt;chmod &lt;span style=&#34;color:#ef9f76&#34;&gt;644&lt;/span&gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;5&lt;/span&gt;&lt;span&gt;cat /etc/bandit_pass/bandit22 &amp;gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;sh 파일을 까보면 &lt;code&gt;/etc/bandit_pass/bandit22&lt;/code&gt; 파일을 &lt;code&gt;/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv&lt;/code&gt;에 매 분마다 넣고 있음을 볼 수 있다.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h3 id="level-21">Level 21</h3>
+<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
+<hr>
+<p>주기적으로 실행되는 crontab이 힌트를 줄 것이다.<br>
+<code>/etc/cron.d</code>를 보라니깐 거기로 가본다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#99d1db">cd</span> /etc/cron.d/
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>ll
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>-rw-r--r--   <span style="color:#ef9f76">1</span> root root   <span style="color:#ef9f76">120</span> Oct <span style="color:#ef9f76">14</span> 09:26 cronjob_bandit22</span></span></code></pre></div><p><code>cronjob_bandit22</code>를 까본다. (-644로 other이 읽을 수 있다.)</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat cronjob_bandit22
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>@reboot bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /usr/bin/cronjob_bandit22.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span><span style="color:#737994;font-style:italic">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>chmod <span style="color:#ef9f76">644</span> /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</span></span></code></pre></div><p>sh 파일을 까보면 <code>/etc/bandit_pass/bandit22</code> 파일을 <code>/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</code>에 매 분마다 넣고 있음을 볼 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</span></span></code></pre></div><hr>
+<h3 id="level-22">Level 22</h3>
+<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
+<p><strong>NOTE:</strong> Looking at shell scripts written by other people is a very useful skill. The script for this level is intentionally made easy to read. If you are having problems understanding what it does, try executing it to see the debug information it prints.</p>
+<hr>
+<p>남이 쓴 sh를 읽는 건 useful skill이다!</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/cron.d/cronjob_bandit23
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>@reboot bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /usr/bin/cronjob_bandit23.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#737994;font-style:italic">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#f2d5cf">myname</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span>whoami<span style="color:#ca9ee6">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span><span style="color:#f2d5cf">mytarget</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span><span style="color:#99d1db">echo</span> I am user <span style="color:#f2d5cf">$myname</span> | md5sum | cut -d <span style="color:#a6d189">&#39; &#39;</span> -f 1<span style="color:#ca9ee6">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span><span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;Copying passwordfile /etc/bandit_pass/</span><span style="color:#f2d5cf">$myname</span><span style="color:#a6d189"> to /tmp/</span><span style="color:#f2d5cf">$mytarget</span><span style="color:#a6d189">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">9</span><span>cat /etc/bandit_pass/<span style="color:#f2d5cf">$myname</span> &gt; /tmp/<span style="color:#f2d5cf">$mytarget</span></span></span></code></pre></div><p>그냥 shell 스크립트에 적힌대로 따라해서 비밀번호 위치를 알아내(면 안된다!)..
+sh 내에서 실행한 <code>whoami</code>는 crontab으로 실행되고 있는데 crontab을 실행시키는 주체가 <code>bandit23</code>이다. (<code>* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null</code>)
+따라서 myname=bandit23으로 넣어줘야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#f2d5cf">myname</span><span style="color:#99d1db;font-weight:bold">=</span>bandit23
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#f2d5cf">mytarget</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span><span style="color:#99d1db">echo</span> I am user <span style="color:#f2d5cf">$myname</span> | md5sum | cut -d <span style="color:#a6d189">&#39; &#39;</span> -f 1<span style="color:#ca9ee6">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>cat /tmp/<span style="color:#f2d5cf">$mytarget</span></span></span></code></pre></div><h3 id="level-23">Level 23</h3>
+<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
+<p><strong>NOTE:</strong> This level requires you to create your own first shell-script. This is a very big step and you should be proud of yourself when you beat this level!</p>
+<p><strong>NOTE 2:</strong> Keep in mind that your shell script is removed once executed, so you may want to keep a copy around…</p>
+<hr>
+<p>습관적으로 열어본다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/cron.d/cronjob_bandit24
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>@reboot bandit24 /usr/bin/cronjob_bandit24.sh &amp;&gt; /dev/null
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>* * * * * bandit24 /usr/bin/cronjob_bandit24.sh &amp;&gt; /dev/null</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>cat /usr/bin/cronjob_bandit24.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span><span style="color:#737994;font-style:italic">#!/bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span><span style="color:#f2d5cf">myname</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span>whoami<span style="color:#ca9ee6">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span><span style="color:#99d1db">cd</span> /var/spool/<span style="color:#f2d5cf">$myname</span>/foo
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span><span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;Executing and deleting all scripts in /var/spool/</span><span style="color:#f2d5cf">$myname</span><span style="color:#a6d189">/foo:&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span><span style="color:#ca9ee6">for</span> i in * .*;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span><span style="color:#ca9ee6">do</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>    <span style="color:#ca9ee6">if</span> <span style="color:#99d1db;font-weight:bold">[</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span> !<span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#34;.&#34;</span> -a <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span> !<span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#34;..&#34;</span> <span style="color:#99d1db;font-weight:bold">]</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>    <span style="color:#ca9ee6">then</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>        <span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;Handling </span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>        <span style="color:#f2d5cf">owner</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#ca9ee6">$(</span>stat --format <span style="color:#a6d189">&#34;%U&#34;</span> ./<span style="color:#f2d5cf">$i</span><span style="color:#ca9ee6">)</span><span style="color:#a6d189">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>        <span style="color:#ca9ee6">if</span> <span style="color:#99d1db;font-weight:bold">[</span> <span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">owner</span><span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#34;bandit23&#34;</span> <span style="color:#99d1db;font-weight:bold">]</span>; <span style="color:#ca9ee6">then</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span>            timeout -s <span style="color:#ef9f76">9</span> <span style="color:#ef9f76">60</span> ./<span style="color:#f2d5cf">$i</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>        <span style="color:#ca9ee6">fi</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>        rm -f ./<span style="color:#f2d5cf">$i</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">18</span><span>    <span style="color:#ca9ee6">fi</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">19</span><span><span style="color:#ca9ee6">done</span></span></span></code></pre></div><p><code>cronjob_bandit24.sh</code>를 열어 보면 긴 스크립트가 나오는데, <code>/var/spool/bandit24/foo</code> 디렉토리의 모든 파일(<code>*</code>, <code>.*</code>)을 순회하면서 <code>.</code>, <code>..</code>를 제외한 파일들에 대해 <code>owner</code>가 <code>bandit23</code>이면 timeout 60초를 걸고 <code>-s 9</code> (SIGKILL) 강제종료하고 그 파일을 실행시킨 후 강제 삭제한다.<br>
+우리가 읽어야 할 파일이 <code>/etc/bandit_pass/bandit24</code>에 있는데 <code>bandit24</code>로 읽을 수 있다.<br>
+crontab은 <code>bandit24</code>로 실행되고 있고 <code>/foo</code> 하위 모든 파일을 실행시키므로, <code>bandit24</code>이 실행 가능한 shell script를 만들고 <code>/foo</code> 하위에 넣어둔 뒤 password 파일을 우리가 원하는 파일로 쓰도록 하면 된다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>drwxrwx-wt <span style="color:#ef9f76">5420</span> root root <span style="color:#ef9f76">10244096</span> Jan <span style="color:#ef9f76">10</span> 07:31 tmp/</span></span></code></pre></div><p><code>/tmp</code> 디렉토리는 <code>other</code>의 권한이 <code>-wt</code>인데 여기서 <code>t</code>는 sticky bit로, <code>/tmp</code> 하위 파일들은 owner만이 삭제가 가능하다. <code>/tmp/grrru.sh</code>를 만든다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>vi /tmp/grrru.sh</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#737994;font-style:italic">#!/bin/bash
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#737994;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>touch /tmp/asdfghjkl
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>cat /etc/bandit_pass/bandit24 &gt; /tmp/asdfghjkl</span></span></code></pre></div><p>대충 비밀번호 가져올 파일 하나 생성해서 넣어주는 식으로 만들었다. <code>grrru.sh</code>를 실행할 주체는 <code>bandit24</code>(cronjob이 실행하므로)이므로 <code>other</code>에 <code>x</code>권한을 줘야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>chmod <span style="color:#ef9f76">665</span> /tmp/grrru.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>ll grrru.sh
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>-rw-rw-r-x <span style="color:#ef9f76">1</span> bandit23 bandit23 <span style="color:#ef9f76">127</span> Jan <span style="color:#ef9f76">10</span> 07:41 grrru.sh*</span></span></code></pre></div><p>crontab이 순회하는 디렉토리로 <code>grrru.sh</code>를 복사한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cp /tmp/grrru.sh /var/spool/bandit24/foo/</span></span></code></pre></div><p>이러고 1분 기다리면 cronjob이 돌아서 <code>grrru.sh</code>를 실행해준 뒤 삭제한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /tmp/asdfghjkl</span></span></code></pre></div><hr>
+<h3 id="level-24">Level 24</h3>
+<p>A daemon is listening on port 30002 and will give you the password for bandit25 if given the password for bandit24 and a secret numeric 4-digit pincode. There is no way to retrieve the pincode except by going through all of the 10000 combinations, called brute-forcing.<br>
+You do not need to create new connections each time</p>
+<hr>
+<p><code>localhost:30002</code>로 <code>$PASSWORD 0000</code> 꼴의 데이터를 보내면 답을 주는데, 정답 pin을 찾아야 다음 비밀번호를 알려준다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>Wrong! Please enter the correct current password and pincode. Try again.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>Correct!
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>The password of user bandit25 is iCi86ttT4KSNe1armKiwbQNmB3YJP3q4</span></span></code></pre></div><p>0000 ~ 9999를 하나씩 보낼 수도 있지만, connection을 한 번 만들면 pin 하나 보낼 때마다 또 연결할 필요가 없다고 하니 script를 작성해서 한 번에 보내보자.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>vi /tmp/grrru24.sh</span></span></code></pre></div><p><code>grrru24</code> 파일을 만들고 한 줄씩 전송할 문자열을 생성해둔다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span><span style="color:#737994;font-style:italic">#!/bin/bash
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span><span style="color:#737994;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>rm -f /tmp/grrru24
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>touch /tmp/grrru24
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>chmod <span style="color:#ef9f76">600</span> /tmp/grrru24
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span><span style="color:#f2d5cf">PASSWORD</span><span style="color:#99d1db;font-weight:bold">=</span>gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span><span style="color:#ca9ee6">for</span> <span style="color:#99d1db;font-weight:bold">((</span><span style="color:#f2d5cf">i</span><span style="color:#99d1db;font-weight:bold">=</span>0; i&lt;10000; i++<span style="color:#99d1db;font-weight:bold">))</span>;<span style="color:#ca9ee6">do</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>        <span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>        <span style="color:#99d1db">printf</span> <span style="color:#a6d189">&#34;%s %04d\n&#34;</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$PASSWORD</span><span style="color:#a6d189">&#34;</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span> &gt;&gt; /tmp/grrru24
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span><span style="color:#ca9ee6">done</span></span></span></code></pre></div><p>뭔가 중간에 <code>Correct!</code>가 나와서 못찾을 줄 알았는데 맨 아랫 줄에 나왔다. (사람마다 다를수도,,)</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./grrru24.sh</span></span></code></pre></div><hr>
+<h3 id="level-25">Level 25</h3>
+<p>Logging in to bandit26 from bandit25 should be fairly easy… The shell for user bandit26 is not <strong>/bin/bash</strong>, but something else. Find out what it is, how it works and how to break out of it.</p>
+<blockquote>
+<p>NOTE: if you’re a Windows user and typically use Powershell to <code>ssh</code> into bandit: Powershell is known to cause issues with the intended solution to this level. You should use command prompt instead.</p>
+</blockquote>
+<hr>
+<p><code>bandit26</code>의 기본 쉘은 <code>/bin/bash</code>가 아니다. 어떤 쉘을 기본으로 사용하는지 먼저 확인한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/passwd | grep bandit26
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>bandit26:x:11026:11026:bandit level 26:/home/bandit26:/usr/bin/showtext</span></span></code></pre></div><p><code>/usr/bin/showtext</code>를 기본 쉘로 사용하고 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /usr/bin/showtext
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#737994;font-style:italic">#!/bin/sh</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#99d1db">export</span> <span style="color:#f2d5cf">TERM</span><span style="color:#99d1db;font-weight:bold">=</span>linux
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span><span style="color:#99d1db">exec</span> more ~/text.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span><span style="color:#99d1db">exit</span> <span style="color:#ef9f76">0</span></span></span></code></pre></div><blockquote>
+<p>머신에 로그인한 직후 실행되는 <code>기본 쉘(login shell)</code>은<br>
+<code>/bin/bash</code> 같은 쉘 프로그램뿐 아니라,
+실행 권한이 있는 임의의 실행 파일(ELF 바이너리 또는 <code>.sh</code> 스크립트)도 될 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>file /usr/bin/showtext
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>/usr/bin/showtext: POSIX shell script, ASCII text executable</span></span></code></pre></div></blockquote>
+<p><code>/usr/bin/showtext</code>에서는 <code>more ~/text.txt</code>를 실행 후 즉시 종료된다.</p>
+<p><code>bandit25</code>로 접속하면 HOME 디렉토리에 <code>bandit26.key</code>가 있는데 이걸로 Level 25를 풀어야 하므로 <code>scp</code>로 local에 가져오거나 <code>bandit25</code> 쉘에서 바로 ssh 접속하거나 해야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit26@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> -i bandit26.sshkey</span></span></code></pre></div><p>위 <code>ssh</code> 접속을 하면 바로 나와지는데, <code>bandit26</code>이라는 아스키아트(?)를 보여주고 바로 종료된다. <code>more</code> 커맨드를 통해 출력된 그림인데, <code>more</code> 커맨드는 표준 출력이 <code>TTY(터미널)</code>인 경우에 화면 높이를 계산해서 출력해야 할 줄 수보다 화면 높이가 작다면 <code>--More--</code>이 뜨면서 pager 모드로 전환된다고 한다.<br>
+그래서 화면 높이를 작게 줄여서 다시 접속한다. ASCII 아트 높이가 6이니깐 6보다 작으면 될 듯 하다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>  _                     _ _ _   ___   __
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span> | |                   | <span style="color:#99d1db;font-weight:bold">(</span>_<span style="color:#99d1db;font-weight:bold">)</span> | |__ <span style="color:#8caaee">\ </span>/ /
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span> | |__   __ _ _ __   __| |_| |_   <span style="color:#99d1db;font-weight:bold">)</span> / /_
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>--More--<span style="color:#99d1db;font-weight:bold">(</span>50%<span style="color:#99d1db;font-weight:bold">)</span></span></span></code></pre></div><p><code>--More--</code>과 함꼐 Paging 모드로 들어왔다. <code>Enter</code>를 치면 한 줄씩 보여주고, <code>위 화살표</code>를 누르면 다시 올라간다.<br>
+리눅스에서 <code>more</code> 명령어 실행 중 <code>v</code>를 누르면 현재 위치에서 <code>vi</code> 편집기를 실행하여 파일을 편집할 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>v</span></span></code></pre></div><p><code>vi</code> 편집기에서 <code>:set shell?</code>를 하면 현재 쉘 설정을 볼 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>:set shell?
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#f2d5cf">shell</span><span style="color:#99d1db;font-weight:bold">=</span>/usr/bin/showtext</span></span></code></pre></div><p>현재 접속 id가 <code>bandit26</code>이므로 <code>vi</code> 편집기 내에서 shell을 <code>/bin/bash</code>로 바꾸면 <code>:sh</code>를 통해 현재 <code>vi</code> 세션 내에서 새로운 쉘을 실행할 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>:set <span style="color:#f2d5cf">shell</span><span style="color:#99d1db;font-weight:bold">=</span>/bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>:sh</span></span></code></pre></div><p>원하는 비밀번호를 가져온다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>bandit26@bandit:~$ cat /etc/bandit_pass/bandit26
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ</span></span></code></pre></div><blockquote>
+<p>여기서 나가지 않고 Level 26을 바로 할 수 있다.</p>
+</blockquote>
+<hr>
+<h3 id="level-26">Level 26</h3>
+<p>Good job getting a shell! Now hurry and grab the password for bandit27!</p>
+<hr>
+<p><code>HOME</code>으로 가서 <code>ls</code>를 실행하면 <code>bandit27-do</code>가 보인다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>file ./bandit27-do
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>./bandit27-do: setuid ELF 32-bit LSB executable, Intel 80386, version <span style="color:#ef9f76">1</span> <span style="color:#99d1db;font-weight:bold">(</span>SYSV<span style="color:#99d1db;font-weight:bold">)</span>, dynamically linked, interpreter /lib/ld-linux.so.2, BuildID<span style="color:#99d1db;font-weight:bold">[</span>sha1<span style="color:#99d1db;font-weight:bold">]=</span>35d353cf6d732f515a73f50ed205265fe1e68f90, <span style="color:#ca9ee6">for</span> GNU/Linux 3.2.0, not stripped</span></span></code></pre></div><p>저번에 봤던 <code>setuid</code>파일이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./bandit27-do id
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#f2d5cf">uid</span><span style="color:#99d1db;font-weight:bold">=</span>11026<span style="color:#99d1db;font-weight:bold">(</span>bandit26<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">gid</span><span style="color:#99d1db;font-weight:bold">=</span>11026<span style="color:#99d1db;font-weight:bold">(</span>bandit26<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">euid</span><span style="color:#99d1db;font-weight:bold">=</span>11027<span style="color:#99d1db;font-weight:bold">(</span>bandit27<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">groups</span><span style="color:#99d1db;font-weight:bold">=</span>11026<span style="color:#99d1db;font-weight:bold">(</span>bandit26<span style="color:#99d1db;font-weight:bold">)</span></span></span></code></pre></div><p>리눅스/유닉스 계열 운영체제에서 <code>setuid</code>같은 특정 권한이 설정된 파일을 실행하면 일시적으로 파일 소유자나 다른 사용자의 권한(EUID)를 획득해서 시스템 리소스에 접근할 수 있다.<br>
+<code>euid=11027(bandit27)</code>로 되어있으므로 이 파일을 이용해서 <code>bandit27</code> 파일을 읽을 수 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./bandit27-do cat /etc/bandit_pass/bandit27</span></span></code></pre></div><hr>
+<h3 id="level-27">Level 27</h3>
+<p>There is a git repository at <code>ssh://bandit27-git@bandit.labs.overthewire.org/home/bandit27-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit27-git</code> is the same as for the user <code>bandit27</code>.</p>
+<p>Clone the repository and find the password for the next level.</p>
+<hr>
+<p><code>bandit27</code>로 접속해서 <code>git clone</code>을 시도했다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#99d1db">cd</span> /tmp
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>git clone ssh://bandit27-git@bandit.labs.overthewire.org:2220/home/bandit27-git/repo</span></span></code></pre></div><p>근데 이러니깐 localhost에서 localhost로 <code>ssh</code> 접속은 리소스 절약을 위해 차단되었다고 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>!!! You are trying to log into this SSH server with a password on port 2220 from localhost.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>!!! Connecting from localhost is blocked to conserve resources. 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>!!! Please log out and log in again.</span></span></code></pre></div><p>그래서 그냥 local 머신에서 바로 <code>git clone</code>해서 <code>README</code>를 읽었다.</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>OverTheWire Bandit(2)</title>
       <link>https://grrru.github.io/blog/overthewire-bandit-2/</link>
@@ -24,6 +359,7 @@
 <hr>
 <h3 id="level-12">Level 12</h3>
 <p>The password for the next level is stored in the file <strong>data.txt</strong>, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work. Use mkdir with a hard to guess directory name. Or better, use the command “mktemp -d”. Then copy the datafile using cp, and rename it using mv (read the manpages!)</p>
+<hr>
 <p>hexadump file을 압축 해제해가면서 원본 데이터 파일을 얻어야 한다.</p>
 
 
@@ -49,6 +385,7 @@
 <hr>
 <h3 id="level-13">Level 13</h3>
 <p>The password for the next level is stored in <strong>/etc/bandit_pass/bandit14 and can only be read by user bandit14</strong>. For this level, you don’t get the next password, but you get a private SSH key that can be used to log into the next level. Look at the commands that logged you into previous bandit levels, and find out how to use the key for this level.</p>
+<hr>
 <p><code>/etc/bandit_pass/bandit14</code>를 읽으면 되지만.. <code>bandit13</code>으로는 읽을 수 없다..</p>
 
 
@@ -80,6 +417,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>cat /etc/bandit_pass/bandit14</span></span></code></pre></div><hr>
 <h3 id="level-14">Level 14</h3>
 <p>The password for the next level can be retrieved by submitting the password of the current level to <strong>port 30000 on localhost</strong>.</p>
+<hr>
 <p><code>localhost:30000</code>으로 level 14의 passwd를 보내면 된다.</p>
 <p><code>nc</code>를 이용해서 30000번 포트로 비밀번호를 보내면 다음 레벨 비밀번호를 알려준다</p>
 
@@ -91,6 +429,7 @@
 <h3 id="level-15">Level 15</h3>
 <p>The password for the next level can be retrieved by submitting the password of the current level to <strong>port 30001 on localhost</strong> using SSL/TLS encryption.</p>
 <p><strong>Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.</strong></p>
+<hr>
 <p>Level 14와 비슷하지만 이번 문제는 SSL/TLS encryption을 해서 30001포트에 보내야 한다.</p>
 <p><code>openssl</code>로 암호화 세션을 먼저 생성한다.</p>
 
@@ -103,6 +442,7 @@
 <hr>
 <h3 id="level-16">Level 16</h3>
 <p>The credentials for the next level can be retrieved by submitting the password of the current level to <strong>a port on localhost in the range 31000 to 32000</strong>. First find out which of these ports have a server listening on them. Then find out which of those speak SSL/TLS and which don’t. There is only 1 server that will give the next credentials, the others will simply send back to you whatever you send to it.</p>
+<hr>
 <p><strong>Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.</strong></p>
 <p>31000 ~ 32000번 사이의 포트 중 <code>LISTENING</code> 상태이고 SSL/TLS 응답이 가능한 하나의 포트를 찾아야 한다. 이 중에 하나만 진짜인데, 나머지는 응답으로 내가 보낸 문자를 그대로 돌려준다.</p>
 
@@ -123,6 +463,7 @@
 <h3 id="level-17">Level 17</h3>
 <p>There are 2 files in the homedirectory: <strong>passwords.old and passwords.new</strong>. The password for the next level is in <strong>passwords.new</strong> and is the only line that has been changed between <strong>passwords.old and passwords.new</strong></p>
 <p><strong>NOTE: if you have solved this level and see ‘Byebye!’ when trying to log into bandit18, this is related to the next level, bandit19</strong></p>
+<hr>
 <p><code>key</code>라는 파일을 만들고 안에 private key를 붙여넣고 <code>-i</code> 옵션을 이용해서 ssh 접속한다.</p>
 
 
@@ -138,6 +479,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>diff passwords.new passwords.old</span></span></code></pre></div><hr>
 <h3 id="level-18">Level 18</h3>
 <p>The password for the next level is stored in a file <strong>readme</strong> in the homedirectory. Unfortunately, someone has modified <strong>.bashrc</strong> to log you out when you log in with SSH.</p>
+<hr>
 <p>누군가 장난을 쳐서 로그인하자마자 로그아웃된다. <code>readme</code>를 읽으면 되므로 ssh 뒤에 command를 달아서 즉시 출력한다.<br>
 command는 <code>;</code>로 여러 명렁을 구분할 수 있다.</p>
 
@@ -148,6 +490,7 @@ command는 <code>;</code>로 여러 명렁을 구분할 수 있다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit18@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> <span style="color:#a6d189">&#39;ls -al;cat ~/readme&#39;</span></span></span></code></pre></div><hr>
 <h3 id="level-19">Level 19</h3>
 <p>To gain access to the next level, you should use the setuid binary in the homedirectory. Execute it without arguments to find out how to use it. The password for this level can be found in the usual place (/etc/bandit_pass), after you have used the setuid binary.</p>
+<hr>
 <p>homedirectory에 있는 <code>setuid binary</code>를 이용하면 된다. 예시를 보려면 arguments 없이 써보라고 한다.</p>
 
 
@@ -168,6 +511,7 @@ command는 <code>;</code>로 여러 명렁을 구분할 수 있다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./bandit20-do cat /etc/bandit_pass/bandit20</span></span></code></pre></div><hr>
 <h3 id="level-20">Level 20</h3>
 <p>There is a setuid binary in the homedirectory that does the following: it makes a connection to localhost on the port you specify as a commandline argument. It then reads a line of text from the connection and compares it to the password in the previous level (bandit20). If the password is correct, it will transmit the password for the next level (bandit21).</p>
+<hr>
 <p><strong>NOTE:</strong> Try connecting to your own network daemon to see if it works as you think</p>
 <p><code>suconnect</code>라는 <code>setuid binary</code>는 임의 포트로 요청 시 요청받은 포트에서 <code>bandit20</code>의 password를 입력하면 다음 단계 password를 주는 파일이다.<br>
 ssh 세션 두 개를 열어야 한다.</p>
@@ -177,7 +521,7 @@ ssh 세션 두 개를 열어야 한다.</p>
 
 
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#737994;font-style:italic"># 1번 세션</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>nc -l -p <span style="color:#ef9f76">1234</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>nc -l <span style="color:#ef9f76">1234</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#737994;font-style:italic"># 2번 세션</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>./suconnect <span style="color:#ef9f76">1234</span>
@@ -190,7 +534,7 @@ ssh 세션 두 개를 열어야 한다.</p>
       <link>https://grrru.github.io/blog/overthewire-bandit-1/</link>
       <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
       <guid>https://grrru.github.io/blog/overthewire-bandit-1/</guid>
-      <description>&lt;h3 id=&#34;overthewire-bandit&#34;&gt;OverTheWire Bandit&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://overthewire.org/wargames/bandit/&#34;&gt;OverTheWire: Bandit&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;리눅스 연습!&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. &lt;code&gt;bandit1&lt;/code&gt;)에 접속할 수 있다.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;level-0&#34;&gt;level 0&lt;/h3&gt;&#xA;&lt;p&gt;ssh를 이용해서 &lt;code&gt;bandit0&lt;/code&gt; 유저로&lt;code&gt;bandit.labs.overthewire.org:2220&lt;/code&gt;에 접속하면 된다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;ssh bandit.labs.overthewire.org -p &lt;span style=&#34;color:#ef9f76&#34;&gt;2220&lt;/span&gt; -l bandit0&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;ssh bandit10@bandit.labs.overthewire.org -p &lt;span style=&#34;color:#ef9f76&#34;&gt;2220&lt;/span&gt; &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;## host 앞에 user@를 붙이는 것도 가능하다&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;home directory에 있는 &lt;code&gt;readme&lt;/code&gt;라는 파일을 읽어 &lt;code&gt;bandit1&lt;/code&gt;의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;cat ~/readme&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;&#xA;&lt;h3 id=&#34;level-1&#34;&gt;level 1&lt;/h3&gt;&#xA;&lt;p&gt;home directory의  &lt;code&gt;-&lt;/code&gt; 파일(dashed file)을 읽어야 한다.&#xA;(&lt;code&gt;ls -al&lt;/code&gt;로 home directory의 파일들을 확인)&lt;/p&gt;</description>
+      <description>&lt;h3 id=&#34;overthewire-bandit&#34;&gt;OverTheWire Bandit&lt;/h3&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://overthewire.org/wargames/bandit/&#34;&gt;OverTheWire: Bandit&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;리눅스 연습!&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. &lt;code&gt;bandit1&lt;/code&gt;)에 접속할 수 있다.&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;level-0&#34;&gt;level 0&lt;/h3&gt;&#xA;&lt;p&gt;The password for the next level is stored in a file called &lt;strong&gt;readme&lt;/strong&gt; located in the home directory. Use this password to log into bandit1 using SSH. Whenever you find a password for a level, use SSH (on port 2220) to log into that level and continue the game.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;ssh를 이용해서 &lt;code&gt;bandit0&lt;/code&gt; 유저로&lt;code&gt;bandit.labs.overthewire.org:2220&lt;/code&gt;에 접속하면 된다.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h3 id="overthewire-bandit">OverTheWire Bandit</h3>
 <p><a href="https://overthewire.org/wargames/bandit/">OverTheWire: Bandit</a></p>
 <p>리눅스 연습!</p>
@@ -199,6 +543,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 </blockquote>
 <hr>
 <h3 id="level-0">level 0</h3>
+<p>The password for the next level is stored in a file called <strong>readme</strong> located in the home directory. Use this password to log into bandit1 using SSH. Whenever you find a password for a level, use SSH (on port 2220) to log into that level and continue the game.</p>
+<hr>
 <p>ssh를 이용해서 <code>bandit0</code> 유저로<code>bandit.labs.overthewire.org:2220</code>에 접속하면 된다.</p>
 
 
@@ -214,6 +560,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat ~/readme</span></span></code></pre></div><hr>
 <h3 id="level-1">level 1</h3>
+<p>The password for the next level is stored in a file called <strong>-</strong> located in the home directory</p>
+<hr>
 <p>home directory의  <code>-</code> 파일(dashed file)을 읽어야 한다.
 (<code>ls -al</code>로 home directory의 파일들을 확인)</p>
 <p><code>-</code>라는 이름의 파일은 <code>cat -</code>로 바로 읽게 되면 아무 반응이 없는데, <code>-</code>가 표준 입력 <code>stdin</code>을 의미해서 입력을 기다리는 상태가 되기 때문이다.</p>
@@ -233,6 +581,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat &lt; - <span style="color:#737994;font-style:italic">## dashed file을 읽어 stdin으로 연결</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat ./- <span style="color:#737994;font-style:italic">## dashed file의 위치를 지정하여 읽음</span></span></span></code></pre></div><hr>
 <h3 id="level-2">level 2</h3>
+<p>The password for the next level is stored in a file called <code>--spaces in this filename--</code> located in the home directory</p>
+<hr>
 <p>파일명에 공백이 있는 파일을 읽어야 한다. 공백 앞에 <code>\</code>를 붙여야 읽을 수 있다.</p>
 
 
@@ -241,6 +591,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat ./--spaces<span style="color:#8caaee">\ </span>in<span style="color:#8caaee">\ </span>this<span style="color:#8caaee">\ </span>filename--</span></span></code></pre></div><hr>
 <h3 id="level-3">level 3</h3>
+<p>The password for the next level is stored in a hidden file in the <strong>inhere</strong> directory.</p>
+<hr>
 <p><code>~/inhere</code> 디렉토리의 숨은 파일을 읽어야 한다. <code>ls</code>는 숨은 파일은 알려주지 않으므로 <code>ls -a</code>를 사용해야 한다.</p>
 
 
@@ -251,6 +603,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat ./...Hiding-From-You</span></span></code></pre></div><p>주로 <code>ls -al</code>을 사용하는데, <code>l</code> 옵션은 권한, 소유자, 그룹, 크기, 시간 등을 한 줄씩 출력해줘서 읽기 편한듯,,</p>
 <hr>
 <h3 id="level-4">level 4</h3>
+<p>The password for the next level is stored in the only human-readable file in the <strong>inhere</strong> directory. Tip: if your terminal is messed up, try the “reset” command.</p>
+<hr>
 <p><code>human-readable</code> 파일을 읽어야 한다.
 <code>file</code> 커맨드로 파일의 MIME 타입 등의 정보를 알 수 있다.</p>
 
@@ -262,6 +616,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>file -i ./*</span></span></code></pre></div><p>파일 하나만 <code>ASCII text</code>으로 사람이 읽을 수 있다.</p>
 <hr>
 <h3 id="level-5">level 5</h3>
+<p>The password for the next level is stored in a file somewhere under the <strong>inhere</strong> directory and has all of the following properties:</p>
+<hr>
 <p><code>inhere</code> 디렉토리에서 아래 조건을 만족하는 파일을 찾아서 읽어야 한다.</p>
 
 
@@ -349,6 +705,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 <p><code>-executable</code>: 실행 가능한 것을 의미하며 앞에 <code>!</code>을 붙여 부정으로 바꿀 수 있다.</p>
 <hr>
 <h3 id="level-6">level 6</h3>
+<p>The password for the next level is stored <strong>somewhere on the server</strong> and has all of the following properties:</p>
+<hr>
 <p>server 내의 어딘가에 있는 파일 중 아래 조건을 만족하는 파일을 읽어야 한다.</p>
 
 
@@ -367,6 +725,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 <code>2&gt;/dev/null</code>은 sderr 2를 <code>/dev/null</code>로 리다이렉션(<code>&gt;</code>)하여 에러 출력이 버려지도록 한다.</p>
 <hr>
 <h3 id="level-7">level 7</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong> next to the word <strong>millionth</strong></p>
+<hr>
 <p>겁나 큰 용량의 <code>data.txt</code> 파일 내에서 <code>millionth</code>라는 단어의 옆에 써있는 password를 읽어야 한다.</p>
 
 
@@ -376,6 +736,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ls -lh <span style="color:#737994;font-style:italic">## h: human 옵션으로 용량 값을 읽기 쉽도록 바꿔준다.</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat data.txt | grep millionth</span></span></code></pre></div><hr>
 <h3 id="level-8">level 8</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong> and is the only line of text that occurs only once</p>
+<hr>
 <p><code>data.txt</code> 에서 유일한 line을 찾아야 한다.</p>
 
 
@@ -386,6 +748,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 <code>uniq</code> 커맨드는 중복되는 line을 제거하고 출력해준다. <code>-d</code>는 중복된 내용만 출력, <code>-u</code>는 고유한 내용만 출력, <code>-i</code>는 대소문자 구분 무시 옵션이다.</p>
 <hr>
 <h3 id="level-9">level 9</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong> in one of the few human-readable strings, preceded by several ‘=’ characters.</p>
+<hr>
 <p><code>data.txt</code>에서 읽을 수 있는, <code>=</code>가 앞에 있는 문자열만을 출력해야 한다.</p>
 
 
@@ -396,6 +760,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 </span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>strings data.txt | grep <span style="color:#a6d189">&#39;=&#39;</span></span></span></code></pre></div><p><code>strings</code>는 파일에 포함된 string을 뽑아낼 수 있다.</p>
 <hr>
 <h3 id="level-10">level 10</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong>, which contains base64 encoded data</p>
+<hr>
 <p>base64 인코딩된 문자열이 <code>data.txt</code>에 들어있다.</p>
 
 
@@ -405,6 +771,8 @@ ssh 세션 두 개를 열어야 한다.</p>
 <div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat data.txt | base64 -d</span></span></code></pre></div><p><code>base64 -d</code> 커맨드로 문자열을 디코딩하여 원래 바이너리를 출력한다.</p>
 <hr>
 <h3 id="level-11">level 11</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong>, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions</p>
+<hr>
 <p><a href="https://www.acmicpc.net/problem/1893">시저 암호</a>가 적용된 <code>data.txt</code> 파일을 해석해야 한다. Rot13이므로 A → N Z→ M으로 치환한다.</p>
 <p>정규식은 아니라고 한다.. (<code>tr</code>에서 쓰인 규칙일 뿐)</p>
 

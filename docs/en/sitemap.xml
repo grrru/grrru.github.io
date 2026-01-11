@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://grrru.github.io/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr-KR"
@@ -16,7 +16,7 @@
                 />
   </url><url>
     <loc>https://grrru.github.io/tags/bandit/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr-KR"
@@ -29,7 +29,7 @@
                 />
   </url><url>
     <loc>https://grrru.github.io/blog/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr-KR"
@@ -42,7 +42,7 @@
                 />
   </url><url>
     <loc>https://grrru.github.io/categories/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr-KR"
@@ -55,7 +55,7 @@
                 />
   </url><url>
     <loc>https://grrru.github.io/categories/linux/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr-KR"
@@ -67,8 +67,11 @@
                 href="https://grrru.github.io/categories/linux/"
                 />
   </url><url>
+    <loc>https://grrru.github.io/tags/linux/</loc>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://grrru.github.io/tags/overthewire/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="kr-KR"
@@ -78,6 +81,22 @@
                 rel="alternate"
                 hreflang="en-US"
                 href="https://grrru.github.io/tags/overthewire/"
+                />
+  </url><url>
+    <loc>https://grrru.github.io/blog/overthewire-bandit-3/</loc>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://grrru.github.io/tags/</loc>
+    <lastmod>2026-01-10T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="kr-KR"
+                href="https://grrru.github.io/kr/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="https://grrru.github.io/tags/"
                 />
   </url><url>
     <loc>https://grrru.github.io/blog/overthewire-bandit-2/</loc>
@@ -91,19 +110,6 @@
                 rel="alternate"
                 hreflang="en-US"
                 href="https://grrru.github.io/blog/overthewire-bandit-2/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/tags/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/tags/"
                 />
   </url><url>
     <loc>https://grrru.github.io/blog/overthewire-bandit-1/</loc>

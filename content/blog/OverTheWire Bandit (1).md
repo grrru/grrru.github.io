@@ -4,6 +4,7 @@ draft: false
 title: OverTheWire Bandit(1)
 categories: Linux
 tags:
+  - linux
   - overthewire
   - bandit
 author: grrru
@@ -13,12 +14,14 @@ author: grrru
 [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)
 
 리눅스 연습!
-
-
 > 각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. `bandit1`)에 접속할 수 있다.
 
 ---
 ### level 0
+The password for the next level is stored in a file called **readme** located in the home directory. Use this password to log into bandit1 using SSH. Whenever you find a password for a level, use SSH (on port 2220) to log into that level and continue the game.
+
+---
+
 ssh를 이용해서 `bandit0` 유저로`bandit.labs.overthewire.org:2220`에 접속하면 된다.
 
 ``` bash
@@ -33,6 +36,10 @@ cat ~/readme
 
 ---
 ### level 1
+The password for the next level is stored in a file called **-** located in the home directory
+
+---
+
 home directory의  `-` 파일(dashed file)을 읽어야 한다.
 (`ls -al`로 home directory의 파일들을 확인)
 
@@ -51,6 +58,10 @@ cat ./- ## dashed file의 위치를 지정하여 읽음
 
 ---
 ### level 2
+The password for the next level is stored in a file called `--spaces in this filename--` located in the home directory
+
+---
+
 파일명에 공백이 있는 파일을 읽어야 한다. 공백 앞에 `\`를 붙여야 읽을 수 있다.
 
 ```bash
@@ -59,6 +70,10 @@ cat ./--spaces\ in\ this\ filename--
 
 ---
 ### level 3
+The password for the next level is stored in a hidden file in the **inhere** directory.
+
+---
+
 `~/inhere` 디렉토리의 숨은 파일을 읽어야 한다. `ls`는 숨은 파일은 알려주지 않으므로 `ls -a`를 사용해야 한다.
 ```bash
 ls -al ## a: all l: long-listing
@@ -69,6 +84,10 @@ cat ./...Hiding-From-You
 
 ---
 ### level 4
+The password for the next level is stored in the only human-readable file in the **inhere** directory. Tip: if your terminal is messed up, try the “reset” command.
+
+---
+
 `human-readable` 파일을 읽어야 한다.
 `file` 커맨드로 파일의 MIME 타입 등의 정보를 알 수 있다.
 ```bash
@@ -79,6 +98,10 @@ file -i ./*
 
 ---
 ### level 5
+The password for the next level is stored in a file somewhere under the **inhere** directory and has all of the following properties:
+
+---
+
 `inhere` 디렉토리에서 아래 조건을 만족하는 파일을 찾아서 읽어야 한다.
 ```text
 - human-readable
@@ -117,6 +140,10 @@ find . -type f -size 1033c ! -executable
 
 ---
 ### level 6
+The password for the next level is stored **somewhere on the server** and has all of the following properties:
+
+---
+
 server 내의 어딘가에 있는 파일 중 아래 조건을 만족하는 파일을 읽어야 한다.
 ```text
 owned by user bandit7
@@ -133,6 +160,10 @@ find / -type f -size 33c -user bandit7 -group bandit6 2>/dev/null
 
 ---
 ### level 7
+The password for the next level is stored in the file **data.txt** next to the word **millionth**
+
+---
+
 겁나 큰 용량의 `data.txt` 파일 내에서 `millionth`라는 단어의 옆에 써있는 password를 읽어야 한다.
 ```bash
 ls -lh ## h: human 옵션으로 용량 값을 읽기 쉽도록 바꿔준다.
@@ -141,6 +172,10 @@ cat data.txt | grep millionth
 
 ---
 ### level 8
+The password for the next level is stored in the file **data.txt** and is the only line of text that occurs only once
+
+---
+
 `data.txt` 에서 유일한 line을 찾아야 한다.
 ```bash
 sort data.txt | uniq -iu
@@ -150,6 +185,10 @@ sort data.txt | uniq -iu
 
 ---
 ### level 9
+The password for the next level is stored in the file **data.txt** in one of the few human-readable strings, preceded by several ‘=’ characters.
+
+---
+
 `data.txt`에서 읽을 수 있는, `=`가 앞에 있는 문자열만을 출력해야 한다.
 ```bash
 file data.txt ## data.txt: data
@@ -159,6 +198,10 @@ strings data.txt | grep '='
 
 ---
 ### level 10
+The password for the next level is stored in the file **data.txt**, which contains base64 encoded data
+
+---
+
 base64 인코딩된 문자열이 `data.txt`에 들어있다.
 ```bash
 cat data.txt | base64 -d
@@ -167,6 +210,10 @@ cat data.txt | base64 -d
 
 ---
 ### level 11
+The password for the next level is stored in the file **data.txt**, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
+
+---
+
 [시저 암호](https://www.acmicpc.net/problem/1893)가 적용된 `data.txt` 파일을 해석해야 한다. Rot13이므로 A → N Z→ M으로 치환한다.
 
 정규식은 아니라고 한다.. (`tr`에서 쓰인 규칙일 뿐)

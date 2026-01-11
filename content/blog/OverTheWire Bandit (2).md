@@ -4,6 +4,7 @@ draft: false
 title: OverTheWire Bandit(2)
 categories: Linux
 tags:
+  - linux
   - overthewire
   - bandit
 author: grrru
@@ -15,6 +16,8 @@ author: grrru
 ---
 ### Level 12
 The password for the next level is stored in the file **data.txt**, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work. Use mkdir with a hard to guess directory name. Or better, use the command “mktemp -d”. Then copy the datafile using cp, and rename it using mv (read the manpages!)
+
+---
 
 hexadump file을 압축 해제해가면서 원본 데이터 파일을 얻어야 한다.
 ```bash
@@ -40,6 +43,8 @@ tar -xf data2.tar
 ---
 ### Level 13
 The password for the next level is stored in **/etc/bandit_pass/bandit14 and can only be read by user bandit14**. For this level, you don’t get the next password, but you get a private SSH key that can be used to log into the next level. Look at the commands that logged you into previous bandit levels, and find out how to use the key for this level.
+
+---
 
 `/etc/bandit_pass/bandit14`를 읽으면 되지만.. `bandit13`으로는 읽을 수 없다..
 ```bash
@@ -70,6 +75,8 @@ cat /etc/bandit_pass/bandit14
 ### Level 14
 The password for the next level can be retrieved by submitting the password of the current level to **port 30000 on localhost**.
 
+---
+
 `localhost:30000`으로 level 14의 passwd를 보내면 된다.
 
 `nc`를 이용해서 30000번 포트로 비밀번호를 보내면 다음 레벨 비밀번호를 알려준다
@@ -84,6 +91,8 @@ The password for the next level can be retrieved by submitting the password of t
 
 **Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.**
 
+---
+
 Level 14와 비슷하지만 이번 문제는 SSL/TLS encryption을 해서 30001포트에 보내야 한다.
 
 `openssl`로 암호화 세션을 먼저 생성한다.
@@ -96,6 +105,8 @@ openssl s_client -connect localhost:30001
 ---
 ### Level 16
 The credentials for the next level can be retrieved by submitting the password of the current level to **a port on localhost in the range 31000 to 32000**. First find out which of these ports have a server listening on them. Then find out which of those speak SSL/TLS and which don’t. There is only 1 server that will give the next credentials, the others will simply send back to you whatever you send to it.
+
+---
 
 **Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.**
 
@@ -119,6 +130,8 @@ There are 2 files in the homedirectory: **passwords.old and passwords.new**. Th
 
 **NOTE: if you have solved this level and see ‘Byebye!’ when trying to log into bandit18, this is related to the next level, bandit19**
 
+---
+
 `key`라는 파일을 만들고 안에 private key를 붙여넣고 `-i` 옵션을 이용해서 ssh 접속한다.
 ```bash
 ssh bandit17@bandit.labs.overthewire.org -p 2220 -i key
@@ -133,6 +146,8 @@ diff passwords.new passwords.old
 ### Level 18
 The password for the next level is stored in a file **readme** in the homedirectory. Unfortunately, someone has modified **.bashrc** to log you out when you log in with SSH.
 
+---
+
 누군가 장난을 쳐서 로그인하자마자 로그아웃된다. `readme`를 읽으면 되므로 ssh 뒤에 command를 달아서 즉시 출력한다.  
 command는 `;`로 여러 명렁을 구분할 수 있다.
 
@@ -143,6 +158,8 @@ ssh bandit18@bandit.labs.overthewire.org -p 2220 'ls -al;cat ~/readme'
 ---
 ### Level 19
 To gain access to the next level, you should use the setuid binary in the homedirectory. Execute it without arguments to find out how to use it. The password for this level can be found in the usual place (/etc/bandit_pass), after you have used the setuid binary.
+
+---
 
 homedirectory에 있는 `setuid binary`를 이용하면 된다. 예시를 보려면 arguments 없이 써보라고 한다.
 
@@ -165,13 +182,15 @@ bandit20
 ### Level 20
 There is a setuid binary in the homedirectory that does the following: it makes a connection to localhost on the port you specify as a commandline argument. It then reads a line of text from the connection and compares it to the password in the previous level (bandit20). If the password is correct, it will transmit the password for the next level (bandit21).
 
+---
+
 **NOTE:** Try connecting to your own network daemon to see if it works as you think
 
 `suconnect`라는 `setuid binary`는 임의 포트로 요청 시 요청받은 포트에서 `bandit20`의 password를 입력하면 다음 단계 password를 주는 파일이다.  
 ssh 세션 두 개를 열어야 한다.
 ```bash
 # 1번 세션
-nc -l -p 1234
+nc -l 1234
 
 # 2번 세션
 ./suconnect 1234
