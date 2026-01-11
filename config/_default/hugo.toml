@@ -32,13 +32,13 @@ contentDir = "content"
 [languages.en.params]
 madeWith = "Made with [Bear Cub](https://github.com/clente/hugo-bearcub)"
 
-[languages.kr]
-title = "Grrru Blog"
-languageName = "kr"
-LanguageCode = "kr-KR"
-contentDir = "content.kr"
-[languages.kr.params]
-madeWith = "Made with [Bear Cub](https://github.com/clente/hugo-bearcub)"
+# [languages.kr]
+# title = "Grrru Blog"
+# languageName = "kr"
+# LanguageCode = "kr-KR"
+# contentDir = "content.kr"
+# [languages.kr.params]
+# madeWith = "Made with [Bear Cub](https://github.com/clente/hugo-bearcub)"
 
 [params]
 

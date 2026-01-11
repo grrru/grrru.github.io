@@ -1,7 +1,7 @@
 ---
 date: 2026-01-09
 draft: true
-title:
+title: Kubernetes 개념 정리
 categories:
 tags:
 author: grrru
