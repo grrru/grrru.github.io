@@ -9,8 +9,233 @@
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
-    <lastBuildDate>Sun, 11 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 13 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://grrru.github.io/tags/bandit/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OverTheWire Bandit (4)</title>
+      <link>https://grrru.github.io/blog/overthewire-bandit-4/</link>
+      <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/blog/overthewire-bandit-4/</guid>
+      <description>&lt;h3 id=&#34;level-28&#34;&gt;Level 28&lt;/h3&gt;&#xA;&lt;p&gt;There is a git repository at &lt;code&gt;ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo&lt;/code&gt; via the port &lt;code&gt;2220&lt;/code&gt;. The password for the user &lt;code&gt;bandit28-git&lt;/code&gt; is the same as for the user &lt;code&gt;bandit28&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;Clone the repository and find the password for the next level.&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;&lt;code&gt;git clone&lt;/code&gt; 후 &lt;code&gt;README.md&lt;/code&gt;를 까봤다.&lt;/p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;3&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#99d1db&#34;&gt;cd&lt;/span&gt; repo&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;4&lt;/span&gt;&lt;span&gt;cat README.md&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;# Bandit Notes&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;Some notes for level29 of bandit.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;3&lt;/span&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;4&lt;/span&gt;&lt;span&gt;## credentials&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;5&lt;/span&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;6&lt;/span&gt;&lt;span&gt;- username: bandit29&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;7&lt;/span&gt;&lt;span&gt;- password: xxxxxxxxxx&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;README.md&lt;/code&gt;에는 별 내용이 없다.&lt;br&gt;&#xA;&lt;code&gt;git log&lt;/code&gt;를 확인했더니 &lt;code&gt;fix info leak&lt;/code&gt;라는 커밋이 있다.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<h3 id="level-28">Level 28</h3>
+<p>There is a git repository at <code>ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit28-git</code> is the same as for the user <code>bandit28</code>.</p>
+<p>Clone the repository and find the password for the next level.</p>
+<hr>
+<p><code>git clone</code> 후 <code>README.md</code>를 까봤다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span><span style="color:#99d1db">cd</span> repo
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>cat README.md</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span># Bandit Notes
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>Some notes for level29 of bandit.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>## credentials
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>- username: bandit29
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span>- password: xxxxxxxxxx</span></span></code></pre></div><p><code>README.md</code>에는 별 내용이 없다.<br>
+<code>git log</code>를 확인했더니 <code>fix info leak</code>라는 커밋이 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>* commit b0354c7be30f500854c5fc971c57e9cbe632fef6 (HEAD -&gt; master, origin/master, origin/HEAD)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>| Author: Morla Porla &lt;morla@overthewire.org&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>| Date:   Tue Oct 14 09:26:19 2025 +0000
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>|
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>|     fix info leak
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>|
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>* commit d0cf2ab7dd7ebc6075b59102a980155268f0fe8f
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>| Author: Morla Porla &lt;morla@overthewire.org&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>| Date:   Tue Oct 14 09:26:19 2025 +0000
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>|
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>|     add missing data
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>|
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>* commit bd6bc3a57f81518bb2ce63f5816607a754ba730d
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>  Author: Ben Dover &lt;noone@overthewire.org&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span>  Date:   Tue Oct 14 09:26:18 2025 +0000
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>      initial commit of README.md</span></span></code></pre></div><p>이전 커밋으로 되돌려 본다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git reset --hard HEAD~1
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat README.md</span></span></code></pre></div><h3 id="level-29">Level 29</h3>
+<p>There is a git repository at <code>ssh://bandit29-git@bandit.labs.overthewire.org/home/bandit29-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit29-git</code> is the same as for the user <code>bandit29</code>.</p>
+<p>Clone the repository and find the password for the next level.</p>
+<hr>
+<p>Level 28과 똑같이 <code>git</code>을 뒤져가며 찾는 문제다.<br>
+<code>dev</code> branch로 바꾼 후에 <code>log</code>를 뒤져서 찾아냈다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git switch dev
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>git log -p</span></span></code></pre></div><p><code>git log</code>에서 <code>-p</code> 옵션은 <code>diff</code>를 상세하게 보여주는 옵션이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>What the -p option produces is slightly different from the traditional diff format:</span></span></code></pre></div><hr>
+<h3 id="level-30">Level 30</h3>
+<p>There is a git repository at <code>ssh://bandit30-git@bandit.labs.overthewire.org/home/bandit30-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit30-git</code> is the same as for the user <code>bandit30</code>.</p>
+<p>Clone the repository and find the password for the next level.</p>
+<hr>
+<p><code>git branch -rvv</code>해도 branch는 하나밖에 없고 <code>git log</code>를 봐도 아무것도 없다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git --no-pager log</span></span></code></pre></div><blockquote>
+<p><code>git --no-pager</code>로 보면 commit id를 <code>pager</code> 없이 바로 출력할 수 있다.</p>
+</blockquote>
+<p><code>git tag</code>를 하니 단서가 나온다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git tag
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>secret</span></span></code></pre></div><p>그냥 바로 password같은 문자열이 나온다..!</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git show secret</span></span></code></pre></div><hr>
+<h3 id="level-31">Level 31</h3>
+<p>There is a git repository at <code>ssh://bandit31-git@bandit.labs.overthewire.org/home/bandit31-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit31-git</code> is the same as for the user <code>bandit31</code>.</p>
+<p>Clone the repository and find the password for the next level.</p>
+<hr>
+<p><code>git clone</code>해오면 <code>README.md</code>가 있다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>This time your task is to push a file to the remote repository.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>Details:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>    File name: key.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>    Content: &#39;May I come in?&#39;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>    Branch: master</span></span></code></pre></div><p>push를 하라는데, 이게 맞나 긴가민가했지만 써있는대로 <code>key.txt</code> 만들고 <code>May I come in?</code>이라고 쓰고 add했다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git add key.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>The following paths are ignored by one of your .gitignore files:
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>key.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>hint: Use -f <span style="color:#ca9ee6">if</span> you really want to add them.
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>hint: Disable this message with <span style="color:#a6d189">&#34;git config set advice.addIgnoredFile false&#34;</span></span></span></code></pre></div><p><code>.gitignore</code>에서 <code>*.txt</code>가 있어서 <code>-f</code>를 써야 한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git add -f key.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>git commit -m <span style="color:#a6d189">&#34;test&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>git push
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>remote: Well <span style="color:#ca9ee6">done</span>! Here is the password <span style="color:#ca9ee6">for</span> the next level:</span></span></code></pre></div><p>push는 안되지만 password를 알려준다.</p>
+<hr>
+<h3 id="level-32">Level 32</h3>
+<p>After all this <code>git</code> stuff, it’s time for another escape. Good luck!</p>
+<hr>
+<p><code>git</code> 문제는 끝났다!</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit32@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>WELCOME TO THE UPPERCASE SHELL
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>&gt;&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>&gt;&gt;</span></span></code></pre></div><p>접속하면 <code>UPPERCASE SHELL</code>라는 쉘이 실행된다. 입력하는 모든 command를 대문자로 치환하는 쉘이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>&gt;&gt; <span style="color:#f2d5cf">$SHELL</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>WELCOME TO THE UPPERCASE SHELL</span></span></code></pre></div><blockquote>
+<p>문제 해결 후 회상
+<code>$0</code>을 입력하면 현재 실행 중인 쉘의 실행 경로가 입력되어 쉘이 재실행된다.<br>
+이 문제의 세팅을 보면 login shell은 <code>uppershell</code>이다.</p>
+</blockquote>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/passwd | grep bandit32
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>bandit32:x:11032:11032:bandit level 32:/home/bandit32:/home/bandit32/uppershell
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#99d1db">echo</span> <span style="color:#f2d5cf">$SHELL</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>/home/bandit32/uppershell</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>$ <span style="color:#f2d5cf">$0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>$ <span style="color:#99d1db">echo</span> <span style="color:#f2d5cf">$0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>sh</span></span></code></pre></div><p><code>$0</code>을 실행하면 <code>sh</code>가 실행되는데, 이는 이 명령을 실행하던 shell이 <code>sh</code>였다는 뜻이다.<br>
+로그인 직후 <code>uppershell</code>가 실행되고 얘가 <code>sh</code>를 실행했다는 뜻(?)인 듯 하다.<br>
+여기서 <code>/usr/bin/bash</code>를 실행하면 bandit에서 보던 <code>bash</code> shell이 실행된다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>$ /usr/bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>bandit33@bandit:~$</span></span></code></pre></div><blockquote>
+<p>해결 방법</p>
+</blockquote>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#f2d5cf">$0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat /etc/bandit_pass/bandit33</span></span></code></pre></div><p>exit하는 것도 어렵다</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ps aux
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>root           <span style="color:#ef9f76">1</span>  0.0  0.0  <span style="color:#ef9f76">14952</span>  <span style="color:#ef9f76">2928</span> ?        S    13:18   0:00 sshd: bandit32 <span style="color:#99d1db;font-weight:bold">[</span>priv<span style="color:#99d1db;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>bandit32       <span style="color:#ef9f76">2</span>  0.0  0.1  <span style="color:#ef9f76">14952</span>  <span style="color:#ef9f76">6948</span> ?        S    13:18   0:00 sshd: bandit32@pts/0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>bandit33       <span style="color:#ef9f76">3</span>  0.0  0.0   <span style="color:#ef9f76">2820</span>  <span style="color:#ef9f76">1508</span> pts/0    Ss   13:18   0:00 -uppershell</span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>$ <span style="color:#99d1db">kill</span> -term <span style="color:#ef9f76">3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>Connection to bandit.labs.overthewire.org closed.</span></span></code></pre></div><hr>
+<h3 id="level-33">Level 33</h3>
+<p><strong>At this moment, level 34 does not exist yet.</strong></p>
+<p>That’s it!</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>OverTheWire Bandit (3)</title>
       <link>https://grrru.github.io/blog/overthewire-bandit-3/</link>
