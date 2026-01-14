@@ -172,7 +172,8 @@ WELCOME TO THE UPPERCASE SHELL
 WELCOME TO THE UPPERCASE SHELL
 ```
 
-> 문제 해결 후 회상
+> 문제 해결 후 회상  
+
 `$0`을 입력하면 현재 실행 중인 쉘의 실행 경로가 입력되어 쉘이 재실행된다.  
 이 문제의 세팅을 보면 login shell은 `uppershell`이다. 
 ```bash
