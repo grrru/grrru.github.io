@@ -230,6 +230,52 @@
     outline: 2px solid var(--link-color);
     outline-offset: 2px;
   }
+
+   
+  .highlight {
+    position: relative;
+  }
+
+  .code-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s, background-color 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .highlight:hover .code-copy-btn {
+    opacity: 1;
+  }
+
+  .code-copy-btn:hover {
+    background-color: var(--input-bg);
+  }
+
+  .code-copy-btn:active {
+    transform: scale(0.95);
+  }
+
+  .code-copy-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .code-copy-btn.copied {
+    color: #22c55e;
+    border-color: #22c55e;
+  }
 </style>
 
 
@@ -403,6 +449,83 @@
                 }
             });
         }
+    })();
+</script>
+
+
+<script>
+    (function () {
+        
+        const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>`;
+
+        
+        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>`;
+
+        
+        document.querySelectorAll('.highlight').forEach(function (highlightBlock) {
+            
+            if (highlightBlock.querySelector('.code-copy-btn')) return;
+
+            
+            const button = document.createElement('button');
+            button.className = 'code-copy-btn';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = copyIcon;
+
+            
+            button.addEventListener('click', function () {
+                
+                const codeElement = highlightBlock.querySelector('code');
+                if (!codeElement) return;
+
+                let codeText = '';
+
+                
+                
+                
+                const lineWrappers = codeElement.querySelectorAll('span[style*="display:flex"]');
+
+                if (lineWrappers.length > 0) {
+                    lineWrappers.forEach(function (wrapper) {
+                        const spans = wrapper.querySelectorAll(':scope > span');
+                        if (spans.length >= 2) {
+                            
+                            codeText += spans[spans.length - 1].textContent;
+                        } else if (spans.length === 1) {
+                            
+                            codeText += spans[0].textContent;
+                        }
+                    });
+                } else {
+                    
+                    codeText = codeElement.textContent;
+                }
+
+                
+                navigator.clipboard.writeText(codeText.trim()).then(function () {
+                    
+                    button.innerHTML = checkIcon;
+                    button.classList.add('copied');
+
+                    
+                    setTimeout(function () {
+                        button.innerHTML = copyIcon;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(function (err) {
+                    console.error('Failed to copy code:', err);
+                });
+            });
+
+            
+            highlightBlock.appendChild(button);
+        });
     })();
 </script></body>
 

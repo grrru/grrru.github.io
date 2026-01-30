@@ -59,3 +59,80 @@
         }
     })();
 </script>
+
+<!-- 코드 블록 복사 버튼 -->
+<script>
+    (function () {
+        // 복사 아이콘 SVG
+        const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>`;
+
+        // 체크 아이콘 SVG
+        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>`;
+
+        // 모든 코드 블록에 복사 버튼 추가
+        document.querySelectorAll('.highlight').forEach(function (highlightBlock) {
+            // 이미 버튼이 있으면 스킵
+            if (highlightBlock.querySelector('.code-copy-btn')) return;
+
+            // 복사 버튼 생성
+            const button = document.createElement('button');
+            button.className = 'code-copy-btn';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = copyIcon;
+
+            // 복사 기능
+            button.addEventListener('click', function () {
+                // 코드 텍스트 추출 (줄 번호 제외)
+                const codeElement = highlightBlock.querySelector('code');
+                if (!codeElement) return;
+
+                let codeText = '';
+
+                // Hugo는 각 줄을 span[style*="display:flex"] 안에 두 개의 span으로 렌더링
+                // 첫 번째 span: 줄 번호 (user-select:none 스타일)
+                // 두 번째 span: 실제 코드
+                const lineWrappers = codeElement.querySelectorAll('span[style*="display:flex"]');
+
+                if (lineWrappers.length > 0) {
+                    lineWrappers.forEach(function (wrapper) {
+                        const spans = wrapper.querySelectorAll(':scope > span');
+                        if (spans.length >= 2) {
+                            // 마지막 span이 실제 코드 (줄 번호가 있을 경우)
+                            codeText += spans[spans.length - 1].textContent;
+                        } else if (spans.length === 1) {
+                            // 줄 번호가 없는 경우
+                            codeText += spans[0].textContent;
+                        }
+                    });
+                } else {
+                    // 줄 번호가 없는 기본 코드 블록
+                    codeText = codeElement.textContent;
+                }
+
+                // 클립보드에 복사
+                navigator.clipboard.writeText(codeText.trim()).then(function () {
+                    // 복사 성공 피드백
+                    button.innerHTML = checkIcon;
+                    button.classList.add('copied');
+
+                    // 2초 후 원래 상태로 복원
+                    setTimeout(function () {
+                        button.innerHTML = copyIcon;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(function (err) {
+                    console.error('Failed to copy code:', err);
+                });
+            });
+
+            // 버튼을 highlight 블록에 추가
+            highlightBlock.appendChild(button);
+        });
+    })();
+</script>

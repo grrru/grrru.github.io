@@ -173,6 +173,52 @@
     outline: 2px solid var(--link-color);
     outline-offset: 2px;
   }
+
+  /* 코드 블록 복사 버튼 스타일 */
+  .highlight {
+    position: relative;
+  }
+
+  .code-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s, background-color 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .highlight:hover .code-copy-btn {
+    opacity: 1;
+  }
+
+  .code-copy-btn:hover {
+    background-color: var(--input-bg);
+  }
+
+  .code-copy-btn:active {
+    transform: scale(0.95);
+  }
+
+  .code-copy-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .code-copy-btn.copied {
+    color: #22c55e;
+    border-color: #22c55e;
+  }
 </style>
 
 <!-- FOUC 방지: 페이지 로드 전 테마 적용 -->
