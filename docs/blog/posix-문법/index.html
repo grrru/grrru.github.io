@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://grrru.github.io/images/favicon-32X32.png" />
+<title>Grrru Blog</title>
+<meta name="title" content="Grrru Blog" />
+<meta name="description" content="변수 확장
+
+
+
+
+
+1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
+2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
+3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
+4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
+
+
+
+
+ 1add_path_bash() {
+ 2  local mode=&#34;append&#34;
+ 3
+ 4  case &#34;${1-}&#34; in
+ 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
+ 6    --append|-a)  mode=&#34;append&#34;; shift ;;
+ 7  esac
+ 8
+ 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
+10  local p=&#34;$1&#34;
+11  [[ -d &#34;$p&#34; ]] || return 0
+12
+13  case &#34;::$PATH::&#34; in
+14    *::&#34;$p&#34;::*) return 0 ;;
+15  esac
+16
+17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
+18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
+19  else
+20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
+21  fi
+22}" />
+<meta name="author" content="grrru" />
+<meta name="keywords" content="linux,shell," />
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="변수 확장
+
+
+
+
+
+1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
+2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
+3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
+4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
+
+
+
+
+ 1add_path_bash() {
+ 2  local mode=&#34;append&#34;
+ 3
+ 4  case &#34;${1-}&#34; in
+ 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
+ 6    --append|-a)  mode=&#34;append&#34;; shift ;;
+ 7  esac
+ 8
+ 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
+10  local p=&#34;$1&#34;
+11  [[ -d &#34;$p&#34; ]] || return 0
+12
+13  case &#34;::$PATH::&#34; in
+14    *::&#34;$p&#34;::*) return 0 ;;
+15  esac
+16
+17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
+18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
+19  else
+20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
+21  fi
+22}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://grrru.github.io/blog/posix-%EB%AC%B8%EB%B2%95/" />
+
+<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_ac11031a856297cb.webp"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2026-01-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2026-01-14T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
+<meta property="fb:admins" content="0000000000" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_ac11031a856297cb.webp"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="변수 확장
+
+
+
+
+
+1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
+2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
+3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
+4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
+
+
+
+
+ 1add_path_bash() {
+ 2  local mode=&#34;append&#34;
+ 3
+ 4  case &#34;${1-}&#34; in
+ 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
+ 6    --append|-a)  mode=&#34;append&#34;; shift ;;
+ 7  esac
+ 8
+ 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
+10  local p=&#34;$1&#34;
+11  [[ -d &#34;$p&#34; ]] || return 0
+12
+13  case &#34;::$PATH::&#34; in
+14    *::&#34;$p&#34;::*) return 0 ;;
+15  esac
+16
+17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
+18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
+19  else
+20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
+21  fi
+22}"/>
+<meta name="twitter:site" content="@example"/>
+
+
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="변수 확장
+
+
+
+
+
+1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
+2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
+3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
+4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
+
+
+
+
+ 1add_path_bash() {
+ 2  local mode=&#34;append&#34;
+ 3
+ 4  case &#34;${1-}&#34; in
+ 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
+ 6    --append|-a)  mode=&#34;append&#34;; shift ;;
+ 7  esac
+ 8
+ 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
+10  local p=&#34;$1&#34;
+11  [[ -d &#34;$p&#34; ]] || return 0
+12
+13  case &#34;::$PATH::&#34; in
+14    *::&#34;$p&#34;::*) return 0 ;;
+15  esac
+16
+17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
+18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
+19  else
+20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
+21  fi
+22}"><meta itemprop="datePublished" content="2026-01-14T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2026-01-14T00:00:00+00:00" />
+<meta itemprop="wordCount" content="111">
+
+<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_ac11031a856297cb.webp"/>
+
+
+<meta itemprop="keywords" content="linux,shell," />
+
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  
+  <link href="/original.min.css" rel="stylesheet">
+
+  
+    
+    <link href="/syntax.min.css" rel="stylesheet">
+  
+
+  
+
+  
+</head>
+
+<body>
+  <header><a class="skip-link" href="#main-content">Skip to main content</a>
+
+<a href="/" class="title"><h1>Grrru Blog</h1></a>
+<nav>
+  <a href="/">Home</a>
+
+  <a href="/blog/">Blog</a>
+
+
+
+
+
+
+
+
+
+</nav>
+</header>
+  <main id="main-content">
+
+<h1></h1>
+<p class="byline">
+  <time datetime='2026-01-14' pubdate>
+    2026-01-14
+  </time>
+  · grrru
+</p>
+
+<content>
+  <h2 id="변수-확장">변수 확장</h2>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span><span style="color:#ca9ee6">:-</span><span style="color:#f2d5cf">word</span><span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 기본값 할당: VAR가 비어있으면 word 사용</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span>:=word<span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 기본값 대입: VAR가 비어있으면 word를 아예 저장함</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span>:?word<span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 에러 출력: VAR가 비어있으면 word를 출력하고 종료</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span>:+word<span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 대체값 사용: VAR가 있을 때만 word 사용</span></span></span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>add_path_bash<span style="color:#99d1db;font-weight:bold">()</span> <span style="color:#99d1db;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>  <span style="color:#99d1db">local</span> <span style="color:#f2d5cf">mode</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;append&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>  <span style="color:#ca9ee6">case</span> <span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">1</span>-<span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span> in
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>    --prepend|-p<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">mode</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;prepend&#34;</span>; <span style="color:#99d1db">shift</span> ;;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>    --append|-a<span style="color:#99d1db;font-weight:bold">)</span>  <span style="color:#f2d5cf">mode</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;append&#34;</span>; <span style="color:#99d1db">shift</span> ;;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>  <span style="color:#ca9ee6">esac</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>  <span style="color:#99d1db;font-weight:bold">[[</span> -z <span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">1</span>-<span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">]]</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>  <span style="color:#99d1db">local</span> <span style="color:#f2d5cf">p</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$1</span><span style="color:#a6d189">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>  <span style="color:#99d1db;font-weight:bold">[[</span> -d <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">]]</span> <span style="color:#99d1db;font-weight:bold">||</span> <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>  <span style="color:#ca9ee6">case</span> <span style="color:#a6d189">&#34;::</span><span style="color:#f2d5cf">$PATH</span><span style="color:#a6d189">::&#34;</span> in
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>    *::<span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">&#34;</span>::*<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">0</span> ;;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span>  <span style="color:#ca9ee6">esac</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>  <span style="color:#ca9ee6">if</span> <span style="color:#99d1db;font-weight:bold">[[</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$mode</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#a6d189">&#34;prepend&#34;</span> <span style="color:#99d1db;font-weight:bold">]]</span>; <span style="color:#ca9ee6">then</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">18</span><span>    <span style="color:#99d1db">export</span> <span style="color:#f2d5cf">PATH</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">PATH</span>:+:<span style="color:#f2d5cf">$PATH</span><span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">19</span><span>  <span style="color:#ca9ee6">else</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">20</span><span>    <span style="color:#99d1db">export</span> <span style="color:#f2d5cf">PATH</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">PATH</span>:+<span style="color:#f2d5cf">$PATH</span>:<span style="color:#a6d189">}</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">21</span><span>  <span style="color:#ca9ee6">fi</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">22</span><span><span style="color:#99d1db;font-weight:bold">}</span></span></span></code></pre></div>
+</content>
+<p>
+  
+    <a class="blog-tags" href="/tags/linux/">#linux</a>
+  
+    <a class="blog-tags" href="/tags/shell/">#shell</a>
+  
+</p>
+
+
+  <p>
+    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"Grrru%20Blog"'>
+      Reply to this post by email ↪
+    </a>
+  </p>
+
+
+
+  </main>
+  <footer><small>
+  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
+</small></footer>
+
+    
+</body>
+
+</html>

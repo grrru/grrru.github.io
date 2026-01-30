@@ -9,21 +9,53 @@
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
-    <lastBuildDate>Tue, 13 Jan 2026 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Jan 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://grrru.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Bandit</title>
-      <link>https://grrru.github.io/tags/bandit/</link>
-      <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>https://grrru.github.io/tags/bandit/</guid>
+      <title>JSON</title>
+      <link>https://grrru.github.io/tags/json/</link>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/tags/json/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
+    </item>
+    <item>
+      <title>JSON RPC</title>
+      <link>https://grrru.github.io/tags/json-rpc/</link>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/tags/json-rpc/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
+    </item>
+    <item>
+      <title>RPC</title>
+      <link>https://grrru.github.io/tags/rpc/</link>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/tags/rpc/</guid>
       <description></description>
       <content:encoded><![CDATA[]]></content:encoded>
     </item>
     <item>
       <title>Linux</title>
       <link>https://grrru.github.io/tags/linux/</link>
-      <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
       <guid>https://grrru.github.io/tags/linux/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
+    </item>
+    <item>
+      <title>Shell</title>
+      <link>https://grrru.github.io/tags/shell/</link>
+      <pubDate>Wed, 14 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/tags/shell/</guid>
+      <description></description>
+      <content:encoded><![CDATA[]]></content:encoded>
+    </item>
+    <item>
+      <title>Bandit</title>
+      <link>https://grrru.github.io/tags/bandit/</link>
+      <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>https://grrru.github.io/tags/bandit/</guid>
       <description></description>
       <content:encoded><![CDATA[]]></content:encoded>
     </item>
