@@ -1,6 +1,6 @@
 ---
 date: 2026-01-14
-draft: false
+draft: true
 title:
 categories: Linux
 tags:
