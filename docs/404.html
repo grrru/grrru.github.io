@@ -53,7 +53,193 @@
   
 
   
-</head>
+<style>
+   
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --heading-color: #1a1a1a;
+    --link-color: #0066cc;
+    --link-visited-color: #551a8b;
+    --border-color: #333333;
+    --blockquote-color: #666666;
+    --code-bg: #f5f5f5;
+    --code-text: #333333;
+    --input-bg: #f5f5f5;
+    --input-text: #333333;
+    --helptext-color: #666666;
+    --skip-link-bg: #ffffff;
+    --figcaption-color: #666666;
+  }
+
+   
+  [data-theme="dark"] {
+    --bg-color: #1d1f27;
+    --text-color: #c9d1d9;
+    --heading-color: #eeeeee;
+    --link-color: #8cc2dd;
+    --link-visited-color: #8b6fcb;
+    --border-color: #c9d1d9;
+    --blockquote-color: #cccccc;
+    --code-bg: #282a36;
+    --code-text: #f8f8f2;
+    --input-bg: #252525;
+    --input-text: #dddddd;
+    --helptext-color: #aaaaaa;
+    --skip-link-bg: #1d1f27;
+    --figcaption-color: #cccccc;
+  }
+
+   
+  body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: var(--heading-color) !important;
+  }
+
+  a {
+    color: var(--link-color) !important;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--link-visited-color) !important;
+  }
+
+  table,
+  th,
+  td {
+    border-color: var(--border-color) !important;
+  }
+
+  blockquote {
+    border-left-color: #999 !important;
+    color: var(--blockquote-color) !important;
+  }
+
+  code {
+    background-color: var(--code-bg) !important;
+    color: var(--code-text) !important;
+  }
+
+  textarea,
+  input {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+  }
+
+  .helptext {
+    color: var(--helptext-color) !important;
+  }
+
+  .skip-link {
+    background-color: var(--skip-link-bg) !important;
+  }
+
+  figcaption>p {
+    color: var(--figcaption-color) !important;
+  }
+
+   
+  .theme-switch {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: inline-block;
+    width: 52px;
+    height: 26px;
+    cursor: pointer;
+  }
+
+  .theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .theme-switch .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 26px;
+    transition: background-color 0.3s;
+  }
+
+  .theme-switch .slider::before {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--bg-color);
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  .theme-switch input:checked+.slider::before {
+    transform: translateX(26px);
+  }
+
+  .theme-switch .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    color: var(--text-color);
+    transition: opacity 0.3s;
+  }
+
+  .theme-switch .moon {
+    left: 5px;
+    opacity: 1;
+  }
+
+  .theme-switch .sun {
+    right: 5px;
+    opacity: 0.5;
+  }
+
+  .theme-switch input:checked+.slider .moon {
+    opacity: 0.5;
+  }
+
+  .theme-switch input:checked+.slider .sun {
+    opacity: 1;
+  }
+
+  .theme-switch:focus-within .slider {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+  }
+</style>
+
+
+<script>
+  (function () {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script></head>
 
 <body>
   <header><a class="skip-link" href="#main-content">Skip to main content</a>
@@ -83,7 +269,66 @@
   Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
 </small></footer>
 
-    
-</body>
+  
+<script>
+    (function () {
+        
+        const toggleWrapper = document.createElement('label');
+        toggleWrapper.className = 'theme-switch';
+        toggleWrapper.setAttribute('aria-label', 'Toggle theme');
+        toggleWrapper.setAttribute('title', 'Toggle light/dark mode');
+
+        toggleWrapper.innerHTML = `
+            <input type="checkbox" id="theme-toggle-checkbox">
+            <span class="slider">
+                <svg class="icon moon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+            </span>
+        `;
+
+        const checkbox = toggleWrapper.querySelector('#theme-toggle-checkbox');
+
+        
+        function updateCheckbox() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            checkbox.checked = isDark;
+        }
+
+        
+        checkbox.addEventListener('change', function () {
+            const newTheme = this.checked ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        
+        document.body.appendChild(toggleWrapper);
+
+        
+        updateCheckbox();
+
+        
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+                if (!localStorage.getItem('theme')) {
+                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                    updateCheckbox();
+                }
+            });
+        }
+    })();
+</script></body>
 
 </html>
