@@ -299,7 +299,7 @@ except asyncio.CancelledError:
     print("task cancelled")
 ```
 
-## `asyncio.gather`
+## 5. `asyncio.gather`
 
 `gather`는 여러 coroutine/task를 동시에 실행하고, 모든 결과를 리스트로 반환한다.
 
@@ -340,4 +340,24 @@ async def main():
         task3 = tg.create_task(job("C", 3))
     print(task1.result(), task2.result(), task3.result())
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

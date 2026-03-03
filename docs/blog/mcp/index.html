@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="https://grrru.github.io/images/favicon-32X32.png" />
+<title>MCP | Grrru Blog</title>
+<meta name="title" content="MCP" />
+<meta name="description" content="들어가며
+2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 텍스트를 생성하는 모델일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.
+이 글은 LLM이 외부 세계와 연결되기 위해 거쳐 온 여정을 다룬다. Function Calling의 등장, AI Agent와 Tools 생태계의 폭발, 그리고 마침내 등장한 MCP(Model Context Protocol) 까지. 이 흐름을 이해하면, MCP가 단순한 새 기술이 아니라 필연적인 귀결이었음을 알 수 있다." />
+<meta name="author" content="claude-4.6-opus" />
+<meta name="keywords" content="mcp," />
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta property="og:title" content="MCP" />
+<meta property="og:description" content="들어가며
+2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 텍스트를 생성하는 모델일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.
+이 글은 LLM이 외부 세계와 연결되기 위해 거쳐 온 여정을 다룬다. Function Calling의 등장, AI Agent와 Tools 생태계의 폭발, 그리고 마침내 등장한 MCP(Model Context Protocol) 까지. 이 흐름을 이해하면, MCP가 단순한 새 기술이 아니라 필연적인 귀결이었음을 알 수 있다." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://grrru.github.io/blog/mcp/" />
+
+<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_a43a088169859a3f.webp"/><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2026-03-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2026-03-03T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
+<meta property="fb:admins" content="0000000000" />
+
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_a43a088169859a3f.webp"/>
+<meta name="twitter:title" content="MCP"/>
+<meta name="twitter:description" content="들어가며
+2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 텍스트를 생성하는 모델일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.
+이 글은 LLM이 외부 세계와 연결되기 위해 거쳐 온 여정을 다룬다. Function Calling의 등장, AI Agent와 Tools 생태계의 폭발, 그리고 마침내 등장한 MCP(Model Context Protocol) 까지. 이 흐름을 이해하면, MCP가 단순한 새 기술이 아니라 필연적인 귀결이었음을 알 수 있다."/>
+<meta name="twitter:site" content="@example"/>
+
+
+
+<meta itemprop="name" content="MCP">
+<meta itemprop="description" content="들어가며
+2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 텍스트를 생성하는 모델일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.
+이 글은 LLM이 외부 세계와 연결되기 위해 거쳐 온 여정을 다룬다. Function Calling의 등장, AI Agent와 Tools 생태계의 폭발, 그리고 마침내 등장한 MCP(Model Context Protocol) 까지. 이 흐름을 이해하면, MCP가 단순한 새 기술이 아니라 필연적인 귀결이었음을 알 수 있다."><meta itemprop="datePublished" content="2026-03-03T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2026-03-03T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1985">
+
+<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_a43a088169859a3f.webp"/>
+
+
+<meta itemprop="keywords" content="mcp," />
+
+<meta name="referrer" content="no-referrer-when-downgrade" />
+
+  
+  <link href="/original.min.css" rel="stylesheet">
+
+  
+    
+    <link href="/syntax.min.css" rel="stylesheet">
+  
+
+  
+
+  
+<style>
+   
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --heading-color: #1a1a1a;
+    --link-color: #0066cc;
+    --link-visited-color: #551a8b;
+    --border-color: #333333;
+    --blockquote-color: #666666;
+    --code-bg: #f5f5f5;
+    --code-text: #333333;
+    --input-bg: #f5f5f5;
+    --input-text: #333333;
+    --helptext-color: #666666;
+    --skip-link-bg: #ffffff;
+    --figcaption-color: #666666;
+  }
+
+   
+  [data-theme="dark"] {
+    --bg-color: #1d1f27;
+    --text-color: #c9d1d9;
+    --heading-color: #eeeeee;
+    --link-color: #8cc2dd;
+    --link-visited-color: #8b6fcb;
+    --border-color: #c9d1d9;
+    --blockquote-color: #cccccc;
+    --code-bg: #282a36;
+    --code-text: #f8f8f2;
+    --input-bg: #252525;
+    --input-text: #dddddd;
+    --helptext-color: #aaaaaa;
+    --skip-link-bg: #1d1f27;
+    --figcaption-color: #cccccc;
+  }
+
+   
+  body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  strong,
+  b {
+    color: var(--heading-color) !important;
+  }
+
+  a {
+    color: var(--link-color) !important;
+  }
+
+  ul.blog-posts li a:visited {
+    color: var(--link-visited-color) !important;
+  }
+
+  table,
+  th,
+  td {
+    border-color: var(--border-color) !important;
+  }
+
+  blockquote {
+    border-left-color: #999 !important;
+    color: var(--blockquote-color) !important;
+  }
+
+  code {
+    background-color: var(--code-bg) !important;
+    color: var(--code-text) !important;
+  }
+
+  textarea,
+  input {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+  }
+
+  .helptext {
+    color: var(--helptext-color) !important;
+  }
+
+  .skip-link {
+    background-color: var(--skip-link-bg) !important;
+  }
+
+  figcaption>p {
+    color: var(--figcaption-color) !important;
+  }
+
+   
+  .theme-switch {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: inline-block;
+    width: 52px;
+    height: 26px;
+    cursor: pointer;
+  }
+
+  .theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .theme-switch .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 26px;
+    transition: background-color 0.3s;
+  }
+
+  .theme-switch .slider::before {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--bg-color);
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  .theme-switch input:checked+.slider::before {
+    transform: translateX(26px);
+  }
+
+  .theme-switch .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    color: var(--text-color);
+    transition: opacity 0.3s;
+  }
+
+  .theme-switch .moon {
+    left: 5px;
+    opacity: 1;
+  }
+
+  .theme-switch .sun {
+    right: 5px;
+    opacity: 0.5;
+  }
+
+  .theme-switch input:checked+.slider .moon {
+    opacity: 0.5;
+  }
+
+  .theme-switch input:checked+.slider .sun {
+    opacity: 1;
+  }
+
+  .theme-switch:focus-within .slider {
+    outline: 2px solid var(--link-color);
+    outline-offset: 2px;
+  }
+
+   
+  .highlight {
+    position: relative;
+  }
+
+  .code-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 8px;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s, background-color 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .highlight:hover .code-copy-btn {
+    opacity: 1;
+  }
+
+  .code-copy-btn:hover {
+    background-color: var(--input-bg);
+  }
+
+  .code-copy-btn:active {
+    transform: scale(0.95);
+  }
+
+  .code-copy-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .code-copy-btn.copied {
+    color: #22c55e;
+    border-color: #22c55e;
+  }
+</style>
+
+
+<script>
+  (function () {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+</script></head>
+
+<body>
+  <header><a class="skip-link" href="#main-content">Skip to main content</a>
+
+<a href="/" class="title"><h1>Grrru Blog</h1></a>
+<nav>
+  <a href="/">Home</a>
+
+  <a href="/blog/">Blog</a>
+
+
+
+
+
+
+
+
+
+</nav>
+</header>
+  <main id="main-content">
+
+<h1>MCP</h1>
+<p class="byline">
+  <time datetime='2026-03-03' pubdate>
+    2026-03-03
+  </time>
+  · claude-4.6-opus
+</p>
+
+<content>
+  <h2 id="들어가며">들어가며</h2>
+<p>2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 <strong>텍스트를 생성하는 모델</strong>일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.</p>
+<p>이 글은 LLM이 외부 세계와 연결되기 위해 거쳐 온 여정을 다룬다. Function Calling의 등장, AI Agent와 Tools 생태계의 폭발, 그리고 마침내 등장한 <strong>MCP(Model Context Protocol)</strong> 까지. 이 흐름을 이해하면, MCP가 단순한 새 기술이 아니라 필연적인 귀결이었음을 알 수 있다.</p>
+<h2 id="1-llm의-한계">1. LLM의 한계</h2>
+<p>ChatGPT(GPT-3.5 기반)가 2022년 11월에 공개되었을 때, 세계는 열광했다. 자연어로 코드를 작성하고, 에세이를 쓰고, 복잡한 개념을 설명하는 능력은 놀라웠다. 하지만 한계는 있었다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>사용자: &#34;오늘 서울 날씨 알려줘&#34;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>ChatGPT: &#34;죄송합니다. 저는 실시간 정보에 접근할 수 없습니다. 2021년 9월까지의 학습 데이터만 보유하고 있습니다.&#34;</span></span></code></pre></div><p>LLM의 한계는 명확했다:</p>
+<ul>
+<li><strong>실시간 데이터 접근 불가</strong>: 학습 시점 이후의 정보를 알 수 없다.</li>
+<li><strong>외부 시스템 연동 불가</strong>: API를 호출하거나, 데이터베이스를 조회하거나, 파일을 읽을 수 없다.</li>
+<li><strong>행동(Action) 수행 불가</strong>: 이메일 전송, 일정 등록, 코드 실행 등 실제 작업을 할 수 없다.</li>
+</ul>
+<p>LLM은 아무리 똑똑해도, <strong>세상과 단절된 뇌</strong>에 불과했다. 이 모델에 &ldquo;손과 발&quot;을 달아주는 것이 2023년부터 시작된 흐름이다.</p>
+<h2 id="2-function-calling의-등장">2. Function Calling의 등장</h2>
+<h3 id="function-calling이란">Function Calling이란</h3>
+<p>2023년 6월 13일, OpenAI는 GPT-3.5와 GPT-4 API에 <strong>Function Calling</strong> 기능을 추가했다. 이것은 LLM과 외부 도구를 연결하는 방식에 있어 패러다임 전환이었다.<br>
+핵심 아이디어는 단순했다. LLM이 직접 함수를 실행하는 것이 아니라, &ldquo;이 함수를 이런 인자로 호출해달라&quot;고 구조화된 형태로 요청하는 것이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>[1단계] 개발자가 사용 가능한 함수 목록을 JSON Schema로 정의하여 API에 전달
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>  &#34;name&#34;: &#34;get_weather&#34;,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>  &#34;description&#34;: &#34;주어진 도시의 현재 날씨를 조회합니다&#34;,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>  &#34;parameters&#34;: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>    &#34;type&#34;: &#34;object&#34;,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>    &#34;properties&#34;: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>      &#34;city&#34;: { &#34;type&#34;: &#34;string&#34;, &#34;description&#34;: &#34;도시 이름&#34; }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>    &#34;required&#34;: [&#34;city&#34;]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span>[2단계] 사용자가 &#34;서울 날씨 알려줘&#34;라고 말하면,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>        LLM이 대화 맥락을 분석하여 적절한 함수 호출을 결정
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">18</span><span>[3단계] LLM이 구조화된 JSON으로 응답
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">19</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">20</span><span>  &#34;function_call&#34;: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">21</span><span>    &#34;name&#34;: &#34;get_weather&#34;,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">22</span><span>    &#34;arguments&#34;: &#34;{\&#34;city\&#34;: \&#34;서울\&#34;}&#34;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">23</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">24</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">25</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">26</span><span>[4단계] 애플리케이션이 실제 함수를 실행하고,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">27</span><span>        결과를 다시 LLM에게 전달
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">28</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">29</span><span>[5단계] LLM이 함수 실행 결과를 자연어로 변환하여 사용자에게 응답
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">30</span><span>        → &#34;서울의 현재 기온은 15°C이고, 맑은 날씨입니다.&#34;</span></span></code></pre></div><p>LLM은 <strong>의사결정자</strong> 역할만 하고, 실제 실행은 애플리케이션이 담당한다. 이렇게 함으로써:</p>
+<ul>
+<li>LLM이 직접 외부 시스템에 접근하는 보안 리스크를 줄였다.</li>
+<li>개발자가 실행 로직을 완전히 제어할 수 있게 되었다.</li>
+<li>구조화된 JSON 출력으로 파싱 오류를 크게 줄였다.</li>
+</ul>
+<h3 id="한계">한계</h3>
+<p>하지만 Function Calling에도 분명한 한계가 있었다:</p>
+<ul>
+<li><strong>플랫폼 종속</strong>: OpenAI API에서 정의한 형식이었다. Anthropic Claude, Google Gemini 등은 각자 다른 형식을 사용했다.</li>
+<li><strong>정적 정의</strong>: 사용할 함수 목록을 미리 코드에 하드코딩해야 했다. 런타임에 동적으로 도구를 발견할 수 없었다.</li>
+<li><strong>실행 로직의 중복</strong>: 같은 기능(예: GitHub 이슈 조회)을 10개의 다른 AI 앱에서 쓰려면, 10번 각각 구현해야 했다.</li>
+</ul>
+<h2 id="3-ai-agent의-시대---tools-그리고-skills">3. AI Agent의 시대 - Tools, 그리고 Skills</h2>
+<h3 id="agent-패러다임의-폭발">Agent 패러다임의 폭발</h3>
+<p>Function Calling이 &ldquo;LLM에 도구를 연결하는 방법&quot;을 제시하자, 더 큰 꿈이 싹텄다. <strong>AI Agent</strong> — LLM이 스스로 계획을 세우고, 도구를 사용하며, 목표를 달성하는 자율적 시스템이다.<br>
+2023년, <code>AutoGPT</code>와 <code>BabyAGI</code> 같은 프로젝트가 등장하며 AI Agent의 가능성을 보여주었다. &ldquo;항공편을 검색하고, 호텔을 예약하고, 일정에 등록해줘&quot;와 같은 복합 작업을 LLM이 단계별로 수행하는 비전이었다.</p>
+<h3 id="tools-agent의-도구-상자">Tools: Agent의 도구 상자</h3>
+<p>Agent 프레임워크에서 <strong>Tool</strong>은 핵심 개념이다. Agent가 외부 세계와 상호작용하기 위해 사용하는 <strong>모든 기능 단위</strong>를 통칭한다.<br>
+LangChain이 이 패턴을 대중화했다:</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span><span style="color:#81c8be">from</span> <span style="color:#ef9f76">langchain.tools</span> <span style="color:#81c8be">import</span> Tool
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>search_tool <span style="color:#99d1db;font-weight:bold">=</span> Tool(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>    name<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;web_search&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>    description<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;인터넷에서 최신 정보를 검색합니다&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>    func<span style="color:#99d1db;font-weight:bold">=</span>search_function
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>calculator_tool <span style="color:#99d1db;font-weight:bold">=</span> Tool(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>    name<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;calculator&#34;</span>, 
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>    description<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;수학 계산을 수행합니다&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>    func<span style="color:#99d1db;font-weight:bold">=</span>calculate_function
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span><span style="color:#737994;font-style:italic"># Agent에게 도구 목록을 전달</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>agent <span style="color:#99d1db;font-weight:bold">=</span> initialize_agent(
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>    tools<span style="color:#99d1db;font-weight:bold">=</span>[search_tool, calculator_tool],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">18</span><span>    llm<span style="color:#99d1db;font-weight:bold">=</span>llm,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">19</span><span>    agent_type<span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;zero-shot-react-description&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">20</span><span>)</span></span></code></pre></div><p>Tool의 본질은 <strong>LLM이 호출할 수 있는 외부 기능의 추상화</strong>라는 점에서 Function Calling과 같지만, LangChain같은 프레임워크가 이를 표준화된 <strong>인터페이스</strong>로 감싸주면서, 다양한 도구를 쉽게 조합할 수 있게 되었다.</p>
+<h3 id="skills-더-모듈화된-접근">Skills: 더 모듈화된 접근</h3>
+<p>Tools가 개별 함수 수준의 능력이라면, <strong>Skills</strong>는 한 단계 높은 추상화다. Skills는 특정 도메인의 지식과 도구 사용 능력을 <strong>재사용 가능한 패키지</strong>로 묶은 것이다.
+예를 들어, &ldquo;GitHub 관리&rdquo; 스킬은 다음을 포함할 수 있다:</p>
+<ul>
+<li>GitHub API 호출 도구 세트</li>
+<li>PR 리뷰 시 따라야 할 프롬프트 가이드</li>
+<li>코드 컨벤션에 대한 도메인 지식</li>
+</ul>
+<p>Skills 패턴의 장점은 <strong>점진적 공개(Progressive Disclosure)</strong> 에 있었다. Agent가 모든 도구를 한번에 로드하는 대신, 필요한 시점에 적절한 스킬을 활성화하여 컨텍스트 윈도우를 효율적으로 사용할 수 있었다.</p>
+<h3 id="nm-통합-문제">N×M 통합 문제</h3>
+<p>2024년이 되자, 생태계는 <strong>폭발적으로 성장</strong>하는 동시에 <strong>심각하게 파편화</strong>되었다.
+<strong>LLM 제공자</strong> 측:</p>
+<ul>
+<li>OpenAI (GPT-4, GPT-4 Turbo)</li>
+<li>Anthropic (Claude 2, Claude 3)</li>
+<li>Google (Gemini)</li>
+<li>Meta (LLaMA)</li>
+<li>수십 개의 오픈소스 모델</li>
+</ul>
+<p><strong>AI 애플리케이션</strong> 측:</p>
+<ul>
+<li>Cursor, GitHub Copilot (코딩 도구)</li>
+<li>ChatGPT, Claude.ai (대화형 AI)</li>
+<li>수백 개의 AI 에이전트 프레임워크</li>
+</ul>
+<p><strong>외부 서비스</strong> 측:</p>
+<ul>
+<li>GitHub, Slack, Jira, Google Drive, Notion, DB, 클라우드 서비스&hellip;</li>
+</ul>
+<p>문제는 이들을 연결하는 <strong>표준이 없었다</strong>는 것이다.</p>
+
+
+
+
+
+<pre tabindex="0"><code>              AI 앱 A        AI 앱 B        AI 앱 C
+           (OpenAI 사용)  (Claude 사용)  (Gemini 사용)
+                ↕               ↕               ↕  
+GitHub ─ [커스텀 코드A] ─ [커스텀 코드B] ─ [커스텀 코드C]
+Slack  ─ [커스텀 코드D] ─ [커스텀 코드E] ─ [커스텀 코드F]
+Jira   ─ [커스텀 코드G] ─ [커스텀 코드H] ─ [커스텀 코드I]</code></pre><p>N개의 AI 앱과 M개의 외부 서비스를 연결하려면, <strong>N×M개의 커스텀 통합</strong>이 필요했다. 새로운 AI 앱이 등장할 때마다, 새로운 서비스가 추가될 때마다, 통합 코드는 기하급수적으로 늘어났다.<br>
+이것은 지속 가능하지 않았다. <strong>USB가 등장하기 전, 모든 기기마다 다른 커넥터를 사용하던 시절</strong>과 같았다.</p>
+<h2 id="4-mcp의-탄생">4. MCP의 탄생</h2>
+<h3 id="mcp란">MCP란</h3>
+<p>2024년 11월 25일, Anthropic은 <strong>MCP(Model Context Protocol)</strong> 를 오픈소스로 공개했다. MCP는 LLM 애플리케이션과 외부 데이터 소스 및 도구 사이의 양방향 연결을 위한 <strong>개방형 표준 프로토콜</strong>이다.</p>
+<h3 id="왜-mcp가-필요했는가">왜 MCP가 필요했는가</h3>
+<p>앞서 살펴본 N×M 문제를 다시 보자. MCP 이전과 이후를 비교하면:</p>
+<p><strong>MCP 이전 (N×M 통합):</strong></p>
+
+
+
+
+
+<pre tabindex="0"><code>AI 앱 A ──[커스텀]──→ GitHub
+AI 앱 A ──[커스텀]──→ Slack  
+AI 앱 A ──[커스텀]──→ DB
+
+AI 앱 B ──[커스텀]──→ GitHub
+AI 앱 B ──[커스텀]──→ Slack
+AI 앱 B ──[커스텀]──→ DB
+
+→ 6개의 커스텀 통합 필요 (2 앱 × 3 서비스)</code></pre><p><strong>MCP 이후 (N+M 통합):</strong></p>
+
+
+
+
+
+<pre tabindex="0"><code>AI 앱 A ──[MCP]──┐
+                  ├──→ GitHub MCP 서버
+AI 앱 B ──[MCP]──┤    Slack MCP 서버
+                  └──→ DB MCP 서버
+
+→ 5개의 구현만 필요 (2개 MCP 클라이언트 + 3개 MCP 서버)</code></pre><p>AI 앱은 MCP 클라이언트만 구현하면 <strong>모든 MCP 서버</strong>에 연결할 수 있다. 외부 서비스는 MCP 서버만 한 번 구현하면 <strong>모든 AI 앱</strong>에서 사용할 수 있다. N×M이 N+M으로 줄어든다.</p>
+<h3 id="language-server-protocol에서-영감을-얻다">Language Server Protocol에서 영감을 얻다</h3>
+<p>MCP의 설계는 Microsoft의 <strong>LSP(Language Server Protocol)</strong> 에서 직접적인 영감을 받았다.<br>
+LSP 이전에는 각 IDE(VS Code, IntelliJ, Vim&hellip;)가 각 프로그래밍 언어(Python, Go, Typescript&hellip;)에 대해 별도의 자동완성/린팅/포매팅 로직을 구현해야 했다. LSP가 등장하면서, 언어별로 하나의 Language Server만 구현하면 모든 IDE에서 사용할 수 있게 되었다.<br>
+MCP는 이와 동일한 접근을 AI 도구 통합에 적용한 것이다.</p>
+<h2 id="5-mcp의-동작-원리">5. MCP의 동작 원리</h2>
+<h3 id="아키텍처-host--client--server">아키텍처: Host → Client → Server</h3>
+<p>MCP는 세 가지 핵심 컴포넌트로 구성된다.</p>
+<p><strong>Host (호스트)</strong></p>
+<ul>
+<li>LLM 애플리케이션 그 자체. Cursor IDE, Claude Desktop, 또는 사용자가 만든 AI 앱이 될 수 있다.</li>
+<li>여러 개의 MCP Client를 생성하고 관리한다.</li>
+<li>보안 정책을 적용하고, 사용자 승인을 관리한다.</li>
+</ul>
+<p><strong>Client (클라이언트)</strong></p>
+<ul>
+<li>Host 내부에서 동작하며, <strong>하나의 Server와 1:1로 연결</strong>된다.</li>
+<li>프로토콜 협상(capability negotiation)을 수행한다.</li>
+<li>Host와 Server 사이에서 메시지를 양방향으로 중계한다.</li>
+</ul>
+<p><strong>Server (서버)</strong></p>
+<ul>
+<li>외부 서비스의 기능을 MCP 프로토콜로 노출하는 경량 프로세스.</li>
+<li>각 서버는 독립적으로 운영되며, 다른 서버의 존재를 알지 못한다.</li>
+<li>서버 간 격리를 통해 보안을 확보한다.</li>
+</ul>
+<h3 id="서버가-제공하는-세-가지--tools-resources-prompts">서버가 제공하는 세 가지 — Tools, Resources, Prompts</h3>
+<p>MCP 서버는 세 가지 종류의 기능을 노출할 수 있다:</p>
+<h4 id="1-tools-도구">1. Tools (도구)</h4>
+<p>LLM이 호출할 수 있는 <strong>실행 가능한 함수</strong>. Function Calling의 진화형이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>  <span style="color:#ca9ee6">&#34;name&#34;</span>: <span style="color:#a6d189">&#34;create_github_issue&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>  <span style="color:#ca9ee6">&#34;description&#34;</span>: <span style="color:#a6d189">&#34;GitHub 저장소에 새 이슈를 생성합니다&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>  <span style="color:#ca9ee6">&#34;inputSchema&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>    <span style="color:#ca9ee6">&#34;type&#34;</span>: <span style="color:#a6d189">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>    <span style="color:#ca9ee6">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>      <span style="color:#ca9ee6">&#34;repo&#34;</span>: { <span style="color:#ca9ee6">&#34;type&#34;</span>: <span style="color:#a6d189">&#34;string&#34;</span>, <span style="color:#ca9ee6">&#34;description&#34;</span>: <span style="color:#a6d189">&#34;owner/repo 형식&#34;</span> },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>      <span style="color:#ca9ee6">&#34;title&#34;</span>: { <span style="color:#ca9ee6">&#34;type&#34;</span>: <span style="color:#a6d189">&#34;string&#34;</span> },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>      <span style="color:#ca9ee6">&#34;body&#34;</span>: { <span style="color:#ca9ee6">&#34;type&#34;</span>: <span style="color:#a6d189">&#34;string&#34;</span> }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>    },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>    <span style="color:#ca9ee6">&#34;required&#34;</span>: [<span style="color:#a6d189">&#34;repo&#34;</span>, <span style="color:#a6d189">&#34;title&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>}</span></span></code></pre></div><p>기존 Function Calling과의 차이점: Tool의 <strong>정의와 실행 로직이 서버에 함께 존재</strong>한다. 클라이언트는 서버에게 &ldquo;이 도구를 이 인자로 실행해줘&quot;라고 요청하기만 하면 된다.</p>
+<h4 id="2-resources-리소스">2. Resources (리소스)</h4>
+<p>LLM에 <strong>컨텍스트로 제공되는 데이터</strong>. 읽기 전용이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>  <span style="color:#ca9ee6">&#34;uri&#34;</span>: <span style="color:#a6d189">&#34;github://repos/myorg/myrepo/issues/42&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>  <span style="color:#ca9ee6">&#34;name&#34;</span>: <span style="color:#a6d189">&#34;Issue #42&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>  <span style="color:#ca9ee6">&#34;mimeType&#34;</span>: <span style="color:#a6d189">&#34;application/json&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>}</span></span></code></pre></div><p>파일 내용, 데이터베이스 레코드, API 응답 등 LLM이 참고할 수 있는 정보를 제공한다. Tool이 &ldquo;행동&quot;이라면, Resource는 &ldquo;지식&quot;이다.</p>
+<h4 id="3-prompts-프롬프트">3. Prompts (프롬프트)</h4>
+<p>미리 정의된 <strong>프롬프트 템플릿과 워크플로우</strong>.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>  <span style="color:#ca9ee6">&#34;name&#34;</span>: <span style="color:#a6d189">&#34;code_review&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>  <span style="color:#ca9ee6">&#34;description&#34;</span>: <span style="color:#a6d189">&#34;코드 리뷰를 수행하는 프롬프트 템플릿&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>  <span style="color:#ca9ee6">&#34;arguments&#34;</span>: [
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>    { <span style="color:#ca9ee6">&#34;name&#34;</span>: <span style="color:#a6d189">&#34;diff&#34;</span>, <span style="color:#ca9ee6">&#34;description&#34;</span>: <span style="color:#a6d189">&#34;리뷰할 코드 diff&#34;</span>, <span style="color:#ca9ee6">&#34;required&#34;</span>: <span style="color:#ef9f76">true</span> }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>  ]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span>}</span></span></code></pre></div><p>특정 작업에 최적화된 프롬프트를 서버가 제공하여, LLM이 일관된 방식으로 작업을 수행하도록 안내한다.</p>
+<h3 id="mcp가-표준화한-것과-하지-않은-것--두-개의-통신-구간">MCP가 표준화한 것과 하지 않은 것 — 두 개의 통신 구간</h3>
+<p>MCP를 이해할 때 가장 흔히 오해하는 부분이 있다. MCP 시스템에는 <strong>두 개의 서로 다른 통신 구간</strong>이 존재하고, MCP가 표준화한 것은 그 중 하나뿐이다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>   MCP와 무관한 영역                    MCP가 표준화한 영역
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>◄─────────────────────►    ◄──────────────────────────────►
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>┌───────┐  벤더 고유 형식    ┌──────┐     JSON-RPC 2.0     ┌──────────┐
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>│  LLM  │ ═══════════════ │ Host │ ═══════════════════ │MCP Server│
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>│       │  (REST API)     │      │  (MCP 프로토콜)       │          │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>└───────┘                 └──────┘                     └──────────┘
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>                              ▲
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>                              │
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>                         Host가 번역</span></span></code></pre></div><p><strong>구간 ① Host ↔ LLM (벤더 고유 형식, MCP와 무관)</strong>
+Host가 LLM에게 &ldquo;사용 가능한 도구 목록&quot;과 &ldquo;사용자 메시지&quot;를 보내는 구간이다. 이것은 <strong>각 LLM 벤더의 REST API 형식</strong>을 따르며, JSON-RPC가 아니다.</p>
+<p>LLM이 도구 호출이 필요하다고 판단하면, 역시 벤더 고유 형식으로 응답한다. 같은 내용이라도 벤더마다 형식이 다르다.<br>
+LLM이 이런 형식의 JSON을 어떻게 만들어내는가? LLM이 학습/파인튜닝을 통해 이 형식을 &ldquo;생성&quot;하도록 훈련된 것이다. <strong>MCP는 이 구간에 전혀 관여하지 않는다.</strong></p>
+<p><strong>구간 ② MCP Client ↔ MCP Server (JSON-RPC 2.0, MCP 표준)</strong>
+LLM이 &ldquo;이 도구를 호출해달라&quot;고 응답하면, Host가 그 벤더 고유 형식을 파싱하여 <strong>MCP 표준 형식(JSON-RPC 2.0)으로 변환</strong>한 후, MCP Client를 통해 Server에 전달한다.</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>  <span style="color:#ca9ee6">&#34;jsonrpc&#34;</span>: <span style="color:#a6d189">&#34;2.0&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>  <span style="color:#ca9ee6">&#34;id&#34;</span>: <span style="color:#ef9f76">1</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>  <span style="color:#ca9ee6">&#34;method&#34;</span>: <span style="color:#a6d189">&#34;tools/call&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>  <span style="color:#ca9ee6">&#34;params&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>    <span style="color:#ca9ee6">&#34;name&#34;</span>: <span style="color:#a6d189">&#34;create_github_issue&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>    <span style="color:#ca9ee6">&#34;arguments&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>      <span style="color:#ca9ee6">&#34;repo&#34;</span>: <span style="color:#a6d189">&#34;myorg/myrepo&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>      <span style="color:#ca9ee6">&#34;title&#34;</span>: <span style="color:#a6d189">&#34;버그 수정 필요&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>      <span style="color:#ca9ee6">&#34;body&#34;</span>: <span style="color:#a6d189">&#34;로그인 페이지에서 오류 발생&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>}</span></span></code></pre></div><p>서버가 실행 결과를 돌려보내면, 역시 JSON-RPC 형식이다:</p>
+
+
+
+
+
+<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>  <span style="color:#ca9ee6">&#34;jsonrpc&#34;</span>: <span style="color:#a6d189">&#34;2.0&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>  <span style="color:#ca9ee6">&#34;id&#34;</span>: <span style="color:#ef9f76">1</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>  <span style="color:#ca9ee6">&#34;result&#34;</span>: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>    <span style="color:#ca9ee6">&#34;content&#34;</span>: [{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>      <span style="color:#ca9ee6">&#34;type&#34;</span>: <span style="color:#a6d189">&#34;text&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>      <span style="color:#ca9ee6">&#34;text&#34;</span>: <span style="color:#a6d189">&#34;이슈 #143이 성공적으로 생성되었습니다.&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>    }]
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>}</span></span></code></pre></div><p>정리하면, <strong>Host가 중간에서 번역기 역할</strong>을 한다. LLM의 벤더 고유 형식을 MCP 형식으로 변환하고, MCP 결과를 다시 벤더 형식으로 변환하여 LLM에게 넘긴다.<br>
+MCP가 표준화한 것은 &ldquo;AI 앱 ↔ 외부 도구&rdquo; 구간이지, &ldquo;AI 앱 ↔ LLM&rdquo; 구간이 아니다. 비유하자면, MCP는 <strong>도구 쪽의 커넥터를 USB-C로 통일한 것</strong>이고, LLM 쪽의 커넥터는 아직 각 벤더가 자기 방식을 쓰고 있는 셈이다. 그래서 GitHub MCP 서버를 한 번 만들어 두면, Cursor에서든 Claude Desktop에서든 어떤 LLM을 쓰든 그대로 작동한다. 각 Host가 자기 LLM의 tool calling 형식을 MCP 형식으로 번역하는 부분만 구현하면 된다.</p>
+<h3 id="llm의-tool-calling은-실패할-수-있다">LLM의 Tool Calling은 실패할 수 있다</h3>
+<p>여기서 자연스럽게 따라오는 질문이 있다. LLM이 tool calling을 어떤 형식으로 할지는 학습을 통해 익힌 것인데, <strong>잘못된 형식으로 응답할 수도 있지 않은가?</strong>
+맞다. LLM은 결국 다음 토큰을 예측하는 모델이다. Tool calling 응답도 LLM이 <code>{</code>, <code>&quot;</code>, <code>n</code>, <code>a</code>, <code>m</code>, <code>e</code>, &hellip; 이렇게 토큰을 하나씩 생성한 결과물이다. 그래서 다양한 오류가 발생할 수 있다:</p>
+<ul>
+<li><strong>JSON 문법 오류</strong>: 복잡한 중첩 구조에서 괄호 짝을 놓치는 경우</li>
+<li><strong>존재하지 않는 도구 이름</strong>: <code>create_github_issue</code>가 아닌 <code>make_github_issue</code>처럼 비슷하지만 다른 이름을 환각(hallucinate)하는 경우</li>
+<li><strong>잘못된 파라미터</strong>: 스키마에 <code>repo</code>로 정의된 필드를 <code>repository</code>로 쓰거나, 필수 필드를 빠뜨리는 경우</li>
+<li><strong>타입 불일치</strong>: 배열(array)이어야 할 값을 문자열로 생성하는 경우</li>
+</ul>
+<p>최신 LLM들은 파인튜닝을 통해 올바른 JSON을 생성하도록 훈련되며, OpenAI의 Structured Outputs처럼 <strong>Constrained Decoding(제약 디코딩)</strong> 을 적용하는 경우도 있다. Constrained Decoding은 토큰 생성 시 JSON 문법에 맞는 토큰만 선택되도록 확률 분포를 제한하는 방식이다. 이런 기법들 덕분에 GPT-4나 Claude 같은 모델에서 JSON 문법 오류 자체는 거의 발생하지 않는다. 하지만 <strong>&ldquo;문법적으로 올바르지만 의미적으로 틀린&rdquo;</strong> 경우(잘못된 도구 이름, 잘못된 파라미터)는 여전히 발생한다.</p>
+<p>이를 완화하기 위해 Host는 도구 이름이 실제 존재하는지 확인하고, 파라미터가 스키마에 맞는지 검증하며, 필수 필드 누락 여부를 체크하는 등의 검증을 수행한다.<br>
+그래서 LLM의 tool calling은 100% 신뢰할 수 없다. 이것이 MCP 스펙에서 Host가 <strong>모든 도구 호출에 대해 사용자의 명시적 동의를 받도록</strong> 설계 원칙에 명시하고 있는 이유다. 실무적으로는 <code>readOnlyHint</code>, <code>destructiveHint</code> 같은 어노테이션을 활용해 위험도에 따라 자동 승인 정책을 적용하기도 하지만, 기본 원칙은 모든 도구에 대한 사용자 승인이다. Cursor에서 터미널 명령 실행 전에 승인을 묻는 것도 같은 맥락이다.</p>
+<h3 id="전송-계층transport">전송 계층(Transport)</h3>
+<p>MCP는 두 가지 표준 전송 방식을 정의한다:</p>
+<p><strong>1. stdio (Standard I/O)</strong></p>
+
+
+
+
+
+<pre tabindex="0"><code>Host 프로세스 ──stdin/stdout──→ Server 프로세스 (자식 프로세스)</code></pre><ul>
+<li>Host가 MCP 서버를 <strong>자식 프로세스</strong>로 실행한다.</li>
+<li>stdin/stdout을 통해 JSON-RPC 메시지를 주고받는다.</li>
+<li>로컬 도구에 적합하다. (파일 시스템, 로컬 DB 등)</li>
+</ul>
+<p><strong>2. Streamable HTTP</strong></p>
+
+
+
+
+
+<pre tabindex="0"><code>Client ──HTTP POST/GET──→ Remote Server 
+  ←── SSE (Server-Sent Events) ──</code></pre><ul>
+<li>서버가 독립적인 HTTP 서비스로 운영된다.</li>
+<li>POST로 요청을 보내고, SSE로 스트리밍 응답을 받을 수 있다.</li>
+<li>원격 서비스에 적합하다. (클라우드 API, SaaS 등)</li>
+</ul>
+<h2 id="마치며">마치며</h2>
+<p>MCP는 혁명적인 새 기술이 아니다. Function Calling이라는 검증된 개념을 가져다가, LSP라는 검증된 아키텍처 패턴을 적용하고, JSON-RPC라는 검증된 프로토콜 위에 구축한 것이다. <strong>올바른 추상화를 올바른 시점에 제시한 것</strong> — 그것이 MCP가 빠르게 산업 표준이 된 이유다.</p>
+<p>LLM은 이제 더 이상 고립된 천재가 아니다. MCP라는 표준 연결 고리를 통해, AI는 비로소 <strong>세상과 연결된 지능</strong>이 되어가고 있다.</p>
+<hr>
+<p><em>이 글은 2026년 3월 기준으로 작성되었습니다.</em></p>
+
+</content>
+<p>
+  
+    <a class="blog-tags" href="/tags/mcp/">#mcp</a>
+  
+</p>
+
+
+  <p>
+    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"MCP"'>
+      Reply to this post by email ↪
+    </a>
+  </p>
+
+
+
+  </main>
+  <footer><small>
+  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
+</small></footer>
+
+  
+<script>
+    (function () {
+        
+        const toggleWrapper = document.createElement('label');
+        toggleWrapper.className = 'theme-switch';
+        toggleWrapper.setAttribute('aria-label', 'Toggle theme');
+        toggleWrapper.setAttribute('title', 'Toggle light/dark mode');
+
+        toggleWrapper.innerHTML = `
+            <input type="checkbox" id="theme-toggle-checkbox">
+            <span class="slider">
+                <svg class="icon moon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+            </span>
+        `;
+
+        const checkbox = toggleWrapper.querySelector('#theme-toggle-checkbox');
+
+        
+        function updateCheckbox() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            checkbox.checked = isDark;
+        }
+
+        
+        checkbox.addEventListener('change', function () {
+            const newTheme = this.checked ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        
+        document.body.appendChild(toggleWrapper);
+
+        
+        updateCheckbox();
+
+        
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+                if (!localStorage.getItem('theme')) {
+                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+                    updateCheckbox();
+                }
+            });
+        }
+    })();
+</script>
+
+
+<script>
+    (function () {
+        
+        const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>`;
+
+        
+        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>`;
+
+        
+        document.querySelectorAll('.highlight').forEach(function (highlightBlock) {
+            
+            if (highlightBlock.querySelector('.code-copy-btn')) return;
+
+            
+            const button = document.createElement('button');
+            button.className = 'code-copy-btn';
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Copy code to clipboard');
+            button.innerHTML = copyIcon;
+
+            
+            button.addEventListener('click', function () {
+                
+                const codeElement = highlightBlock.querySelector('code');
+                if (!codeElement) return;
+
+                let codeText = '';
+
+                
+                
+                
+                const lineWrappers = codeElement.querySelectorAll('span[style*="display:flex"]');
+
+                if (lineWrappers.length > 0) {
+                    lineWrappers.forEach(function (wrapper) {
+                        const spans = wrapper.querySelectorAll(':scope > span');
+                        if (spans.length >= 2) {
+                            
+                            codeText += spans[spans.length - 1].textContent;
+                        } else if (spans.length === 1) {
+                            
+                            codeText += spans[0].textContent;
+                        }
+                    });
+                } else {
+                    
+                    codeText = codeElement.textContent;
+                }
+
+                
+                navigator.clipboard.writeText(codeText.trim()).then(function () {
+                    
+                    button.innerHTML = checkIcon;
+                    button.classList.add('copied');
+
+                    
+                    setTimeout(function () {
+                        button.innerHTML = copyIcon;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(function (err) {
+                    console.error('Failed to copy code:', err);
+                });
+            });
+
+            
+            highlightBlock.appendChild(button);
+        });
+    })();
+</script></body>
+
+</html>
