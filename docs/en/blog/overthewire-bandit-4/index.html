@@ -13,7 +13,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
 <title>OverTheWire Bandit (4) | Grrru Blog</title>
 
-<link rel="stylesheet" href="/css/style.min.021251fd309590386c8ca3bfd467062a8b2eb083f4b88cbeb606a0935f6d39a8.css" integrity="sha256-AhJR/TCVkDhsjKO/1GcGKosusIP0uIy&#43;tgagk19tOag=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous"><link href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" rel="stylesheet"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+<link rel="stylesheet" href="/css/style.min.9dd2b9f18c2379ed7da7c8b55e4da2086a3183c5f0903aee9201289c1beb5bf1.css" integrity="sha256-ndK58Ywjee19p8i1Xk2iCGoxg8XwkDrukgEonBvrW/E=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous"><link href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" rel="stylesheet"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
   <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -32,6 +32,7 @@
   });
   </script>
       <script defer src="/js/main.efe1c5af6419872348da040541422cd54f4c7676d6c803aa83022a39b416901a.js" integrity="sha256-7&#43;HFr2QZhyNI2gQFQUIs1U9MdnbWyAOqgwIqObQWkBo=" crossorigin="anonymous"></script>
+      <script defer src="/js/toc-toggle.6da3c46f7f1cb150840ea365cd46eef2fa3a103272aedc562b65c9d9572d0697.js" integrity="sha256-baPEb38csVCEDqNlzUbu8vo6EDJyrtxWK2XJ2VctBpc=" crossorigin="anonymous"></script>
 
 
 </head>
@@ -75,10 +76,30 @@
         January 13, 2026
       </time>
     </p>
-  </header><div class="post-content">
-    <h3 id="level-28">
-  Level 28
-</h3>
+  </header>
+  <div class="toc-wrapper">
+    <button id="toc-toggle-button" type="button" aria-expanded="false" title="Toggle Contents">
+      Contents <span id="toc-toggle-arrow">▼</span>
+    </button>
+    <div id="toc-container" role="navigation" aria-label="Table of Contents">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-level-28">1. level 28</a></li>
+    <li><a href="#2-level-29">2. level 29</a></li>
+    <li><a href="#3-level-30">3. level 30</a></li>
+    <li><a href="#4-level-31">4. level 31</a></li>
+    <li><a href="#5-level-32">5. level 32</a></li>
+    <li><a href="#6-level-33">6. level 33</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    <h2 id="1-level-28">
+  1. level 28
+</h2>
 <p>There is a git repository at <code>ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit28-git</code> is the same as for the user <code>bandit28</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
@@ -236,9 +257,9 @@ I checked <code>git log</code> and found a commit titled <code>fix info leak</co
     </button>
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git reset --hard HEAD~1
 </span></span><span class="line"><span class="cl">cat README.md</span></span></code></pre></div></div>
-<h3 id="level-29">
-  Level 29
-</h3>
+<h2 id="2-level-29">
+  2. level 29
+</h2>
 <p>There is a git repository at <code>ssh://bandit29-git@bandit.labs.overthewire.org/home/bandit29-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit29-git</code> is the same as for the user <code>bandit29</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
@@ -309,9 +330,9 @@ I found it by switching to the <code>dev</code> branch and digging through the <
     </button>
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">What the -p option produces is slightly different from the traditional diff format:</span></span></code></pre></div></div>
 <hr>
-<h3 id="level-30">
-  Level 30
-</h3>
+<h2 id="3-level-30">
+  3. level 30
+</h2>
 <p>There is a git repository at <code>ssh://bandit30-git@bandit.labs.overthewire.org/home/bandit30-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit30-git</code> is the same as for the user <code>bandit30</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
@@ -416,9 +437,9 @@ I found it by switching to the <code>dev</code> branch and digging through the <
     </button>
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git show secret</span></span></code></pre></div></div>
 <hr>
-<h3 id="level-31">
-  Level 31
-</h3>
+<h2 id="4-level-31">
+  4. level 31
+</h2>
 <p>There is a git repository at <code>ssh://bandit31-git@bandit.labs.overthewire.org/home/bandit31-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit31-git</code> is the same as for the user <code>bandit31</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
@@ -533,9 +554,9 @@ I found it by switching to the <code>dev</code> branch and digging through the <
 </span></span><span class="line"><span class="cl">remote: Well <span class="k">done</span>! Here is the password <span class="k">for</span> the next level:</span></span></code></pre></div></div>
 <p>The push doesn&rsquo;t actually happen, but it gives you the password.</p>
 <hr>
-<h3 id="level-32">
-  Level 32
-</h3>
+<h2 id="5-level-32">
+  5. level 32
+</h2>
 <p>After all this <code>git</code> stuff, it’s time for another escape. Good luck!</p>
 <hr>
 <p>The <code>git</code> problems are over!</p>
@@ -820,9 +841,9 @@ Executing <code>/usr/bin/bash</code> from here starts the <code>bash</code> shel
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">$ <span class="nb">kill</span> -term <span class="m">3</span>
 </span></span><span class="line"><span class="cl">Connection to bandit.labs.overthewire.org closed.</span></span></code></pre></div></div>
 <hr>
-<h3 id="level-33">
-  Level 33
-</h3>
+<h2 id="6-level-33">
+  6. level 33
+</h2>
 <p><strong>At this moment, level 34 does not exist yet.</strong></p>
 <p>That’s it!</p>
 

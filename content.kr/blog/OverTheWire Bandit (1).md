@@ -10,14 +10,14 @@ tags:
 author: grrru
 ---
 
-### OverTheWire Bandit
+## 0. OverTheWire Bandit
 [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)
 
 리눅스 연습!
 > 각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. `bandit1`)에 접속할 수 있다.
 
 ---
-### level 0
+## 1. level 0
 The password for the next level is stored in a file called **readme** located in the home directory. Use this password to log into bandit1 using SSH. Whenever you find a password for a level, use SSH (on port 2220) to log into that level and continue the game.
 
 ---
@@ -35,7 +35,8 @@ cat ~/readme
 ```
 
 ---
-### level 1
+
+## 2. level 1
 The password for the next level is stored in a file called **-** located in the home directory
 
 ---
@@ -57,7 +58,8 @@ cat ./- ## dashed file의 위치를 지정하여 읽음
 ```
 
 ---
-### level 2
+
+## 3. level 2
 The password for the next level is stored in a file called `--spaces in this filename--` located in the home directory
 
 ---
@@ -69,7 +71,8 @@ cat ./--spaces\ in\ this\ filename--
 ```
 
 ---
-### level 3
+
+## 4. level 3
 The password for the next level is stored in a hidden file in the **inhere** directory.
 
 ---
@@ -83,7 +86,8 @@ cat ./...Hiding-From-You
 주로 `ls -al`을 사용하는데, `l` 옵션은 권한, 소유자, 그룹, 크기, 시간 등을 한 줄씩 출력해줘서 읽기 편한듯,,
 
 ---
-### level 4
+
+## 5. level 4
 The password for the next level is stored in the only human-readable file in the **inhere** directory. Tip: if your terminal is messed up, try the “reset” command.
 
 ---
@@ -97,7 +101,8 @@ file -i ./*
 파일 하나만 `ASCII text`으로 사람이 읽을 수 있다.
 
 ---
-### level 5
+
+## 6. level 5
 The password for the next level is stored in a file somewhere under the **inhere** directory and has all of the following properties:
 
 ---
@@ -139,7 +144,8 @@ find . -type f -size 1033c ! -executable
 `-executable`: 실행 가능한 것을 의미하며 앞에 `!`을 붙여 부정으로 바꿀 수 있다.
 
 ---
-### level 6
+
+## 7. level 6
 The password for the next level is stored **somewhere on the server** and has all of the following properties:
 
 ---
@@ -159,7 +165,8 @@ find / -type f -size 33c -user bandit7 -group bandit6 2>/dev/null
 `2>/dev/null`은 sderr 2를 `/dev/null`로 리다이렉션(`>`)하여 에러 출력이 버려지도록 한다.
 
 ---
-### level 7
+
+## 8. level 7
 The password for the next level is stored in the file **data.txt** next to the word **millionth**
 
 ---
@@ -171,7 +178,8 @@ cat data.txt | grep millionth
 ```
 
 ---
-### level 8
+
+## 9. level 8
 The password for the next level is stored in the file **data.txt** and is the only line of text that occurs only once
 
 ---
@@ -184,7 +192,8 @@ sort data.txt | uniq -iu
 `uniq` 커맨드는 중복되는 line을 제거하고 출력해준다. `-d`는 중복된 내용만 출력, `-u`는 고유한 내용만 출력, `-i`는 대소문자 구분 무시 옵션이다.
 
 ---
-### level 9
+
+## 10. level 9
 The password for the next level is stored in the file **data.txt** in one of the few human-readable strings, preceded by several ‘=’ characters.
 
 ---
@@ -197,7 +206,8 @@ strings data.txt | grep '='
 `strings`는 파일에 포함된 string을 뽑아낼 수 있다.
 
 ---
-### level 10
+
+## 11. level 10
 The password for the next level is stored in the file **data.txt**, which contains base64 encoded data
 
 ---
@@ -209,7 +219,8 @@ cat data.txt | base64 -d
 `base64 -d` 커맨드로 문자열을 디코딩하여 원래 바이너리를 출력한다.
 
 ---
-### level 11
+
+## 12. level 11
 The password for the next level is stored in the file **data.txt**, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
 
 ---

@@ -57,6 +57,9 @@ mainSections = ["blog"]
 [params.home.recent]
 limit = 5
 
+[params.post]
+enableTOC = false
+
 [params.social]
 github = "https://github.com/grrru"
 linkedin = "https://www.linkedin.com/in/grrru/"

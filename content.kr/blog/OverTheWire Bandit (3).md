@@ -10,7 +10,7 @@ tags:
 author: grrru
 ---
 
-### Level 21
+## 1. Level 21
 A program is running automatically at regular intervals from **cron**, the time-based job scheduler. Look in **/etc/cron.d/** for the configuration and see what command is being executed.
 
 ---
@@ -47,7 +47,7 @@ cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
 ```
 
 ---
-### Level 22
+## 2. Level 22
 A program is running automatically at regular intervals from **cron**, the time-based job scheduler. Look in **/etc/cron.d/** for the configuration and see what command is being executed.
 
 **NOTE:** Looking at shell scripts written by other people is a very useful skill. The script for this level is intentionally made easy to read. If you are having problems understanding what it does, try executing it to see the debug information it prints.
@@ -84,7 +84,7 @@ cat /tmp/$mytarget
 ```
 
 
-### Level 23
+## 3. Level 23
 A program is running automatically at regular intervals from **cron**, the time-based job scheduler. Look in **/etc/cron.d/** for the configuration and see what command is being executed.
 
 **NOTE:** This level requires you to create your own first shell-script. This is a very big step and you should be proud of yourself when you beat this level!
@@ -163,7 +163,7 @@ cat /tmp/asdfghjkl
 
 ---
 
-### Level 24
+## 4. Level 24
 A daemon is listening on port 30002 and will give you the password for bandit25 if given the password for bandit24 and a secret numeric 4-digit pincode. There is no way to retrieve the pincode except by going through all of the 10000 combinations, called brute-forcing.  
 You do not need to create new connections each time
 
@@ -207,7 +207,7 @@ done
 ```
 
 ---
-### Level 25
+## 5. Level 25
 Logging in to bandit26 from bandit25 should be fairly easy… The shell for user bandit26 is not **/bin/bash**, but something else. Find out what it is, how it works and how to break out of it.
 
 > NOTE: if you’re a Windows user and typically use Powershell to `ssh` into bandit: Powershell is known to cause issues with the intended solution to this level. You should use command prompt instead.
@@ -286,7 +286,7 @@ s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
 
 ---
 
-### Level 26
+## 6. Level 26
 Good job getting a shell! Now hurry and grab the password for bandit27!
 
 ---
@@ -311,7 +311,7 @@ uid=11026(bandit26) gid=11026(bandit26) euid=11027(bandit27) groups=11026(bandit
 
 ---
 
-### Level 27
+## 7. Level 27
 There is a git repository at `ssh://bandit27-git@bandit.labs.overthewire.org/home/bandit27-git/repo` via the port `2220`. The password for the user `bandit27-git` is the same as for the user `bandit27`.
 
 Clone the repository and find the password for the next level.

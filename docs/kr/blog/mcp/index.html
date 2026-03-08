@@ -13,8 +13,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
 <title>MCP (Model Context Protocol) | Grrru Blog</title>
 
-<link rel="stylesheet" href="/css/style.min.021251fd309590386c8ca3bfd467062a8b2eb083f4b88cbeb606a0935f6d39a8.css" integrity="sha256-AhJR/TCVkDhsjKO/1GcGKosusIP0uIy&#43;tgagk19tOag=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/style.min.9dd2b9f18c2379ed7da7c8b55e4da2086a3183c5f0903aee9201289c1beb5bf1.css" integrity="sha256-ndK58Ywjee19p8i1Xk2iCGoxg8XwkDrukgEonBvrW/E=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous">
       <script defer src="/js/main.efe1c5af6419872348da040541422cd54f4c7676d6c803aa83022a39b416901a.js" integrity="sha256-7&#43;HFr2QZhyNI2gQFQUIs1U9MdnbWyAOqgwIqObQWkBo=" crossorigin="anonymous"></script>
+      <script defer src="/js/toc-toggle.6da3c46f7f1cb150840ea365cd46eef2fa3a103272aedc562b65c9d9572d0697.js" integrity="sha256-baPEb38csVCEDqNlzUbu8vo6EDJyrtxWK2XJ2VctBpc=" crossorigin="anonymous"></script>
 
 
 </head>
@@ -58,9 +59,56 @@
         March 3, 2026
       </time>
     </p>
-  </header><div class="post-content">
-    <h2 id="들어가며">
-  들어가며
+  </header>
+  <div class="toc-wrapper">
+    <button id="toc-toggle-button" type="button" aria-expanded="false" title="Toggle Contents">
+      Contents <span id="toc-toggle-arrow">▼</span>
+    </button>
+    <div id="toc-container" role="navigation" aria-label="Table of Contents">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-들어가며">0. 들어가며</a></li>
+    <li><a href="#1-llm의-한계">1. LLM의 한계</a></li>
+    <li><a href="#2-function-calling의-등장">2. Function Calling의 등장</a>
+      <ul>
+        <li><a href="#function-calling이란">Function Calling이란</a></li>
+        <li><a href="#한계">한계</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-ai-agent의-시대---tools-그리고-skills">3. AI Agent의 시대 - Tools, 그리고 Skills</a>
+      <ul>
+        <li><a href="#agent-패러다임의-폭발">Agent 패러다임의 폭발</a></li>
+        <li><a href="#tools-agent의-도구-상자">Tools: Agent의 도구 상자</a></li>
+        <li><a href="#skills-더-모듈화된-접근">Skills: 더 모듈화된 접근</a></li>
+        <li><a href="#nm-통합-문제">N×M 통합 문제</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-mcp의-탄생">4. MCP의 탄생</a>
+      <ul>
+        <li><a href="#mcp란">MCP란</a></li>
+        <li><a href="#왜-mcp가-필요했는가">왜 MCP가 필요했는가</a></li>
+        <li><a href="#language-server-protocol에서-영감을-얻다">Language Server Protocol에서 영감을 얻다</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-mcp의-동작-원리">5. MCP의 동작 원리</a>
+      <ul>
+        <li><a href="#아키텍처-host--client--server">아키텍처: Host → Client → Server</a></li>
+        <li><a href="#서버가-제공하는-세-가지--tools-resources-prompts">서버가 제공하는 세 가지 — Tools, Resources, Prompts</a></li>
+        <li><a href="#mcp가-표준화한-것과-하지-않은-것--두-개의-통신-구간">MCP가 표준화한 것과 하지 않은 것 — 두 개의 통신 구간</a></li>
+        <li><a href="#llm의-tool-calling은-실패할-수-있다">LLM의 Tool Calling은 실패할 수 있다</a></li>
+        <li><a href="#전송-계층transport">전송 계층(Transport)</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-마치며">6. 마치며</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    <h2 id="0-들어가며">
+  0. 들어가며
 </h2>
 <p>2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 <strong>텍스트를 생성하는 모델</strong>일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.</p>
 <p>이 글은 LLM이 외부 세계와 연결되기 위해 거쳐 온 여정을 다룬다. Function Calling의 등장, AI Agent와 Tools 생태계의 폭발, 그리고 마침내 등장한 <strong>MCP(Model Context Protocol)</strong> 까지. 이 흐름을 이해하면, MCP가 단순한 새 기술이 아니라 필연적인 귀결이었음을 알 수 있다.</p>
@@ -809,8 +857,8 @@ MCP가 표준화한 것은 &ldquo;AI 앱 ↔ 외부 도구&rdquo; 구간이지, 
 <li>POST로 요청을 보내고, SSE로 스트리밍 응답을 받을 수 있다.</li>
 <li>원격 서비스에 적합하다. (클라우드 API, SaaS 등)</li>
 </ul>
-<h2 id="마치며">
-  마치며
+<h2 id="6-마치며">
+  6. 마치며
 </h2>
 <p>MCP는 혁명적인 새 기술이 아니다. Function Calling이라는 검증된 개념을 가져다가, LSP라는 검증된 아키텍처 패턴을 적용하고, JSON-RPC라는 검증된 프로토콜 위에 구축한 것이다. <strong>올바른 추상화를 올바른 시점에 제시한 것</strong> — 그것이 MCP가 빠르게 산업 표준이 된 이유다.</p>
 <p>LLM은 이제 더 이상 고립된 천재가 아니다. MCP라는 표준 연결 고리를 통해, AI는 비로소 <strong>세상과 연결된 지능</strong>이 되어가고 있다.</p>
@@ -820,7 +868,7 @@ MCP가 표준화한 것은 &ldquo;AI 앱 ↔ 외부 도구&rdquo; 구간이지, 
   </div>
 
   <footer class="post-footer">
-  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/kr/tags/mcp/">#mcp</a></div></div>
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/kr/tags/mcp/">#mcp</a><a rel="nofollow" href="/kr/tags/llm/">#llm</a><a rel="nofollow" href="/kr/tags/ai/">#ai</a></div></div>
 </footer>
 </article>
 

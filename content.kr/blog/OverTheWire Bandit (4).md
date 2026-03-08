@@ -10,7 +10,7 @@ tags:
 author: grrru
 ---
 
-### Level 28
+## 1. Level 28
 There is a git repository at `ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo` via the port `2220`. The password for the user `bandit28-git` is the same as for the user `bandit28`.
 
 Clone the repository and find the password for the next level.
@@ -64,7 +64,7 @@ git reset --hard HEAD~1
 cat README.md
 ```
 
-### Level 29
+## 2. Level 29
 There is a git repository at `ssh://bandit29-git@bandit.labs.overthewire.org/home/bandit29-git/repo` via the port `2220`. The password for the user `bandit29-git` is the same as for the user `bandit29`.
 
 Clone the repository and find the password for the next level.
@@ -85,7 +85,7 @@ What the -p option produces is slightly different from the traditional diff form
 
 ---
 
-### Level 30
+## 3. Level 30
 There is a git repository at `ssh://bandit30-git@bandit.labs.overthewire.org/home/bandit30-git/repo` via the port `2220`. The password for the user `bandit30-git` is the same as for the user `bandit30`.
 
 Clone the repository and find the password for the next level.
@@ -112,7 +112,7 @@ git show secret
 
 ---
 
-### Level 31
+## 4. Level 31
 There is a git repository at `ssh://bandit31-git@bandit.labs.overthewire.org/home/bandit31-git/repo` via the port `2220`. The password for the user `bandit31-git` is the same as for the user `bandit31`.
 
 Clone the repository and find the password for the next level.
@@ -151,7 +151,7 @@ push는 안되지만 password를 알려준다.
 
 ---
 
-### Level 32
+## 5. Level 32
 After all this `git` stuff, it’s time for another escape. Good luck!
 
 ---
@@ -221,7 +221,7 @@ Connection to bandit.labs.overthewire.org closed.
 
 ---
 
-### Level 33
+## 6. Level 33
 **At this moment, level 34 does not exist yet.**
 
 That’s it!

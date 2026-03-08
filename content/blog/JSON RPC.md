@@ -7,7 +7,7 @@ tags: ["JSON-RPC"]
 author: "grrru"
 ---
 
-## JSON
+## 1. JSON
 
 Stands for JavaScript Object Notation, a collection of `key-value` pairs.
 
@@ -25,7 +25,7 @@ JSON has a concise syntax and is parsed faster than XML.
 
 ---
 
-## JSON RPC
+## 2. JSON RPC
 
 `RPC` stands for Remote Procedure Call, a communication technology that allows calling programs (functions/procedures) on another computer connected via a network as if they were local functions, without separate remote control coding.
 
@@ -52,13 +52,13 @@ JSON has a concise syntax and is parsed faster than XML.
 
 ---
 
-## Advantages of JSON RPC
+## 3. Advantages of JSON RPC
 
 It is simple, intuitive, language-independent, efficient for network communication, highly scalable, and easy to handle errors.
 
 ---
 
-## Reference
+## 4. Reference
 
 - [# What is JSON RPC?](https://lab.wallarm.com/what/json-rpc%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80/?lang=ko)
 

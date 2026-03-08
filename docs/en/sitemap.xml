@@ -15,6 +15,19 @@
                 href="/en/"
                 />
   </url><url>
+    <loc>/en/tags/ai/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/ai/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/ai/"
+                />
+  </url><url>
     <loc>/en/blog/</loc>
     <lastmod>2026-03-03T00:00:00+00:00</lastmod>
     <xhtml:link
@@ -39,6 +52,19 @@
                 rel="alternate"
                 hreflang="en-US"
                 href="/en/categories/"
+                />
+  </url><url>
+    <loc>/en/tags/llm/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/llm/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/llm/"
                 />
   </url><url>
     <loc>/en/categories/mcp/</loc>

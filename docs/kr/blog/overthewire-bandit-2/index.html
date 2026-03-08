@@ -13,8 +13,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
 <title>OverTheWire Bandit (2) | Grrru Blog</title>
 
-<link rel="stylesheet" href="/css/style.min.021251fd309590386c8ca3bfd467062a8b2eb083f4b88cbeb606a0935f6d39a8.css" integrity="sha256-AhJR/TCVkDhsjKO/1GcGKosusIP0uIy&#43;tgagk19tOag=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/style.min.9dd2b9f18c2379ed7da7c8b55e4da2086a3183c5f0903aee9201289c1beb5bf1.css" integrity="sha256-ndK58Ywjee19p8i1Xk2iCGoxg8XwkDrukgEonBvrW/E=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous">
       <script defer src="/js/main.efe1c5af6419872348da040541422cd54f4c7676d6c803aa83022a39b416901a.js" integrity="sha256-7&#43;HFr2QZhyNI2gQFQUIs1U9MdnbWyAOqgwIqObQWkBo=" crossorigin="anonymous"></script>
+      <script defer src="/js/toc-toggle.6da3c46f7f1cb150840ea365cd46eef2fa3a103272aedc562b65c9d9572d0697.js" integrity="sha256-baPEb38csVCEDqNlzUbu8vo6EDJyrtxWK2XJ2VctBpc=" crossorigin="anonymous"></script>
 
 
 </head>
@@ -58,15 +59,38 @@
         January 7, 2026
       </time>
     </p>
-  </header><div class="post-content">
-    <blockquote>
-<p><a href="https://overthewire.org/wargames/bandit/">OverTheWire: Bandit</a><br>
-<code>Level 12</code>부터 ~</p>
-</blockquote>
+  </header>
+  <div class="toc-wrapper">
+    <button id="toc-toggle-button" type="button" aria-expanded="false" title="Toggle Contents">
+      Contents <span id="toc-toggle-arrow">▼</span>
+    </button>
+    <div id="toc-container" role="navigation" aria-label="Table of Contents">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#0-level-12부터">0. Level 12부터</a></li>
+    <li><a href="#1-level-12">1. level 12</a></li>
+    <li><a href="#2-level-13">2. level 13</a></li>
+    <li><a href="#3-level-14">3. level 14</a></li>
+    <li><a href="#4-level-15">4. level 15</a></li>
+    <li><a href="#5-level-16">5. level 16</a></li>
+    <li><a href="#6-level-17">6. level 17</a></li>
+    <li><a href="#7-level-18">7. level 18</a></li>
+    <li><a href="#8-level-19">8. level 19</a></li>
+    <li><a href="#9-level-20">9. level 20</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    <h2 id="0-level-12부터">
+  0. Level 12부터
+</h2>
 <hr>
-<h3 id="level-12">
-  Level 12
-</h3>
+<h2 id="1-level-12">
+  1. level 12
+</h2>
 <p>The password for the next level is stored in the file <strong>data.txt</strong>, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work. Use mkdir with a hard to guess directory name. Or better, use the command “mktemp -d”. Then copy the datafile using cp, and rename it using mv (read the manpages!)</p>
 <hr>
 <p>hexadump file을 압축 해제해가면서 원본 데이터 파일을 얻어야 한다.</p>
@@ -144,9 +168,9 @@
 </span></span><span class="line"><span class="cl">tar -xf data2.tar</span></span></code></pre></div></div>
 <p>위 3개만 반복해서 나왔던 듯.. 10번 정도 하면 text 파일이 나온다.</p>
 <hr>
-<h3 id="level-13">
-  Level 13
-</h3>
+<h2 id="2-level-13">
+  2. level 13
+</h2>
 <p>The password for the next level is stored in <strong>/etc/bandit_pass/bandit14 and can only be read by user bandit14</strong>. For this level, you don’t get the next password, but you get a private SSH key that can be used to log into the next level. Look at the commands that logged you into previous bandit levels, and find out how to use the key for this level.</p>
 <hr>
 <p><code>/etc/bandit_pass/bandit14</code>를 읽으면 되지만.. <code>bandit13</code>으로는 읽을 수 없다..</p>
@@ -282,9 +306,9 @@
 </span></span><span class="line"><span class="cl">ssh -i key bandit14@bandit.labs.overthewire.org -p <span class="m">2220</span>
 </span></span><span class="line"><span class="cl">cat /etc/bandit_pass/bandit14</span></span></code></pre></div></div>
 <hr>
-<h3 id="level-14">
-  Level 14
-</h3>
+<h2 id="3-level-14">
+  3. level 14
+</h2>
 <p>The password for the next level can be retrieved by submitting the password of the current level to <strong>port 30000 on localhost</strong>.</p>
 <hr>
 <p><code>localhost:30000</code>으로 level 14의 passwd를 보내면 된다.</p>
@@ -321,9 +345,9 @@
     </button>
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nb">echo</span> MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS <span class="p">|</span> nc localhost <span class="m">30000</span></span></span></code></pre></div></div>
 <hr>
-<h3 id="level-15">
-  Level 15
-</h3>
+<h2 id="4-level-15">
+  4. level 15
+</h2>
 <p>The password for the next level can be retrieved by submitting the password of the current level to <strong>port 30001 on localhost</strong> using SSL/TLS encryption.</p>
 <p><strong>Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.</strong></p>
 <hr>
@@ -363,9 +387,9 @@
 <p><code>s_client</code>는 SSL/TLS 세션을 연결하겠다는 뜻이다.<br>
 세션이 연결되면 level14 password를 붙여넣는다.</p>
 <hr>
-<h3 id="level-16">
-  Level 16
-</h3>
+<h2 id="5-level-16">
+  5. level 16
+</h2>
 <p>The credentials for the next level can be retrieved by submitting the password of the current level to <strong>a port on localhost in the range 31000 to 32000</strong>. First find out which of these ports have a server listening on them. Then find out which of those speak SSL/TLS and which don’t. There is only 1 server that will give the next credentials, the others will simply send back to you whatever you send to it.</p>
 <hr>
 <p><strong>Helpful note: Getting “DONE”, “RENEGOTIATING” or “KEYUPDATE”? Read the “CONNECTED COMMANDS” section in the manpage.</strong></p>
@@ -437,9 +461,9 @@
 이를 피하려면 <code>-quiet</code> 옵션을 붙여서 인터렉티브 모드로 들어가지 않도록 해야 한다.
 <code>Correct!</code>가 나오면 RSA private key를 준다. (비밀번호가 아니라 credentials를 준다.)</p>
 <hr>
-<h3 id="level-17">
-  Level 17
-</h3>
+<h2 id="6-level-17">
+  6. level 17
+</h2>
 <p>There are 2 files in the homedirectory: <strong>passwords.old and passwords.new</strong>. The password for the next level is in <strong>passwords.new</strong> and is the only line that has been changed between <strong>passwords.old and passwords.new</strong></p>
 <p><strong>NOTE: if you have solved this level and see ‘Byebye!’ when trying to log into bandit18, this is related to the next level, bandit19</strong></p>
 <hr>
@@ -508,9 +532,9 @@
     </button>
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">diff passwords.new passwords.old</span></span></code></pre></div></div>
 <hr>
-<h3 id="level-18">
-  Level 18
-</h3>
+<h2 id="7-level-18">
+  7. level 18
+</h2>
 <p>The password for the next level is stored in a file <strong>readme</strong> in the homedirectory. Unfortunately, someone has modified <strong>.bashrc</strong> to log you out when you log in with SSH.</p>
 <hr>
 <p>누군가 장난을 쳐서 로그인하자마자 로그아웃된다. <code>readme</code>를 읽으면 되므로 ssh 뒤에 command를 달아서 즉시 출력한다.<br>
@@ -547,9 +571,9 @@ command는 <code>;</code>로 여러 명렁을 구분할 수 있다.</p>
     </button>
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">ssh bandit18@bandit.labs.overthewire.org -p <span class="m">2220</span> <span class="s1">&#39;ls -al;cat ~/readme&#39;</span></span></span></code></pre></div></div>
 <hr>
-<h3 id="level-19">
-  Level 19
-</h3>
+<h2 id="8-level-19">
+  8. level 19
+</h2>
 <p>To gain access to the next level, you should use the setuid binary in the homedirectory. Execute it without arguments to find out how to use it. The password for this level can be found in the usual place (/etc/bandit_pass), after you have used the setuid binary.</p>
 <hr>
 <p>homedirectory에 있는 <code>setuid binary</code>를 이용하면 된다. 예시를 보려면 arguments 없이 써보라고 한다.</p>
@@ -622,9 +646,9 @@ command는 <code>;</code>로 여러 명렁을 구분할 수 있다.</p>
     </button>
   </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">./bandit20-do cat /etc/bandit_pass/bandit20</span></span></code></pre></div></div>
 <hr>
-<h3 id="level-20">
-  Level 20
-</h3>
+<h2 id="9-level-20">
+  9. level 20
+</h2>
 <p>There is a setuid binary in the homedirectory that does the following: it makes a connection to localhost on the port you specify as a commandline argument. It then reads a line of text from the connection and compares it to the password in the previous level (bandit20). If the password is correct, it will transmit the password for the next level (bandit21).</p>
 <hr>
 <p><strong>NOTE:</strong> Try connecting to your own network daemon to see if it works as you think</p>

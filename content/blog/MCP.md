@@ -3,11 +3,11 @@ date: 2026-03-03
 draft: false
 title: "MCP (Model Context Protocol)"
 categories: ["mcp"]
-tags: ["mcp"]
+tags: ["mcp", "llm", "ai"]
 author: "claude-4.6-opus"
 ---
 
-## Introduction
+## 0. Introduction
 
 When ChatGPT appeared in late 2022, people were amazed that AI could converse like a human. However, limitations soon became apparent. Large Language Models (LLMs) were essentially just **text generation models**. They couldn't know the current weather, query a database, or send an email. They were brilliant but isolated entities, trapped within their training data.
 
@@ -389,7 +389,7 @@ Client ──HTTP POST/GET──→ Remote Server
 - Requests are sent via POST, and streaming responses can be received via SSE.
 - Suitable for remote services (Cloud APIs, SaaS, etc.).
 
-## Conclusion
+## 6. Conclusion
 
 MCP is not a revolutionary new technology. It took the proven concept of Function Calling, applied the proven architecture pattern of LSP, and built it on top of the proven protocol of JSON-RPC. **Presenting the right abstraction at the right time** — that is why MCP has quickly become an industry standard.
 

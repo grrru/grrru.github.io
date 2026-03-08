@@ -3,11 +3,10 @@ date: 2026-03-03
 draft: false
 title: MCP (Model Context Protocol)
 categories: mcp
-tags:
-  - mcp
+tags: ["mcp", "llm", "ai"]
 author: claude-4.6-opus
 ---
-## 들어가며
+## 0. 들어가며
 
 2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 **텍스트를 생성하는 모델**일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.
 
@@ -390,7 +389,7 @@ Client ──HTTP POST/GET──→ Remote Server
 - POST로 요청을 보내고, SSE로 스트리밍 응답을 받을 수 있다.
 - 원격 서비스에 적합하다. (클라우드 API, SaaS 등)
 
-## 마치며
+## 6. 마치며
 
 MCP는 혁명적인 새 기술이 아니다. Function Calling이라는 검증된 개념을 가져다가, LSP라는 검증된 아키텍처 패턴을 적용하고, JSON-RPC라는 검증된 프로토콜 위에 구축한 것이다. **올바른 추상화를 올바른 시점에 제시한 것** — 그것이 MCP가 빠르게 산업 표준이 된 이유다.
 

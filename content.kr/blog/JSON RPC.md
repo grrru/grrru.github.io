@@ -8,7 +8,7 @@ tags:
 author: grrru
 ---
 
-## JSON
+## 1. JSON
 
 JavaScript Object Notation의 약자로, `key-value` 쌍의 집합.
 
@@ -26,7 +26,7 @@ JSON은 구문이 간결하고 XML보다 빠르게 파싱된다.
 
 ---
 
-## JSON RPC
+## 2. JSON RPC
 
 `RPC`는 Remote Procedure Call의 약자로, 별도의 원격 제어 코딩 없이 네트워크로 연결된 다른 컴퓨터의 프로그램(함수/프로시저)를 로컬 함수처럼 호출하는 통신 기술이다.  
 
@@ -53,15 +53,14 @@ JSON은 구문이 간결하고 XML보다 빠르게 파싱된다.
 
 ---
 
-## JSON RPC 장점
+## 3. JSON RPC 장점
 
 간단하고 직관적이며 언어 독립적이고 네트워크 통신에 효율적이며 확장성이 높고 에러 처리가 용이하다.
 
 ---
 
-## Reference
+## 4. Reference
 
 - [# JSON RPC란 무엇인가?](https://lab.wallarm.com/what/json-rpc%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80/?lang=ko)
 
 ---
-

@@ -7,14 +7,14 @@ tags: ["linux", "overthewire", "bandit"]
 author: "grrru"
 ---
 
-### OverTheWire Bandit
+## 0. OverTheWire Bandit
 [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/)
 
 Practice Linux!
 > You can connect to the next level's user (e.g., `bandit1`) using the password obtained in each stage.
 
 ---
-### level 0
+## 1. level 0
 The password for the next level is stored in a file called **readme** located in the home directory. Use this password to log into bandit1 using SSH. Whenever you find a password for a level, use SSH (on port 2220) to log into that level and continue the game.
 
 ---
@@ -32,7 +32,7 @@ cat ~/readme
 ```
 
 ---
-### level 1
+## 2. level 1
 The password for the next level is stored in a file called **-** located in the home directory
 
 ---
@@ -54,7 +54,7 @@ cat ./- ## Read by specifying the file's location
 ```
 
 ---
-### level 2
+## 3. level 2
 The password for the next level is stored in a file called `--spaces in this filename--` located in the home directory
 
 ---
@@ -66,7 +66,7 @@ cat ./--spaces\ in\ this\ filename--
 ```
 
 ---
-### level 3
+## 4. level 3
 The password for the next level is stored in a hidden file in the **inhere** directory.
 
 ---
@@ -80,7 +80,7 @@ cat ./...Hiding-From-You
 `ls -al` is commonly used as the `l` option provides permissions, owner, group, size, and time in a line-by-line format, making it easy to read.
 
 ---
-### level 4
+## 5. level 4
 The password for the next level is stored in the only human-readable file in the **inhere** directory. Tip: if your terminal is messed up, try the “reset” command.
 
 ---
@@ -94,7 +94,7 @@ file -i ./*
 Only one file will be `ASCII text`, which is human-readable.
 
 ---
-### level 5
+## 6. level 5
 The password for the next level is stored in a file somewhere under the **inhere** directory and has all of the following properties:
 
 ---
@@ -136,7 +136,7 @@ find . -type f -size 1033c ! -executable
 `-executable`: Refers to executable items; adding `!` negates it.
 
 ---
-### level 6
+## 7. level 6
 The password for the next level is stored **somewhere on the server** and has all of the following properties:
 
 ---
@@ -156,7 +156,7 @@ Without `2>/dev/null`, the `find` command will output `Permission Denied` error 
 `2>/dev/null` redirects `stderr` (2) to `/dev/null`, discarding the error output.
 
 ---
-### level 7
+## 8. level 7
 The password for the next level is stored in the file **data.txt** next to the word **millionth**
 
 ---
@@ -168,7 +168,7 @@ cat data.txt | grep millionth
 ```
 
 ---
-### level 8
+## 9. level 8
 The password for the next level is stored in the file **data.txt** and is the only line of text that occurs only once
 
 ---
@@ -181,7 +181,7 @@ sort data.txt | uniq -iu
 The `uniq` command removes duplicate lines and outputs the result. `-d` outputs only duplicates, `-u` outputs only unique content, and `-i` ignores case.
 
 ---
-### level 9
+## 10. level 9
 The password for the next level is stored in the file **data.txt** in one of the few human-readable strings, preceded by several ‘=’ characters.
 
 ---
@@ -194,7 +194,7 @@ strings data.txt | grep '='
 `strings` extracts strings contained in a file.
 
 ---
-### level 10
+## 11. level 10
 The password for the next level is stored in the file **data.txt**, which contains base64 encoded data
 
 ---
@@ -206,7 +206,7 @@ cat data.txt | base64 -d
 The `base64 -d` command decodes the string and outputs the original binary.
 
 ---
-### level 11
+## 12. level 11
 The password for the next level is stored in the file **data.txt**, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
 
 ---
