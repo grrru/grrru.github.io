@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Grrru Blog</title>
-    <link>https://grrru.github.io/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on Grrru Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-US</language>
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
     <lastBuildDate>Tue, 03 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://grrru.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mcp</title>
-      <link>https://grrru.github.io/categories/mcp/</link>
+      <link>http://localhost:1313/categories/mcp/</link>
       <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>https://grrru.github.io/categories/mcp/</guid>
+      <guid>http://localhost:1313/categories/mcp/</guid>
       <description></description>
-      <content:encoded><![CDATA[]]></content:encoded>
     </item>
     <item>
       <title>Backend</title>
-      <link>https://grrru.github.io/categories/backend/</link>
+      <link>http://localhost:1313/categories/backend/</link>
       <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>https://grrru.github.io/categories/backend/</guid>
+      <guid>http://localhost:1313/categories/backend/</guid>
       <description></description>
-      <content:encoded><![CDATA[]]></content:encoded>
     </item>
     <item>
       <title>Linux</title>
-      <link>https://grrru.github.io/categories/linux/</link>
+      <link>http://localhost:1313/categories/linux/</link>
       <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>https://grrru.github.io/categories/linux/</guid>
+      <guid>http://localhost:1313/categories/linux/</guid>
       <description></description>
-      <content:encoded><![CDATA[]]></content:encoded>
     </item>
   </channel>
 </rss>

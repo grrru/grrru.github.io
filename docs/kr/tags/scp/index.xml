@@ -1,41 +1,22 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Scp on Grrru Blog</title>
-    <link>https://grrru.github.io/kr/tags/scp/</link>
+    <link>/kr/tags/scp/</link>
     <description>Recent content in Scp on Grrru Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>kr-KR</language>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
     <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://grrru.github.io/kr/tags/scp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/kr/tags/scp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>scp</title>
-      <link>https://grrru.github.io/kr/blog/scp/</link>
+      <link>/kr/blog/scp/</link>
       <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>https://grrru.github.io/kr/blog/scp/</guid>
-      <description>&lt;h2 id=&#34;현재-조건-정리&#34;&gt;현재 조건 정리&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;server1 -&amp;gt; server2 : ssh private key O&lt;/li&gt;&#xA;&lt;li&gt;server2 -&amp;gt; server1 : ssh private key X&lt;/li&gt;&#xA;&lt;li&gt;목표: server2의 파일을 server1로 이동&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;scp&#34;&gt;scp&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;server1에서 실행&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;1&lt;/span&gt;&lt;span&gt;scp user2@server2:/src/file /dst/   &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# file&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;2&lt;/span&gt;&lt;span&gt;scp -r user2@server2:/src/dir /dst/ &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# directory&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;3&lt;/span&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7&#34;&gt;4&lt;/span&gt;&lt;span&gt;rsync -av user2@server2:/src/ /dst/ &lt;span style=&#34;color:#737994;font-style:italic&#34;&gt;# 대용량 -&amp;gt; test는 안해봄&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-      <content:encoded><![CDATA[<h2 id="현재-조건-정리">현재 조건 정리</h2>
-<ul>
-<li>server1 -&gt; server2 : ssh private key O</li>
-<li>server2 -&gt; server1 : ssh private key X</li>
-<li>목표: server2의 파일을 server1로 이동</li>
-</ul>
-<h2 id="scp">scp</h2>
-<ul>
-<li>server1에서 실행</li>
-</ul>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>scp user2@server2:/src/file /dst/   <span style="color:#737994;font-style:italic"># file</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>scp -r user2@server2:/src/dir /dst/ <span style="color:#737994;font-style:italic"># directory</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>rsync -av user2@server2:/src/ /dst/ <span style="color:#737994;font-style:italic"># 대용량 -&gt; test는 안해봄</span></span></span></code></pre></div>]]></content:encoded>
+      <guid>/kr/blog/scp/</guid>
+      <description>&lt;h2 id=&#34;현재-조건-정리&#34;&gt;&#xA;  현재 조건 정리&#xA;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;server1 -&amp;gt; server2 : ssh private key O&lt;/li&gt;&#xA;&lt;li&gt;server2 -&amp;gt; server1 : ssh private key X&lt;/li&gt;&#xA;&lt;li&gt;목표: server2의 파일을 server1로 이동&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;scp&#34;&gt;&#xA;  scp&#xA;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;server1에서 실행&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;div class=&#34;codeblock&#34;&gt;&#xA;  &lt;div class=&#34;codeblock-actions&#34;&gt;&#xA;    &lt;button type=&#34;button&#34;&#xA;            class=&#34;codeblock-action codeblock-action--wrap&#34;&#xA;            data-wrap-toggle&#xA;            data-icon-button&#xA;            aria-pressed=&#34;false&#34;&#xA;            title=&#34;Enable soft wrap&#34;&#xA;            data-wrap-title=&#34;Enable soft wrap&#34;&#xA;            data-nowrap-title=&#34;Disable soft wrap&#34;&gt;&#xA;      &lt;svg viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;path d=&#34;M4 6h16M4 10h12a4 4 0 0 1 0 8h-2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34;/&gt;&#xA;        &lt;path d=&#34;M14 18l-2-2m2 2l-2 2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;&#xA;      &lt;/svg&gt;&#xA;    &lt;/button&gt;&#xA;&#xA;    &lt;button type=&#34;button&#34;&#xA;            class=&#34;codeblock-action codeblock-action--copy&#34;&#xA;            data-copy-code&#xA;            data-icon-button&#xA;            title=&#34;Copy code&#34;&#xA;            data-copied-title=&#34;COPIED&#34;&gt;&#xA;      &lt;svg class=&#34;icon-copy&#34; viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;rect x=&#34;9&#34; y=&#34;9&#34; width=&#34;13&#34; height=&#34;13&#34; rx=&#34;2&#34; ry=&#34;2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34;&gt;&lt;/rect&gt;&#xA;        &lt;path d=&#34;M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34;&gt;&lt;/path&gt;&#xA;      &lt;/svg&gt;&#xA;      &lt;svg class=&#34;icon-check&#34; viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;path d=&#34;M20 6L9 17l-5-5&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&lt;/path&gt;&#xA;      &lt;/svg&gt;&#xA;    &lt;/button&gt;&#xA;  &lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp user2@server2:/src/file /dst/   &lt;span class=&#34;c1&#34;&gt;# file&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -r user2@server2:/src/dir /dst/ &lt;span class=&#34;c1&#34;&gt;# directory&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -av user2@server2:/src/ /dst/ &lt;span class=&#34;c1&#34;&gt;# 대용량 -&amp;gt; test는 안해봄&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</description>
     </item>
   </channel>
 </rss>

@@ -1,829 +1,904 @@
 <!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="https://grrru.github.io/images/favicon-32X32.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
 <title>OverTheWire Bandit (4) | Grrru Blog</title>
-<meta name="title" content="OverTheWire Bandit (4)" />
-<meta name="description" content="Level 28
-There is a git repository at ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo via the port 2220. The password for the user bandit28-git is the same as for the user bandit28.
-Clone the repository and find the password for the next level.
 
-git clone 후 README.md를 까봤다.
-
-
-
-
-
-1git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
-2
-3cd repo
-4cat README.md
-
-
-
-
-1# Bandit Notes
-2Some notes for level29 of bandit.
-3
-4## credentials
-5
-6- username: bandit29
-7- password: xxxxxxxxxxREADME.md에는 별 내용이 없다.
-git log를 확인했더니 fix info leak라는 커밋이 있다." />
-<meta name="author" content="grrru" />
-<meta name="keywords" content="linux,overthewire,bandit," />
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta property="og:title" content="OverTheWire Bandit (4)" />
-<meta property="og:description" content="Level 28
-There is a git repository at ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo via the port 2220. The password for the user bandit28-git is the same as for the user bandit28.
-Clone the repository and find the password for the next level.
-
-git clone 후 README.md를 까봤다.
-
-
-
-
-
-1git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
-2
-3cd repo
-4cat README.md
-
-
-
-
-1# Bandit Notes
-2Some notes for level29 of bandit.
-3
-4## credentials
-5
-6- username: bandit29
-7- password: xxxxxxxxxxREADME.md에는 별 내용이 없다.
-git log를 확인했더니 fix info leak라는 커밋이 있다." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://grrru.github.io/blog/overthewire-bandit-4/" />
-
-<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_90afd3759b48b3a5.webp"/><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2026-01-13T00:00:00+00:00" />
-<meta property="article:modified_time" content="2026-01-13T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
-<meta property="fb:admins" content="0000000000" />
-
-
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_90afd3759b48b3a5.webp"/>
-<meta name="twitter:title" content="OverTheWire Bandit (4)"/>
-<meta name="twitter:description" content="Level 28
-There is a git repository at ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo via the port 2220. The password for the user bandit28-git is the same as for the user bandit28.
-Clone the repository and find the password for the next level.
-
-git clone 후 README.md를 까봤다.
-
-
-
-
-
-1git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
-2
-3cd repo
-4cat README.md
-
-
-
-
-1# Bandit Notes
-2Some notes for level29 of bandit.
-3
-4## credentials
-5
-6- username: bandit29
-7- password: xxxxxxxxxxREADME.md에는 별 내용이 없다.
-git log를 확인했더니 fix info leak라는 커밋이 있다."/>
-<meta name="twitter:site" content="@example"/>
-
-
-
-<meta itemprop="name" content="OverTheWire Bandit (4)">
-<meta itemprop="description" content="Level 28
-There is a git repository at ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo via the port 2220. The password for the user bandit28-git is the same as for the user bandit28.
-Clone the repository and find the password for the next level.
-
-git clone 후 README.md를 까봤다.
-
-
-
-
-
-1git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
-2
-3cd repo
-4cat README.md
-
-
-
-
-1# Bandit Notes
-2Some notes for level29 of bandit.
-3
-4## credentials
-5
-6- username: bandit29
-7- password: xxxxxxxxxxREADME.md에는 별 내용이 없다.
-git log를 확인했더니 fix info leak라는 커밋이 있다."><meta itemprop="datePublished" content="2026-01-13T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2026-01-13T00:00:00+00:00" />
-<meta itemprop="wordCount" content="659">
-
-<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_90afd3759b48b3a5.webp"/>
-
-
-<meta itemprop="keywords" content="linux,overthewire,bandit," />
-
-<meta name="referrer" content="no-referrer-when-downgrade" />
-
-  
-  <link href="/original.min.css" rel="stylesheet">
-
-  
-    
-    <link href="/syntax.min.css" rel="stylesheet">
-  
-
-  
-
-  
-<style>
-   
-  :root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --heading-color: #1a1a1a;
-    --link-color: #0066cc;
-    --link-visited-color: #551a8b;
-    --border-color: #333333;
-    --blockquote-color: #666666;
-    --code-bg: #f5f5f5;
-    --code-text: #333333;
-    --input-bg: #f5f5f5;
-    --input-text: #333333;
-    --helptext-color: #666666;
-    --skip-link-bg: #ffffff;
-    --figcaption-color: #666666;
-  }
-
-   
-  [data-theme="dark"] {
-    --bg-color: #1d1f27;
-    --text-color: #c9d1d9;
-    --heading-color: #eeeeee;
-    --link-color: #8cc2dd;
-    --link-visited-color: #8b6fcb;
-    --border-color: #c9d1d9;
-    --blockquote-color: #cccccc;
-    --code-bg: #282a36;
-    --code-text: #f8f8f2;
-    --input-bg: #252525;
-    --input-text: #dddddd;
-    --helptext-color: #aaaaaa;
-    --skip-link-bg: #1d1f27;
-    --figcaption-color: #cccccc;
-  }
-
-   
-  body {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  strong,
-  b {
-    color: var(--heading-color) !important;
-  }
-
-  a {
-    color: var(--link-color) !important;
-  }
-
-  ul.blog-posts li a:visited {
-    color: var(--link-visited-color) !important;
-  }
-
-  table,
-  th,
-  td {
-    border-color: var(--border-color) !important;
-  }
-
-  blockquote {
-    border-left-color: #999 !important;
-    color: var(--blockquote-color) !important;
-  }
-
-  code {
-    background-color: var(--code-bg) !important;
-    color: var(--code-text) !important;
-  }
-
-  textarea,
-  input {
-    background-color: var(--input-bg) !important;
-    color: var(--input-text) !important;
-  }
-
-  .helptext {
-    color: var(--helptext-color) !important;
-  }
-
-  .skip-link {
-    background-color: var(--skip-link-bg) !important;
-  }
-
-  figcaption>p {
-    color: var(--figcaption-color) !important;
-  }
-
-   
-  .theme-switch {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: inline-block;
-    width: 52px;
-    height: 26px;
-    cursor: pointer;
-  }
-
-  .theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .theme-switch .slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 26px;
-    transition: background-color 0.3s;
-  }
-
-  .theme-switch .slider::before {
-    content: '';
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background-color: var(--bg-color);
-    border-radius: 50%;
-    transition: transform 0.3s;
-  }
-
-  .theme-switch input:checked+.slider::before {
-    transform: translateX(26px);
-  }
-
-  .theme-switch .icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    color: var(--text-color);
-    transition: opacity 0.3s;
-  }
-
-  .theme-switch .moon {
-    left: 5px;
-    opacity: 1;
-  }
-
-  .theme-switch .sun {
-    right: 5px;
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .moon {
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .sun {
-    opacity: 1;
-  }
-
-  .theme-switch:focus-within .slider {
-    outline: 2px solid var(--link-color);
-    outline-offset: 2px;
-  }
-
-   
-  .highlight {
-    position: relative;
-  }
-
-  .code-copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 8px;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    cursor: pointer;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.2s, background-color 0.2s;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .highlight:hover .code-copy-btn {
-    opacity: 1;
-  }
-
-  .code-copy-btn:hover {
-    background-color: var(--input-bg);
-  }
-
-  .code-copy-btn:active {
-    transform: scale(0.95);
-  }
-
-  .code-copy-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .code-copy-btn.copied {
-    color: #22c55e;
-    border-color: #22c55e;
-  }
-</style>
-
-
-<script>
-  (function () {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-theme', 'dark');
+<link rel="stylesheet" href="/css/style.34d638306027d0aab6fb13dd71a53072cf9b40625c44cbfbe9915ab5a5fdf041.css"><link rel="stylesheet" href="/css/pygments-friendly.8a524ea06b3e0ded4ac287fa92ac82550c9f0fe09820b2787e3a1484ba27a28b.css"><link href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" rel="stylesheet"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\\\[", right: "\\\\]", display: true},
+          {left: "\\\\(", right: "\\\\)", display: false}
+        ],
+        throwOnError: false,
+        ignoredTags: ["script","noscript","style","textarea","pre","code"]
+      });
     }
-  })();
-</script></head>
+  });
+  </script>
+      <script defer src="/js/main.3a35234d925ee11ffb302a37a387cfdb9ae838561b2df6f26dc6898328c9f0d3.js"></script>
 
+
+</head>
 <body>
-  <header><a class="skip-link" href="#main-content">Skip to main content</a>
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/">
+      <h1>Grrru Blog</h1>
+    </a>
+  </div>
 
-<a href="/" class="title"><h1>Grrru Blog</h1></a>
-<nav>
-  <a href="/">Home</a>
+  <nav class="site-nav"><a href="/">Home</a>
+     <a href="/blog/">Blog</a>
+    <a href="/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
 
-  <a href="/blog/">Blog</a>
-
-
-
-
-
-
-
-
-
-</nav>
-</header>
-  <main id="main-content">
-
-<h1>OverTheWire Bandit (4)</h1>
-<p class="byline">
-  <time datetime='2026-01-13' pubdate>
-    2026-01-13
-  </time>
-  · grrru
-</p>
-
-<content>
-  <h3 id="level-28">Level 28</h3>
-<p>There is a git repository at <code>ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit28-git</code> is the same as for the user <code>bandit28</code>.</p>
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title">OverTheWire Bandit (4)</h1>
+    <p class="post-meta">
+      <time datetime="2026-01-13">
+        January 13, 2026
+      </time>
+    </p>
+  </header><div class="post-content">
+    <h3 id="level-28">
+  Level 28
+</h3>
+<p>There is a git repository at <code>ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit28-git</code> is the same as for the user <code>bandit28</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
-<p><code>git clone</code> 후 <code>README.md</code>를 까봤다.</p>
+<p>After <code>git clone</code>, I checked <code>README.md</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> repo
+</span></span><span class="line"><span class="cl">cat README.md</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"># Bandit Notes
+</span></span><span class="line"><span class="cl">Some notes for level29 of bandit.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">## credentials
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- username: bandit29
+</span></span><span class="line"><span class="cl">- password: xxxxxxxxxx</span></span></code></pre></div></div>
+<p>There wasn&rsquo;t much in <code>README.md</code>.
+I checked <code>git log</code> and found a commit titled <code>fix info leak</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">* commit b0354c7be30f500854c5fc971c57e9cbe632fef6 (HEAD -&gt; master, origin/master, origin/HEAD)
+</span></span><span class="line"><span class="cl">| Author: Morla Porla &lt;morla@overthewire.org&gt;
+</span></span><span class="line"><span class="cl">| Date:   Tue Oct 14 09:26:19 2025 +0000
+</span></span><span class="line"><span class="cl">|
+</span></span><span class="line"><span class="cl">|     fix info leak
+</span></span><span class="line"><span class="cl">|
+</span></span><span class="line"><span class="cl">* commit d0cf2ab7dd7ebc6075b59102a980155268f0fe8f
+</span></span><span class="line"><span class="cl">| Author: Morla Porla &lt;morla@overthewire.org&gt;
+</span></span><span class="line"><span class="cl">| Date:   Tue Oct 14 09:26:19 2025 +0000
+</span></span><span class="line"><span class="cl">|
+</span></span><span class="line"><span class="cl">|     add missing data
+</span></span><span class="line"><span class="cl">|
+</span></span><span class="line"><span class="cl">* commit bd6bc3a57f81518bb2ce63f5816607a754ba730d
+</span></span><span class="line"><span class="cl">  Author: Ben Dover &lt;noone@overthewire.org&gt;
+</span></span><span class="line"><span class="cl">  Date:   Tue Oct 14 09:26:18 2025 +0000
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      initial commit of README.md</span></span></code></pre></div></div>
+<p>I reverted to the previous commit.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span><span style="color:#99d1db">cd</span> repo
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>cat README.md</span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span># Bandit Notes
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>Some notes for level29 of bandit.
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>## credentials
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>- username: bandit29
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span>- password: xxxxxxxxxx</span></span></code></pre></div><p><code>README.md</code>에는 별 내용이 없다.<br>
-<code>git log</code>를 확인했더니 <code>fix info leak</code>라는 커밋이 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>* commit b0354c7be30f500854c5fc971c57e9cbe632fef6 (HEAD -&gt; master, origin/master, origin/HEAD)
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>| Author: Morla Porla &lt;morla@overthewire.org&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>| Date:   Tue Oct 14 09:26:19 2025 +0000
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>|
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>|     fix info leak
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>|
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>* commit d0cf2ab7dd7ebc6075b59102a980155268f0fe8f
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>| Author: Morla Porla &lt;morla@overthewire.org&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>| Date:   Tue Oct 14 09:26:19 2025 +0000
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>|
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>|     add missing data
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>|
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>* commit bd6bc3a57f81518bb2ce63f5816607a754ba730d
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>  Author: Ben Dover &lt;noone@overthewire.org&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span>  Date:   Tue Oct 14 09:26:18 2025 +0000
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>      initial commit of README.md</span></span></code></pre></div><p>이전 커밋으로 되돌려 본다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git reset --hard HEAD~1
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat README.md</span></span></code></pre></div><h3 id="level-29">Level 29</h3>
-<p>There is a git repository at <code>ssh://bandit29-git@bandit.labs.overthewire.org/home/bandit29-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit29-git</code> is the same as for the user <code>bandit29</code>.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git reset --hard HEAD~1
+</span></span><span class="line"><span class="cl">cat README.md</span></span></code></pre></div></div>
+<h3 id="level-29">
+  Level 29
+</h3>
+<p>There is a git repository at <code>ssh://bandit29-git@bandit.labs.overthewire.org/home/bandit29-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit29-git</code> is the same as for the user <code>bandit29</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
-<p>Level 28과 똑같이 <code>git</code>을 뒤져가며 찾는 문제다.<br>
-<code>dev</code> branch로 바꾼 후에 <code>log</code>를 뒤져서 찾아냈다.</p>
+<p>Similar to Level 28, this problem involves searching through <code>git</code>.
+I found it by switching to the <code>dev</code> branch and digging through the <code>log</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git switch dev
+</span></span><span class="line"><span class="cl">git log -p</span></span></code></pre></div></div>
+<p>The <code>-p</code> option in <code>git log</code> shows the <code>diff</code> in detail.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git switch dev
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>git log -p</span></span></code></pre></div><p><code>git log</code>에서 <code>-p</code> 옵션은 <code>diff</code>를 상세하게 보여주는 옵션이다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>What the -p option produces is slightly different from the traditional diff format:</span></span></code></pre></div><hr>
-<h3 id="level-30">Level 30</h3>
-<p>There is a git repository at <code>ssh://bandit30-git@bandit.labs.overthewire.org/home/bandit30-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit30-git</code> is the same as for the user <code>bandit30</code>.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">What the -p option produces is slightly different from the traditional diff format:</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-30">
+  Level 30
+</h3>
+<p>There is a git repository at <code>ssh://bandit30-git@bandit.labs.overthewire.org/home/bandit30-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit30-git</code> is the same as for the user <code>bandit30</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
-<p><code>git branch -rvv</code>해도 branch는 하나밖에 없고 <code>git log</code>를 봐도 아무것도 없다.</p>
+<p>Running <code>git branch -rvv</code> showed only one branch, and <code>git log</code> showed nothing.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git --no-pager log</span></span></code></pre></div><blockquote>
-<p><code>git --no-pager</code>로 보면 commit id를 <code>pager</code> 없이 바로 출력할 수 있다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git --no-pager log</span></span></code></pre></div></div>
+<blockquote>
+<p>Using <code>git --no-pager</code> outputs the commit ID directly without a <code>pager</code>.</p>
 </blockquote>
-<p><code>git tag</code>를 하니 단서가 나온다.</p>
+<p>Running <code>git tag</code> provided a clue.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git tag
+</span></span><span class="line"><span class="cl">secret</span></span></code></pre></div></div>
+<p>The password-like string appeared immediately!</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git tag
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>secret</span></span></code></pre></div><p>그냥 바로 password같은 문자열이 나온다..!</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git show secret</span></span></code></pre></div><hr>
-<h3 id="level-31">Level 31</h3>
-<p>There is a git repository at <code>ssh://bandit31-git@bandit.labs.overthewire.org/home/bandit31-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit31-git</code> is the same as for the user <code>bandit31</code>.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git show secret</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-31">
+  Level 31
+</h3>
+<p>There is a git repository at <code>ssh://bandit31-git@bandit.labs.overthewire.org/home/bandit31-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit31-git</code> is the same as for the user <code>bandit31</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
-<p><code>git clone</code>해오면 <code>README.md</code>가 있다.</p>
+<p>After <code>git clone</code>, there is a <code>README.md</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">This time your task is to push a file to the remote repository.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Details:
+</span></span><span class="line"><span class="cl">    File name: key.txt
+</span></span><span class="line"><span class="cl">    Content: &#39;May I come in?&#39;
+</span></span><span class="line"><span class="cl">    Branch: master</span></span></code></pre></div></div>
+<p>The task was to push. I was a bit unsure, but I created <code>key.txt</code> as instructed, wrote <code>May I come in?</code>, and added it.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git add key.txt
+</span></span><span class="line"><span class="cl">The following paths are ignored by one of your .gitignore files:
+</span></span><span class="line"><span class="cl">key.txt
+</span></span><span class="line"><span class="cl">hint: Use -f <span class="k">if</span> you really want to add them.
+</span></span><span class="line"><span class="cl">hint: Disable this message with <span class="s2">&#34;git config set advice.addIgnoredFile false&#34;</span></span></span></code></pre></div></div>
+<p>Since <code>*.txt</code> is in <code>.gitignore</code>, I had to use <code>-f</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>This time your task is to push a file to the remote repository.
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>Details:
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>    File name: key.txt
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>    Content: &#39;May I come in?&#39;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>    Branch: master</span></span></code></pre></div><p>push를 하라는데, 이게 맞나 긴가민가했지만 써있는대로 <code>key.txt</code> 만들고 <code>May I come in?</code>이라고 쓰고 add했다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git add key.txt
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>The following paths are ignored by one of your .gitignore files:
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>key.txt
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>hint: Use -f <span style="color:#ca9ee6">if</span> you really want to add them.
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>hint: Disable this message with <span style="color:#a6d189">&#34;git config set advice.addIgnoredFile false&#34;</span></span></span></code></pre></div><p><code>.gitignore</code>에서 <code>*.txt</code>가 있어서 <code>-f</code>를 써야 한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>git add -f key.txt
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>git commit -m <span style="color:#a6d189">&#34;test&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>git push
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>remote: Well <span style="color:#ca9ee6">done</span>! Here is the password <span style="color:#ca9ee6">for</span> the next level:</span></span></code></pre></div><p>push는 안되지만 password를 알려준다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">git add -f key.txt
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;test&#34;</span>
+</span></span><span class="line"><span class="cl">git push
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">remote: Well <span class="k">done</span>! Here is the password <span class="k">for</span> the next level:</span></span></code></pre></div></div>
+<p>The push doesn&rsquo;t actually happen, but it gives you the password.</p>
 <hr>
-<h3 id="level-32">Level 32</h3>
-<p>After all this <code>git</code> stuff, it’s time for another escape. Good luck!</p>
+<h3 id="level-32">
+  Level 32
+</h3>
+<p>After all this <code>git</code> stuff, it’s time for another escape. Good luck!</p>
 <hr>
-<p><code>git</code> 문제는 끝났다!</p>
+<p>The <code>git</code> problems are over!</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">ssh bandit32@bandit.labs.overthewire.org -p <span class="m">2220</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">WELCOME TO THE UPPERCASE SHELL
+</span></span><span class="line"><span class="cl">&gt;&gt;
+</span></span><span class="line"><span class="cl">&gt;&gt;</span></span></code></pre></div></div>
+<p>Upon connecting, the <code>UPPERCASE SHELL</code> is executed. This shell converts every command you type into uppercase.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit32@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>WELCOME TO THE UPPERCASE SHELL
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>&gt;&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>&gt;&gt;</span></span></code></pre></div><p>접속하면 <code>UPPERCASE SHELL</code>라는 쉘이 실행된다. 입력하는 모든 command를 대문자로 치환하는 쉘이다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>&gt;&gt; <span style="color:#f2d5cf">$SHELL</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>WELCOME TO THE UPPERCASE SHELL</span></span></code></pre></div><blockquote>
-<p>문제 해결 후 회상</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">&gt;&gt; <span class="nv">$SHELL</span>
+</span></span><span class="line"><span class="cl">WELCOME TO THE UPPERCASE SHELL</span></span></code></pre></div></div>
+<blockquote>
+<p>Reflections after solving:</p>
 </blockquote>
-<p><code>$0</code>을 입력하면 현재 실행 중인 쉘의 실행 경로가 입력되어 쉘이 재실행된다.<br>
-이 문제의 세팅을 보면 login shell은 <code>uppershell</code>이다.</p>
+<p>Typing <code>$0</code> executes the current shell&rsquo;s path, restarting the shell.
+Looking at the settings for this problem, the login shell is <code>uppershell</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /etc/passwd <span class="p">|</span> grep bandit32
+</span></span><span class="line"><span class="cl">bandit32:x:11032:11032:bandit level 32:/home/bandit32:/home/bandit32/uppershell
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$SHELL</span>
+</span></span><span class="line"><span class="cl">/home/bandit32/uppershell</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">$ <span class="nv">$0</span>
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="nv">$0</span>
+</span></span><span class="line"><span class="cl">sh</span></span></code></pre></div></div>
+<p>Executing <code>$0</code> runs <code>sh</code>, which means the shell executing this command was <code>sh</code>.
+It seems that <code>uppershell</code> was executed immediately after login and it, in turn, executed <code>sh</code>.
+Executing <code>/usr/bin/bash</code> from here starts the <code>bash</code> shell used in bandit.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/passwd | grep bandit32
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>bandit32:x:11032:11032:bandit level 32:/home/bandit32:/home/bandit32/uppershell
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#99d1db">echo</span> <span style="color:#f2d5cf">$SHELL</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>/home/bandit32/uppershell</span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>$ <span style="color:#f2d5cf">$0</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>$ <span style="color:#99d1db">echo</span> <span style="color:#f2d5cf">$0</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>sh</span></span></code></pre></div><p><code>$0</code>을 실행하면 <code>sh</code>가 실행되는데, 이는 이 명령을 실행하던 shell이 <code>sh</code>였다는 뜻이다.<br>
-로그인 직후 <code>uppershell</code>가 실행되고 얘가 <code>sh</code>를 실행했다는 뜻(?)인 듯 하다.<br>
-여기서 <code>/usr/bin/bash</code>를 실행하면 bandit에서 보던 <code>bash</code> shell이 실행된다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>$ /usr/bin/bash
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>bandit33@bandit:~$</span></span></code></pre></div><blockquote>
-<p>해결 방법</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">$ /usr/bin/bash
+</span></span><span class="line"><span class="cl">bandit33@bandit:~$</span></span></code></pre></div></div>
+<blockquote>
+<p>Solution:</p>
 </blockquote>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nv">$0</span>
+</span></span><span class="line"><span class="cl">cat /etc/bandit_pass/bandit33</span></span></code></pre></div></div>
+<p>Even exiting is tricky.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">ps aux
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+</span></span><span class="line"><span class="cl">root           <span class="m">1</span>  0.0  0.0  <span class="m">14952</span>  <span class="m">2928</span> ?        S    13:18   0:00 sshd: bandit32 <span class="o">[</span>priv<span class="o">]</span>
+</span></span><span class="line"><span class="cl">bandit32       <span class="m">2</span>  0.0  0.1  <span class="m">14952</span>  <span class="m">6948</span> ?        S    13:18   0:00 sshd: bandit32@pts/0
+</span></span><span class="line"><span class="cl">bandit33       <span class="m">3</span>  0.0  0.0   <span class="m">2820</span>  <span class="m">1508</span> pts/0    Ss   13:18   0:00 -uppershell</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#f2d5cf">$0</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat /etc/bandit_pass/bandit33</span></span></code></pre></div><p>exit하는 것도 어렵다</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ps aux
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>root           <span style="color:#ef9f76">1</span>  0.0  0.0  <span style="color:#ef9f76">14952</span>  <span style="color:#ef9f76">2928</span> ?        S    13:18   0:00 sshd: bandit32 <span style="color:#99d1db;font-weight:bold">[</span>priv<span style="color:#99d1db;font-weight:bold">]</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>bandit32       <span style="color:#ef9f76">2</span>  0.0  0.1  <span style="color:#ef9f76">14952</span>  <span style="color:#ef9f76">6948</span> ?        S    13:18   0:00 sshd: bandit32@pts/0
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>bandit33       <span style="color:#ef9f76">3</span>  0.0  0.0   <span style="color:#ef9f76">2820</span>  <span style="color:#ef9f76">1508</span> pts/0    Ss   13:18   0:00 -uppershell</span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>$ <span style="color:#99d1db">kill</span> -term <span style="color:#ef9f76">3</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>Connection to bandit.labs.overthewire.org closed.</span></span></code></pre></div><hr>
-<h3 id="level-33">Level 33</h3>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">$ <span class="nb">kill</span> -term <span class="m">3</span>
+</span></span><span class="line"><span class="cl">Connection to bandit.labs.overthewire.org closed.</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-33">
+  Level 33
+</h3>
 <p><strong>At this moment, level 34 does not exist yet.</strong></p>
 <p>That’s it!</p>
 
-</content>
-<p>
-  
-    <a class="blog-tags" href="/tags/linux/">#linux</a>
-  
-    <a class="blog-tags" href="/tags/overthewire/">#overthewire</a>
-  
-    <a class="blog-tags" href="/tags/bandit/">#bandit</a>
-  
-</p>
+  </div>
 
-
-  <p>
-    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"OverTheWire%20Bandit%20%284%29"'>
-      Reply to this post by email ↪
-    </a>
-  </p>
-
-
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/tags/linux/">#linux</a><a rel="nofollow" href="/tags/overthewire/">#overthewire</a><a rel="nofollow" href="/tags/bandit/">#bandit</a></div></div>
+</footer>
+</article>
 
   </main>
-  <footer><small>
-  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
-</small></footer>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav><span class="lang-dropdown footer-lang">
+      <button class="lang-toggle" type="button" aria-label="Select language" aria-expanded="false">
+        <span class="lang-name">English</span>
+        <svg class="lang-arrow" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1338 6.16015C16.3217 5.95783 16.6375 5.94599 16.8399 6.13378C17.0421 6.32166 17.054 6.6375 16.8662 6.83984L10.3662 13.8398L10.2891 13.9082C10.2053 13.9675 10.1043 14 9.99999 14C9.86101 14 9.72836 13.9417 9.63377 13.8398L3.13374 6.83984L3.07221 6.75976C2.95129 6.56111 2.98312 6.29824 3.16011 6.13378C3.33708 5.96954 3.60085 5.95776 3.78999 6.09277L3.86616 6.16015L9.99999 12.7666L16.1338 6.16015Z"></path></svg>
+      </button>
+      <span class="lang-menu" role="menu"><a href="/blog/overthewire-bandit-4/" role="menuitem" class="lang-active">
+            <span class="lang-item-name">English</span>
+            <span class="lang-item-check"></span>
+          </a><a href="/kr/blog/overthewire-bandit-4/" role="menuitem" class="">
+            <span class="lang-item-name">한국어</span>
+            <span class="lang-item-check"></span>
+          </a></span>
+    </span></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
 
-  
-<script>
-    (function () {
-        
-        const toggleWrapper = document.createElement('label');
-        toggleWrapper.className = 'theme-switch';
-        toggleWrapper.setAttribute('aria-label', 'Toggle theme');
-        toggleWrapper.setAttribute('title', 'Toggle light/dark mode');
+  </footer>
 
-        toggleWrapper.innerHTML = `
-            <input type="checkbox" id="theme-toggle-checkbox">
-            <span class="slider">
-                <svg class="icon moon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-                <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5"/>
-                    <line x1="12" y1="1" x2="12" y2="3"/>
-                    <line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/>
-                    <line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                </svg>
-            </span>
-        `;
-
-        const checkbox = toggleWrapper.querySelector('#theme-toggle-checkbox');
-
-        
-        function updateCheckbox() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            checkbox.checked = isDark;
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
 
-        
-        checkbox.addEventListener('change', function () {
-            const newTheme = this.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
         });
 
-        
-        document.body.appendChild(toggleWrapper);
-
-        
-        updateCheckbox();
-
-        
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-                if (!localStorage.getItem('theme')) {
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-                    updateCheckbox();
-                }
-            });
-        }
-    })();
-</script>
-
-
-<script>
-    (function () {
-        
-        const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>`;
-
-        
-        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>`;
-
-        
-        document.querySelectorAll('.highlight').forEach(function (highlightBlock) {
-            
-            if (highlightBlock.querySelector('.code-copy-btn')) return;
-
-            
-            const button = document.createElement('button');
-            button.className = 'code-copy-btn';
-            button.type = 'button';
-            button.setAttribute('aria-label', 'Copy code to clipboard');
-            button.innerHTML = copyIcon;
-
-            
-            button.addEventListener('click', function () {
-                
-                const codeElement = highlightBlock.querySelector('code');
-                if (!codeElement) return;
-
-                let codeText = '';
-
-                
-                
-                
-                const lineWrappers = codeElement.querySelectorAll('span[style*="display:flex"]');
-
-                if (lineWrappers.length > 0) {
-                    lineWrappers.forEach(function (wrapper) {
-                        const spans = wrapper.querySelectorAll(':scope > span');
-                        if (spans.length >= 2) {
-                            
-                            codeText += spans[spans.length - 1].textContent;
-                        } else if (spans.length === 1) {
-                            
-                            codeText += spans[0].textContent;
-                        }
-                    });
-                } else {
-                    
-                    codeText = codeElement.textContent;
-                }
-
-                
-                navigator.clipboard.writeText(codeText.trim()).then(function () {
-                    
-                    button.innerHTML = checkIcon;
-                    button.classList.add('copied');
-
-                    
-                    setTimeout(function () {
-                        button.innerHTML = copyIcon;
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(function (err) {
-                    console.error('Failed to copy code:', err);
-                });
-            });
-
-            
-            highlightBlock.appendChild(button);
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
         });
-    })();
-</script></body>
-
+      }
+    });
+  </script></body>
 </html>

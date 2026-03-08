@@ -1,305 +1,410 @@
 <!DOCTYPE html>
-<html lang="kr-KR">
-
+<html lang="ko-KR" dir="ltr">
 <head>
-  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="https://grrru.github.io/images/favicon-32X32.png" />
-<title>OverTheWire Bandit(1) | Grrru Blog</title>
-<meta name="title" content="OverTheWire Bandit(1)" />
-<meta name="description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>OverTheWire Bandit (1) | Grrru Blog</title>
 
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
+<link rel="stylesheet" href="/css/style.min.021251fd309590386c8ca3bfd467062a8b2eb083f4b88cbeb606a0935f6d39a8.css" integrity="sha256-AhJR/TCVkDhsjKO/1GcGKosusIP0uIy&#43;tgagk19tOag=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous">
+      <script defer src="/js/main.efe1c5af6419872348da040541422cd54f4c7676d6c803aa83022a39b416901a.js" integrity="sha256-7&#43;HFr2QZhyNI2gQFQUIs1U9MdnbWyAOqgwIqObQWkBo=" crossorigin="anonymous"></script>
 
 
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)" />
-<meta name="author" content="grrru" />
-<meta name="keywords" content="overthewire,bandit," />
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta property="og:title" content="OverTheWire Bandit(1)" />
-<meta property="og:description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
-
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
-
-
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://grrru.github.io/kr/blog/overthewire-bandit-1/" />
-
-<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2025-12-28T00:00:00+00:00" />
-<meta property="article:modified_time" content="2025-12-28T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
-<meta property="fb:admins" content="0000000000" />
-
-
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/>
-<meta name="twitter:title" content="OverTheWire Bandit(1)"/>
-<meta name="twitter:description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
-
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
-
-
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)"/>
-<meta name="twitter:site" content="@example"/>
-
-
-
-<meta itemprop="name" content="OverTheWire Bandit(1)">
-<meta itemprop="description" content="OverTheWire Bandit
-OverTheWire: Bandit
-리눅스 연습!
-
-각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. bandit1)에 접속할 수 있다.
-
-
-level 0
-ssh를 이용해서 bandit0 유저로bandit.labs.overthewire.org:2220에 접속하면 된다.
-
-
-
-
-
-1ssh bandit.labs.overthewire.org -p 2220 -l bandit0
-2ssh bandit10@bandit.labs.overthewire.org -p 2220 ## host 앞에 user@를 붙이는 것도 가능하다home directory에 있는 readme라는 파일을 읽어 bandit1의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.
-
-
-
-
-
-1cat ~/readme
-level 1
-home directory의  - 파일(dashed file)을 읽어야 한다.
-(ls -al로 home directory의 파일들을 확인)"><meta itemprop="datePublished" content="2025-12-28T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2025-12-28T00:00:00+00:00" />
-<meta itemprop="wordCount" content="516">
-
-<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_88966b8430ab60ed.webp"/>
-
-
-<meta itemprop="keywords" content="overthewire,bandit," />
-
-<meta name="referrer" content="no-referrer-when-downgrade" />
-
-  
-  <link href="/original.min.css" rel="stylesheet">
-
-  
-    
-    <link href="/syntax.min.css" rel="stylesheet">
-  
-
-  
-
-  
 </head>
-
 <body>
-  <header><a class="skip-link" href="#main-content">Skip to main content</a>
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/kr/">
+      <h1>Grrru Blog</h1>
+    </a>
+  </div>
 
-<a href="/kr/" class="title"><h1>Grrru Blog</h1></a>
-<nav>
-  <a href="/">Home</a>
+  <nav class="site-nav"><a href="/kr/">Home</a>
+     <a href="/kr/blog/">Blog</a>
+    <a href="/kr/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
 
-  <a href="/blog/">Blog</a>
-
-
-
-
-
-
-  
-
-
-
-
-  
-    <a href="/blog/overthewire-bandit-1/">en</a>
-  
-
-</nav>
-</header>
-  <main id="main-content">
-
-<h1>OverTheWire Bandit(1)</h1>
-<p class="byline">
-  <time datetime='2025-12-28' pubdate>
-    2025-12-28
-  </time>
-  · grrru
-</p>
-
-<content>
-  <h3 id="overthewire-bandit">OverTheWire Bandit</h3>
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title">OverTheWire Bandit (1)</h1>
+    <p class="post-meta">
+      <time datetime="2025-12-28">
+        December 28, 2025
+      </time>
+    </p>
+  </header><div class="post-content">
+    <h3 id="overthewire-bandit">
+  OverTheWire Bandit
+</h3>
 <p><a href="https://overthewire.org/wargames/bandit/">OverTheWire: Bandit</a></p>
 <p>리눅스 연습!</p>
 <blockquote>
 <p>각 단계에서 얻은 password로 다음 레벨의 아이디(e.g. <code>bandit1</code>)에 접속할 수 있다.</p>
 </blockquote>
 <hr>
-<h3 id="level-0">level 0</h3>
+<h3 id="level-0">
+  level 0
+</h3>
+<p>The password for the next level is stored in a file called <strong>readme</strong> located in the home directory. Use this password to log into bandit1 using SSH. Whenever you find a password for a level, use SSH (on port 2220) to log into that level and continue the game.</p>
+<hr>
 <p>ssh를 이용해서 <code>bandit0</code> 유저로<code>bandit.labs.overthewire.org:2220</code>에 접속하면 된다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">ssh bandit.labs.overthewire.org -p <span class="m">2220</span> -l bandit0
+</span></span><span class="line"><span class="cl">ssh bandit10@bandit.labs.overthewire.org -p <span class="m">2220</span> <span class="c1">## host 앞에 user@를 붙이는 것도 가능하다</span></span></span></code></pre></div></div>
+<p>home directory에 있는 <code>readme</code>라는 파일을 읽어 <code>bandit1</code>의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> -l bandit0
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>ssh bandit10@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> <span style="color:#737994;font-style:italic">## host 앞에 user@를 붙이는 것도 가능하다</span></span></span></code></pre></div><p>home directory에 있는 <code>readme</code>라는 파일을 읽어 <code>bandit1</code>의 password를 찾아낸다. 찾아낸 password는 로컬 머신에 복사해둬야 한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat ~/readme</span></span></code></pre></div><hr>
-<h3 id="level-1">level 1</h3>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat ~/readme</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-1">
+  level 1
+</h3>
+<p>The password for the next level is stored in a file called <strong>-</strong> located in the home directory</p>
+<hr>
 <p>home directory의  <code>-</code> 파일(dashed file)을 읽어야 한다.
 (<code>ls -al</code>로 home directory의 파일들을 확인)</p>
 <p><code>-</code>라는 이름의 파일은 <code>cat -</code>로 바로 읽게 되면 아무 반응이 없는데, <code>-</code>가 표준 입력 <code>stdin</code>을 의미해서 입력을 기다리는 상태가 되기 때문이다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">bandit1@bandit:~$ cat -
+</span></span><span class="line"><span class="cl">hello
+</span></span><span class="line"><span class="cl">hello</span></span></code></pre></div></div>
+<p>아래와 같이 읽을 수 있다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>bandit1@bandit:~$ cat -
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>hello
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>hello</span></span></code></pre></div><p>아래와 같이 읽을 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat &lt; - <span style="color:#737994;font-style:italic">## dashed file을 읽어 stdin으로 연결</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat ./- <span style="color:#737994;font-style:italic">## dashed file의 위치를 지정하여 읽음</span></span></span></code></pre></div><hr>
-<h3 id="level-2">level 2</h3>
-<p>파일명에 공백이 있는 파일을 읽어야 한다. 공백 앞에 <code>\</code>를 붙여야 읽을 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat ./--spaces<span style="color:#8caaee">\ </span>in<span style="color:#8caaee">\ </span>this<span style="color:#8caaee">\ </span>filename--</span></span></code></pre></div><hr>
-<h3 id="level-3">level 3</h3>
-<p><code>~/inhere</code> 디렉토리의 숨은 파일을 읽어야 한다. <code>ls</code>는 숨은 파일은 알려주지 않으므로 <code>ls -a</code>를 사용해야 한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ls -al <span style="color:#737994;font-style:italic">## a: all l: long-listing</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat ./...Hiding-From-You</span></span></code></pre></div><p>주로 <code>ls -al</code>을 사용하는데, <code>l</code> 옵션은 권한, 소유자, 그룹, 크기, 시간 등을 한 줄씩 출력해줘서 읽기 편한듯,,</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat &lt; - <span class="c1">## dashed file을 읽어 stdin으로 연결</span>
+</span></span><span class="line"><span class="cl">cat ./- <span class="c1">## dashed file의 위치를 지정하여 읽음</span></span></span></code></pre></div></div>
 <hr>
-<h3 id="level-4">level 4</h3>
+<h3 id="level-2">
+  level 2
+</h3>
+<p>The password for the next level is stored in a file called <code>--spaces in this filename--</code> located in the home directory</p>
+<hr>
+<p>파일명에 공백이 있는 파일을 읽어야 한다. 공백 앞에 <code>\</code>를 붙여야 읽을 수 있다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat ./--spaces<span class="se">\ </span>in<span class="se">\ </span>this<span class="se">\ </span>filename--</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-3">
+  level 3
+</h3>
+<p>The password for the next level is stored in a hidden file in the <strong>inhere</strong> directory.</p>
+<hr>
+<p><code>~/inhere</code> 디렉토리의 숨은 파일을 읽어야 한다. <code>ls</code>는 숨은 파일은 알려주지 않으므로 <code>ls -a</code>를 사용해야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">ls -al <span class="c1">## a: all l: long-listing</span>
+</span></span><span class="line"><span class="cl">cat ./...Hiding-From-You</span></span></code></pre></div></div>
+<p>주로 <code>ls -al</code>을 사용하는데, <code>l</code> 옵션은 권한, 소유자, 그룹, 크기, 시간 등을 한 줄씩 출력해줘서 읽기 편한듯,,</p>
+<hr>
+<h3 id="level-4">
+  level 4
+</h3>
+<p>The password for the next level is stored in the only human-readable file in the <strong>inhere</strong> directory. Tip: if your terminal is messed up, try the “reset” command.</p>
+<hr>
 <p><code>human-readable</code> 파일을 읽어야 한다.
 <code>file</code> 커맨드로 파일의 MIME 타입 등의 정보를 알 수 있다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#99d1db">cd</span> ~/inhere
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>file -i ./*</span></span></code></pre></div><p>파일 하나만 <code>ASCII text</code>으로 사람이 읽을 수 있다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nb">cd</span> ~/inhere
+</span></span><span class="line"><span class="cl">file -i ./*</span></span></code></pre></div></div>
+<p>파일 하나만 <code>ASCII text</code>으로 사람이 읽을 수 있다.</p>
 <hr>
-<h3 id="level-5">level 5</h3>
+<h3 id="level-5">
+  level 5
+</h3>
+<p>The password for the next level is stored in a file somewhere under the <strong>inhere</strong> directory and has all of the following properties:</p>
+<hr>
 <p><code>inhere</code> 디렉토리에서 아래 조건을 만족하는 파일을 찾아서 읽어야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">- human-readable
+</span></span><span class="line"><span class="cl">- 1033 bytes in size
+</span></span><span class="line"><span class="cl">- not executable</span></span></code></pre></div></div>
+<p><code>find .</code>는 현재 디렉토리 하위의 모든 파일과 디렉토리들을 보여준다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>- human-readable
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>- 1033 bytes in size
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>- not executable</span></span></code></pre></div><p><code>find .</code>는 현재 디렉토리 하위의 모든 파일과 디렉토리들을 보여준다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>find . -type f -size 1033c ! -executable</span></span></code></pre></div><p><code>-type</code>: 검색할 타입을 지정한다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">find . -type f -size 1033c ! -executable</span></span></code></pre></div></div>
+<p><code>-type</code>: 검색할 타입을 지정한다.</p>
 <table>
   <thead>
       <tr>
@@ -338,6 +443,7 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
       </tr>
   </tbody>
 </table>
+
 <p><code>-size</code>: 사이즈로 검색한다.</p>
 <table>
   <thead>
@@ -369,97 +475,353 @@ home directory의  - 파일(dashed file)을 읽어야 한다.
       </tr>
   </tbody>
 </table>
+
 <p><code>-executable</code>: 실행 가능한 것을 의미하며 앞에 <code>!</code>을 붙여 부정으로 바꿀 수 있다.</p>
 <hr>
-<h3 id="level-6">level 6</h3>
+<h3 id="level-6">
+  level 6
+</h3>
+<p>The password for the next level is stored <strong>somewhere on the server</strong> and has all of the following properties:</p>
+<hr>
 <p>server 내의 어딘가에 있는 파일 중 아래 조건을 만족하는 파일을 읽어야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">owned by user bandit7
+</span></span><span class="line"><span class="cl">owned by group bandit6
+</span></span><span class="line"><span class="cl">33 bytes in size</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>owned by user bandit7
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>owned by group bandit6
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>33 bytes in size</span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>find / -type f -size 33c -user bandit7 -group bandit6 2&gt;/dev/null</span></span></code></pre></div><p><code>-user</code>, <code>-group</code>로 owner 검색이 가능하다.
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">find / -type f -size 33c -user bandit7 -group bandit6 2&gt;/dev/null</span></span></code></pre></div></div>
+<p><code>-user</code>, <code>-group</code>로 owner 검색이 가능하다.
 <code>2&gt;/dev/null</code>를 쓰지 않으면 <code>find</code> 커맨드 실행 중 권한이 없는 디렉토리/파일을 만날 때 에러 메시지 <code>Permission Denied</code>를 <code>stderr</code>(FD 2)로 출력한다.
 <code>2&gt;/dev/null</code>은 sderr 2를 <code>/dev/null</code>로 리다이렉션(<code>&gt;</code>)하여 에러 출력이 버려지도록 한다.</p>
 <hr>
-<h3 id="level-7">level 7</h3>
+<h3 id="level-7">
+  level 7
+</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong> next to the word <strong>millionth</strong></p>
+<hr>
 <p>겁나 큰 용량의 <code>data.txt</code> 파일 내에서 <code>millionth</code>라는 단어의 옆에 써있는 password를 읽어야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ls -lh <span style="color:#737994;font-style:italic">## h: human 옵션으로 용량 값을 읽기 쉽도록 바꿔준다.</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>cat data.txt | grep millionth</span></span></code></pre></div><hr>
-<h3 id="level-8">level 8</h3>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">ls -lh <span class="c1">## h: human 옵션으로 용량 값을 읽기 쉽도록 바꿔준다.</span>
+</span></span><span class="line"><span class="cl">cat data.txt <span class="p">|</span> grep millionth</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-8">
+  level 8
+</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong> and is the only line of text that occurs only once</p>
+<hr>
 <p><code>data.txt</code> 에서 유일한 line을 찾아야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>sort data.txt | uniq -iu</span></span></code></pre></div><p><code>sort</code>로 파일의 line들을 정렬한다. 여러 옵션을 추가로 사용할 수 있다.
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">sort data.txt <span class="p">|</span> uniq -iu</span></span></code></pre></div></div>
+<p><code>sort</code>로 파일의 line들을 정렬한다. 여러 옵션을 추가로 사용할 수 있다.
 <code>uniq</code> 커맨드는 중복되는 line을 제거하고 출력해준다. <code>-d</code>는 중복된 내용만 출력, <code>-u</code>는 고유한 내용만 출력, <code>-i</code>는 대소문자 구분 무시 옵션이다.</p>
 <hr>
-<h3 id="level-9">level 9</h3>
+<h3 id="level-9">
+  level 9
+</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong> in one of the few human-readable strings, preceded by several ‘=’ characters.</p>
+<hr>
 <p><code>data.txt</code>에서 읽을 수 있는, <code>=</code>가 앞에 있는 문자열만을 출력해야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>file data.txt <span style="color:#737994;font-style:italic">## data.txt: data</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>strings data.txt | grep <span style="color:#a6d189">&#39;=&#39;</span></span></span></code></pre></div><p><code>strings</code>는 파일에 포함된 string을 뽑아낼 수 있다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">file data.txt <span class="c1">## data.txt: data</span>
+</span></span><span class="line"><span class="cl">strings data.txt <span class="p">|</span> grep <span class="s1">&#39;=&#39;</span></span></span></code></pre></div></div>
+<p><code>strings</code>는 파일에 포함된 string을 뽑아낼 수 있다.</p>
 <hr>
-<h3 id="level-10">level 10</h3>
+<h3 id="level-10">
+  level 10
+</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong>, which contains base64 encoded data</p>
+<hr>
 <p>base64 인코딩된 문자열이 <code>data.txt</code>에 들어있다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat data.txt | base64 -d</span></span></code></pre></div><p><code>base64 -d</code> 커맨드로 문자열을 디코딩하여 원래 바이너리를 출력한다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat data.txt <span class="p">|</span> base64 -d</span></span></code></pre></div></div>
+<p><code>base64 -d</code> 커맨드로 문자열을 디코딩하여 원래 바이너리를 출력한다.</p>
 <hr>
-<h3 id="level-11">level 11</h3>
+<h3 id="level-11">
+  level 11
+</h3>
+<p>The password for the next level is stored in the file <strong>data.txt</strong>, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions</p>
+<hr>
 <p><a href="https://www.acmicpc.net/problem/1893">시저 암호</a>가 적용된 <code>data.txt</code> 파일을 해석해야 한다. Rot13이므로 A → N Z→ M으로 치환한다.</p>
 <p>정규식은 아니라고 한다.. (<code>tr</code>에서 쓰인 규칙일 뿐)</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat data.txt <span class="p">|</span> tr <span class="s1">&#39;[A-Za-z]&#39;</span> <span class="s1">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div></div>
 
+  </div>
 
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat data.txt | tr <span style="color:#a6d189">&#39;[A-Za-z]&#39;</span> <span style="color:#a6d189">&#39;[N-ZA-Mn-za-m]&#39;</span></span></span></code></pre></div>
-</content>
-<p>
-  
-    <a class="blog-tags" href="/kr/tags/overthewire/">#overthewire</a>
-  
-    <a class="blog-tags" href="/kr/tags/bandit/">#bandit</a>
-  
-</p>
-
-
-  <p>
-    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"OverTheWire%20Bandit%281%29"'>
-      Reply to this post by email ↪
-    </a>
-  </p>
-
-
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/kr/tags/linux/">#linux</a><a rel="nofollow" href="/kr/tags/overthewire/">#overthewire</a><a rel="nofollow" href="/kr/tags/bandit/">#bandit</a></div></div>
+</footer>
+</article>
 
   </main>
-  <footer><small>
-  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
-</small></footer>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/kr/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav><span class="lang-dropdown footer-lang">
+      <button class="lang-toggle" type="button" aria-label="Select language" aria-expanded="false">
+        <span class="lang-name">한국어</span>
+        <svg class="lang-arrow" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1338 6.16015C16.3217 5.95783 16.6375 5.94599 16.8399 6.13378C17.0421 6.32166 17.054 6.6375 16.8662 6.83984L10.3662 13.8398L10.2891 13.9082C10.2053 13.9675 10.1043 14 9.99999 14C9.86101 14 9.72836 13.9417 9.63377 13.8398L3.13374 6.83984L3.07221 6.75976C2.95129 6.56111 2.98312 6.29824 3.16011 6.13378C3.33708 5.96954 3.60085 5.95776 3.78999 6.09277L3.86616 6.16015L9.99999 12.7666L16.1338 6.16015Z"></path></svg>
+      </button>
+      <span class="lang-menu" role="menu"><a href="/en/blog/overthewire-bandit-1/" role="menuitem" class="">
+            <span class="lang-item-name">English</span>
+            <span class="lang-item-check"></span>
+          </a><a href="/kr/blog/overthewire-bandit-1/" role="menuitem" class="lang-active">
+            <span class="lang-item-name">한국어</span>
+            <span class="lang-item-check"></span>
+          </a></span>
+    </span></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
 
-    
-</body>
+  </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script></body>
 </html>

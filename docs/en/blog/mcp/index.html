@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>MCP (Model Context Protocol) | Grrru Blog</title>
+
+<link rel="stylesheet" href="/css/style.min.021251fd309590386c8ca3bfd467062a8b2eb083f4b88cbeb606a0935f6d39a8.css" integrity="sha256-AhJR/TCVkDhsjKO/1GcGKosusIP0uIy&#43;tgagk19tOag=" crossorigin="anonymous"><link rel="stylesheet" href="/css/pygments-friendly.min.28135e6c0da5803b920fa8df2ca818e8bffa680293762a228fe96c10634a9662.css" integrity="sha256-KBNebA2lgDuSD6jfLKgY6L/6aAKTdioij&#43;lsEGNKlmI=" crossorigin="anonymous">
+      <script defer src="/js/main.efe1c5af6419872348da040541422cd54f4c7676d6c803aa83022a39b416901a.js" integrity="sha256-7&#43;HFr2QZhyNI2gQFQUIs1U9MdnbWyAOqgwIqObQWkBo=" crossorigin="anonymous"></script>
+
+
+</head>
+<body>
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/en/">
+      <h1>Grrru Blog</h1>
+    </a>
+  </div>
+
+  <nav class="site-nav"><a href="/en/">Home</a>
+     <a href="/en/blog/">Blog</a>
+    <a href="/en/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
+
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title">MCP (Model Context Protocol)</h1>
+    <p class="post-meta">
+      <time datetime="2026-03-03">
+        March 3, 2026
+      </time>
+    </p>
+  </header><div class="post-content">
+    <h2 id="introduction">
+  Introduction
+</h2>
+<p>When ChatGPT appeared in late 2022, people were amazed that AI could converse like a human. However, limitations soon became apparent. Large Language Models (LLMs) were essentially just <strong>text generation models</strong>. They couldn&rsquo;t know the current weather, query a database, or send an email. They were brilliant but isolated entities, trapped within their training data.</p>
+<p>This post covers the journey LLMs have taken to connect with the outside world: from the emergence of Function Calling, the explosion of AI Agents and the Tools ecosystem, to the final arrival of the <strong>Model Context Protocol (MCP)</strong>. Understanding this progression reveals that MCP is not just a new technology, but an inevitable conclusion.</p>
+<h2 id="1-limitations-of-llms">
+  1. Limitations of LLMs
+</h2>
+<p>When ChatGPT (based on GPT-3.5) was released in November 2022, the world was enthusiastic. Its ability to write code in natural language, compose essays, and explain complex concepts was remarkable. But it had its limits.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">User: &#34;What&#39;s the weather in Seoul today?&#34;
+</span></span><span class="line"><span class="cl">ChatGPT: &#34;I&#39;m sorry, I don&#39;t have access to real-time information. My training data only goes up until September 2021.&#34;</span></span></code></pre></div></div>
+<p>The limitations of LLMs were clear:</p>
+<ul>
+<li><strong>No access to real-time data</strong>: They don&rsquo;t know information beyond their training point.</li>
+<li><strong>Inability to link with external systems</strong>: They cannot call APIs, query databases, or read files.</li>
+<li><strong>Inability to perform actions</strong>: They cannot do actual work like sending emails, registering schedules, or executing code.</li>
+</ul>
+<p>No matter how smart an LLM was, it was just a <strong>brain disconnected from the world</strong>. Giving this model &ldquo;hands and feet&rdquo; is the trend that began in 2023.</p>
+<h2 id="2-the-emergence-of-function-calling">
+  2. The Emergence of Function Calling
+</h2>
+<h3 id="what-is-function-calling">
+  What is Function Calling?
+</h3>
+<p>On June 13, 2023, OpenAI added the <strong>Function Calling</strong> capability to the GPT-3.5 and GPT-4 APIs. This was a paradigm shift in how LLMs connect with external tools.
+The core idea was simple: instead of the LLM executing a function directly, it requests in a structured format: &ldquo;Please call this function with these arguments.&rdquo;</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">[Step 1] Developer defines a list of available functions using JSON Schema and passes it to the API.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">  &#34;name&#34;: &#34;get_weather&#34;,
+</span></span><span class="line"><span class="cl">  &#34;description&#34;: &#34;Get the current weather for a given city&#34;,
+</span></span><span class="line"><span class="cl">  &#34;parameters&#34;: {
+</span></span><span class="line"><span class="cl">    &#34;type&#34;: &#34;object&#34;,
+</span></span><span class="line"><span class="cl">    &#34;properties&#34;: {
+</span></span><span class="line"><span class="cl">      &#34;city&#34;: { &#34;type&#34;: &#34;string&#34;, &#34;description&#34;: &#34;City name&#34; }
+</span></span><span class="line"><span class="cl">    },
+</span></span><span class="line"><span class="cl">    &#34;required&#34;: [&#34;city&#34;]
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">[Step 2] User says, &#34;Tell me the weather in Seoul.&#34;
+</span></span><span class="line"><span class="cl">        The LLM analyzes the conversation context and decides on the appropriate function call.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">[Step 3] LLM responds with structured JSON.
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">  &#34;function_call&#34;: {
+</span></span><span class="line"><span class="cl">    &#34;name&#34;: &#34;get_weather&#34;,
+</span></span><span class="line"><span class="cl">    &#34;arguments&#34;: &#34;{\&#34;city\&#34;: \&#34;Seoul\&#34;}&#34;
+</span></span><span class="line"><span class="cl">  }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">[Step 4] The application executes the actual function and passes the result back to the LLM.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">[Step 5] The LLM converts the function result into natural language and responds to the user.
+</span></span><span class="line"><span class="cl">        → &#34;The current temperature in Seoul is 15°C, and it&#39;s sunny.&#34;</span></span></code></pre></div></div>
+<p>The LLM only acts as the <strong>decision-maker</strong>, while the application handles the actual execution. This:</p>
+<ul>
+<li>Reduced security risks of LLMs directly accessing external systems.</li>
+<li>Allowed developers to have full control over the execution logic.</li>
+<li>Significantly reduced parsing errors with structured JSON output.</li>
+</ul>
+<h3 id="limitations">
+  Limitations
+</h3>
+<p>However, Function Calling also had clear limitations:</p>
+<ul>
+<li><strong>Platform dependency</strong>: It was a format defined specifically for the OpenAI API. Anthropic Claude, Google Gemini, and others used different formats.</li>
+<li><strong>Static definition</strong>: The list of functions had to be hard-coded in advance. Tools couldn&rsquo;t be discovered dynamically at runtime.</li>
+<li><strong>Redundancy of execution logic</strong>: To use the same functionality (e.g., querying GitHub issues) in 10 different AI apps, it had to be implemented 10 separate times.</li>
+</ul>
+<h2 id="3-the-era-of-ai-agents---tools-and-skills">
+  3. The Era of AI Agents - Tools and Skills
+</h2>
+<h3 id="explosion-of-the-agent-paradigm">
+  Explosion of the Agent Paradigm
+</h3>
+<p>As Function Calling suggested a way to connect tools to LLMs, a bigger dream sprouted: <strong>AI Agents</strong> — autonomous systems where the LLM makes plans, uses tools, and achieves goals on its own.
+In 2023, projects like <code>AutoGPT</code> and <code>BabyAGI</code> emerged, showing the potential of AI Agents. The vision was for an LLM to perform complex tasks step-by-step, such as &ldquo;Search for flights, book a hotel, and register it on my calendar.&rdquo;</p>
+<h3 id="tools-the-agents-toolbox">
+  Tools: The Agent&rsquo;s Toolbox
+</h3>
+<p>In Agent frameworks, <strong>Tools</strong> are a core concept. They refer to <strong>any unit of functionality</strong> an Agent uses to interact with the outside world.
+LangChain popularized this pattern:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">langchain.tools</span> <span class="kn">import</span> <span class="n">Tool</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">search_tool</span> <span class="o">=</span> <span class="n">Tool</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">name</span><span class="o">=</span><span class="s2">&#34;web_search&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">description</span><span class="o">=</span><span class="s2">&#34;Searches the internet for the latest information&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">func</span><span class="o">=</span><span class="n">search_function</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">calculator_tool</span> <span class="o">=</span> <span class="n">Tool</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">name</span><span class="o">=</span><span class="s2">&#34;calculator&#34;</span><span class="p">,</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">description</span><span class="o">=</span><span class="s2">&#34;Performs mathematical calculations&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">func</span><span class="o">=</span><span class="n">calculate_function</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Pass the tool list to the Agent</span>
+</span></span><span class="line"><span class="cl"><span class="n">agent</span> <span class="o">=</span> <span class="n">initialize_agent</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">search_tool</span><span class="p">,</span> <span class="n">calculator_tool</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">agent_type</span><span class="o">=</span><span class="s2">&#34;zero-shot-react-description&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span></span></span></code></pre></div></div>
+<p>The essence of a Tool is the same as Function Calling—an <strong>abstraction of an external function that an LLM can call</strong>. However, as frameworks like LangChain wrapped these in standardized <strong>interfaces</strong>, it became easy to combine various tools.</p>
+<h3 id="skills-a-more-modular-approach">
+  Skills: A More Modular Approach
+</h3>
+<p>While Tools are at the level of individual functions, <strong>Skills</strong> are a higher level of abstraction. Skills bundle domain knowledge and tool usage capabilities into <strong>reusable packages</strong>.
+For example, a &ldquo;GitHub Management&rdquo; skill might include:</p>
+<ul>
+<li>A set of tools for calling the GitHub API.</li>
+<li>Prompt guides to follow during PR reviews.</li>
+<li>Domain knowledge about code conventions.</li>
+</ul>
+<p>The advantage of the Skills pattern was <strong>Progressive Disclosure</strong>. Instead of loading all tools at once, an Agent could activate appropriate skills when needed, using the context window efficiently.</p>
+<h3 id="the-nm-integration-problem">
+  The N×M Integration Problem
+</h3>
+<p>By 2024, the ecosystem grew <strong>explosively</strong> yet was <strong>severely fragmented</strong>.
+<strong>LLM Providers</strong>:</p>
+<ul>
+<li>OpenAI (GPT-4, GPT-4 Turbo)</li>
+<li>Anthropic (Claude 2, Claude 3)</li>
+<li>Google (Gemini)</li>
+<li>Meta (LLaMA)</li>
+<li>Dozens of open-source models</li>
+</ul>
+<p><strong>AI Applications</strong>:</p>
+<ul>
+<li>Cursor, GitHub Copilot (Coding tools)</li>
+<li>ChatGPT, Claude.ai (Conversational AI)</li>
+<li>Hundreds of AI agent frameworks</li>
+</ul>
+<p><strong>External Services</strong>:</p>
+<ul>
+<li>GitHub, Slack, Jira, Google Drive, Notion, DBs, Cloud services&hellip;</li>
+</ul>
+<p>The problem was that there was <strong>no standard</strong> to connect them.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">AI App A        AI App B        AI App C
+</span></span><span class="line"><span class="cl">           (Uses OpenAI)   (Uses Claude)   (Uses Gemini)
+</span></span><span class="line"><span class="cl">                ↕               ↕               ↕  
+</span></span><span class="line"><span class="cl">GitHub ─ [Custom Code A] ─ [Custom Code B] ─ [Custom Code C]
+</span></span><span class="line"><span class="cl">Slack  ─ [Custom Code D] ─ [Custom Code E] ─ [Custom Code F]
+</span></span><span class="line"><span class="cl">Jira   ─ [Custom Code G] ─ [Custom Code H] ─ [Custom Code I]</span></span></code></pre></div></div>
+<p>To connect N AI apps with M external services, <strong>N×M custom integrations</strong> were required. Every time a new AI app emerged or a new service was added, the integration code grew exponentially.
+This was unsustainable. It was like the era <strong>before USB, where every device used a different connector</strong>.</p>
+<h2 id="4-the-birth-of-mcp">
+  4. The Birth of MCP
+</h2>
+<h3 id="what-is-mcp">
+  What is MCP?
+</h3>
+<p>On November 25, 2024, Anthropic open-sourced the <strong>Model Context Protocol (MCP)</strong>. MCP is an <strong>open standard protocol</strong> for two-way connection between LLM applications and external data sources and tools.</p>
+<h3 id="why-was-mcp-needed">
+  Why was MCP needed?
+</h3>
+<p>Looking back at the N×M problem, let&rsquo;s compare before and after MCP:</p>
+<p><strong>Before MCP (N×M Integrations):</strong></p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">AI App A ──[Custom]──→ GitHub
+</span></span><span class="line"><span class="cl">AI App A ──[Custom]──→ Slack  
+</span></span><span class="line"><span class="cl">AI App A ──[Custom]──→ DB
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">AI App B ──[Custom]──→ GitHub
+</span></span><span class="line"><span class="cl">AI App B ──[Custom]──→ Slack
+</span></span><span class="line"><span class="cl">AI App B ──[Custom]──→ DB
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">→ 6 custom integrations needed (2 apps × 3 services)</span></span></code></pre></div></div>
+<p><strong>After MCP (N+M Integrations):</strong></p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">AI App A ──[MCP]──┐
+</span></span><span class="line"><span class="cl">                  ├──→ GitHub MCP Server
+</span></span><span class="line"><span class="cl">AI App B ──[MCP]──┤    Slack MCP Server
+</span></span><span class="line"><span class="cl">                  └──→ DB MCP Server
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">→ Only 5 implementations needed (2 MCP clients + 3 MCP servers)</span></span></code></pre></div></div>
+<p>An AI app only needs to implement an MCP client to connect to <strong>all MCP servers</strong>. An external service only needs to implement an MCP server once to be usable by <strong>all AI apps</strong>. N×M reduces to N+M.</p>
+<h3 id="inspired-by-the-language-server-protocol">
+  Inspired by the Language Server Protocol
+</h3>
+<p>The design of MCP was directly inspired by Microsoft&rsquo;s <strong>LSP (Language Server Protocol)</strong>.
+Before LSP, each IDE (VS Code, IntelliJ, Vim&hellip;) had to implement separate autocomplete/linting/formatting logic for each programming language (Python, Go, TypeScript&hellip;). With the advent of LSP, implementing one Language Server per language made it usable in all IDEs.
+MCP applies this same approach to AI tool integration.</p>
+<h2 id="5-how-mcp-works">
+  5. How MCP Works
+</h2>
+<h3 id="architecture-host--client--server">
+  Architecture: Host → Client → Server
+</h3>
+<p>MCP consists of three core components.</p>
+<p><strong>Host</strong></p>
+<ul>
+<li>The LLM application itself. This could be Cursor IDE, Claude Desktop, or a user-created AI app.</li>
+<li>Creates and manages multiple MCP Clients.</li>
+<li>Applies security policies and manages user approvals.</li>
+</ul>
+<p><strong>Client</strong></p>
+<ul>
+<li>Runs inside the Host and connects <strong>1:1 with one Server</strong>.</li>
+<li>Performs capability negotiation.</li>
+<li>Relays messages bidirectionally between the Host and the Server.</li>
+</ul>
+<p><strong>Server</strong></p>
+<ul>
+<li>A lightweight process that exposes the functionality of an external service via the MCP protocol.</li>
+<li>Each server operates independently and is unaware of other servers.</li>
+<li>Ensures security through server isolation.</li>
+</ul>
+<h3 id="three-things-servers-provide--tools-resources-and-prompts">
+  Three Things Servers Provide — Tools, Resources, and Prompts
+</h3>
+<p>An MCP server can expose three types of functionality:</p>
+<h4 id="1-tools">
+  1. Tools
+</h4>
+<p><strong>Executable functions</strong> that an LLM can call. An evolution of Function Calling.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;create_github_issue&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Creates a new issue in a GitHub repository&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;inputSchema&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;object&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;properties&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;repo&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;string&#34;</span><span class="p">,</span> <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Format: owner/repo&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;string&#34;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;body&#34;</span><span class="p">:</span> <span class="p">{</span> <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;string&#34;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;required&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;repo&#34;</span><span class="p">,</span> <span class="s2">&#34;title&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<p>Difference from traditional Function Calling: The <strong>definition and execution logic of the Tool exist together on the server</strong>. The client simply requests the server: &ldquo;Execute this tool with these arguments.&rdquo;</p>
+<h4 id="2-resources">
+  2. Resources
+</h4>
+<p><strong>Data provided as context</strong> to the LLM. Read-only.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;uri&#34;</span><span class="p">:</span> <span class="s2">&#34;github://repos/myorg/myrepo/issues/42&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Issue #42&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;mimeType&#34;</span><span class="p">:</span> <span class="s2">&#34;application/json&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<p>Provides information the LLM can refer to, such as file contents, database records, or API responses. If a Tool is an &ldquo;Action,&rdquo; a Resource is &ldquo;Knowledge.&rdquo;</p>
+<h4 id="3-prompts">
+  3. Prompts
+</h4>
+<p>Predefined <strong>prompt templates and workflows</strong>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;code_review&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Prompt template for performing code reviews&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;arguments&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;diff&#34;</span><span class="p">,</span> <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Code diff to review&#34;</span><span class="p">,</span> <span class="nt">&#34;required&#34;</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<p>Servers provide prompts optimized for specific tasks, guiding the LLM to perform work in a consistent manner.</p>
+<h3 id="what-mcp-standardizes-and-what-it-doesnt--two-communication-segments">
+  What MCP Standardizes and What It Doesn&rsquo;t — Two Communication Segments
+</h3>
+<p>There is a common misunderstanding when it comes to MCP. In an MCP system, there are <strong>two different communication segments</strong>, and MCP only standardizes one of them.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Area Unrelated to MCP               Area Standardized by MCP
+</span></span><span class="line"><span class="cl">◄─────────────────────►    ◄──────────────────────────────►
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌───────┐  Vendor-specific   ┌──────┐     JSON-RPC 2.0     ┌──────────┐
+</span></span><span class="line"><span class="cl">│  LLM  │ ═══════════════ │ Host │ ═══════════════════ │MCP Server│
+</span></span><span class="line"><span class="cl">│       │  (REST API)     │      │  (MCP Protocol)       │          │
+</span></span><span class="line"><span class="cl">└───────┘                 └──────┘                     └──────────┘
+</span></span><span class="line"><span class="cl">                              ▲
+</span></span><span class="line"><span class="cl">                              │
+</span></span><span class="line"><span class="cl">                        Host Translates</span></span></code></pre></div></div>
+<p><strong>Segment ① Host ↔ LLM (Vendor-specific, unrelated to MCP)</strong>
+This is the segment where the Host sends the &ldquo;list of available tools&rdquo; and &ldquo;user messages&rdquo; to the LLM. This follows <strong>each LLM vendor&rsquo;s REST API format</strong>, not JSON-RPC.</p>
+<p>When the LLM determines a tool call is needed, it also responds in a vendor-specific format. Even for the same content, the format varies by vendor.
+How does the LLM generate this JSON? The LLM has been trained/fine-tuned to &ldquo;generate&rdquo; this format. <strong>MCP is not involved in this segment at all.</strong></p>
+<p><strong>Segment ② MCP Client ↔ MCP Server (JSON-RPC 2.0, MCP Standard)</strong>
+When the LLM responds with &ldquo;Please call this tool,&rdquo; the Host parses that vendor-specific format, <strong>translates it into the MCP standard format (JSON-RPC 2.0)</strong>, and delivers it to the Server via the MCP Client.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;jsonrpc&#34;</span><span class="p">:</span> <span class="s2">&#34;2.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;method&#34;</span><span class="p">:</span> <span class="s2">&#34;tools/call&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;params&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;create_github_issue&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;arguments&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;repo&#34;</span><span class="p">:</span> <span class="s2">&#34;myorg/myrepo&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;title&#34;</span><span class="p">:</span> <span class="s2">&#34;Bug fix needed&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;body&#34;</span><span class="p">:</span> <span class="s2">&#34;Error occurring on the login page&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<p>When the server returns the execution result, it is also in JSON-RPC format:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;jsonrpc&#34;</span><span class="p">:</span> <span class="s2">&#34;2.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;result&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;content&#34;</span><span class="p">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;text&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;Issue #143 has been successfully created.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<p>In summary, <strong>the Host acts as a translator in the middle</strong>. It converts the LLM&rsquo;s vendor-specific format to the MCP format and passes the MCP result back to the LLM in the vendor format.
+MCP standardizes the &ldquo;AI App ↔ External Tool&rdquo; segment, not the &ldquo;AI App ↔ LLM&rdquo; segment. To use an analogy, MCP <strong>unified the connector on the tool side to USB-C</strong>, while the connector on the LLM side still uses each vendor&rsquo;s own method. That&rsquo;s why once you create a GitHub MCP server, it works exactly the same in Cursor or Claude Desktop, regardless of which LLM you use. Each Host just needs to implement the part that translates its LLM&rsquo;s tool calling format to the MCP format.</p>
+<h3 id="llm-tool-calling-can-fail">
+  LLM Tool Calling Can Fail
+</h3>
+<p>A natural question follows. If the LLM learned what format to use for tool calling through training, <strong>couldn&rsquo;t it respond in the wrong format?</strong>
+Correct. An LLM is ultimately a model that predicts the next token. A tool calling response is also the result of the LLM generating tokens like <code>{</code>, <code>&quot;</code>, <code>n</code>, <code>a</code>, <code>m</code>, <code>e</code>, &hellip; one by one. Thus, various errors can occur:</p>
+<ul>
+<li><strong>JSON Syntax Error</strong>: Missing matching brackets in complex nested structures.</li>
+<li><strong>Non-existent Tool Name</strong>: Hallucinating a similar but different name like <code>make_github_issue</code> instead of <code>create_github_issue</code>.</li>
+<li><strong>Wrong Parameters</strong>: Using a field like <code>repository</code> when it was defined as <code>repo</code> in the schema, or omitting required fields.</li>
+<li><strong>Type Mismatch</strong>: Generating a string when the value should be an array.</li>
+</ul>
+<p>Modern LLMs are trained to generate valid JSON through fine-tuning, and some cases apply <strong>Constrained Decoding</strong>, like OpenAI&rsquo;s Structured Outputs. Constrained Decoding limits the probability distribution during token generation so that only tokens matching the JSON syntax are selected. Thanks to these techniques, JSON syntax errors themselves rarely occur in models like GPT-4 or Claude. However, <strong>&ldquo;syntactically correct but semantically wrong&rdquo;</strong> cases (wrong tool names, wrong parameters) still happen.</p>
+<p>To mitigate this, the Host verifies if the tool name actually exists, validates if parameters match the schema, and checks for missing required fields.
+Therefore, LLM tool calling cannot be 100% trusted. This is why MCP design principles specify that the Host <strong>must obtain explicit user consent for every tool call</strong>. In practice, annotations like <code>readOnlyHint</code> or <code>destructiveHint</code> are used to apply automatic approval policies based on risk level, but the basic principle remains user approval for all tools. This is the same reason Cursor asks for approval before executing a terminal command.</p>
+<h3 id="transport-layer">
+  Transport Layer
+</h3>
+<p>MCP defines two standard transport methods:</p>
+<p><strong>1. stdio (Standard I/O)</strong></p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Host Process ──stdin/stdout──→ Server Process (Child Process)</span></span></code></pre></div></div>
+<ul>
+<li>The Host runs the MCP server as a <strong>child process</strong>.</li>
+<li>JSON-RPC messages are exchanged via stdin/stdout.</li>
+<li>Suitable for local tools (file systems, local DBs, etc.).</li>
+</ul>
+<p><strong>2. Streamable HTTP</strong></p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Client ──HTTP POST/GET──→ Remote Server 
+</span></span><span class="line"><span class="cl">  ←── SSE (Server-Sent Events) ──</span></span></code></pre></div></div>
+<ul>
+<li>The server is operated as an independent HTTP service.</li>
+<li>Requests are sent via POST, and streaming responses can be received via SSE.</li>
+<li>Suitable for remote services (Cloud APIs, SaaS, etc.).</li>
+</ul>
+<h2 id="conclusion">
+  Conclusion
+</h2>
+<p>MCP is not a revolutionary new technology. It took the proven concept of Function Calling, applied the proven architecture pattern of LSP, and built it on top of the proven protocol of JSON-RPC. <strong>Presenting the right abstraction at the right time</strong> — that is why MCP has quickly become an industry standard.</p>
+<p>LLMs are no longer isolated geniuses. Through the standard link called MCP, AI is finally becoming an <strong>intelligence connected to the world</strong>.</p>
+<hr>
+<p><em>This post was written based on information as of March 2026.</em></p>
+
+  </div>
+
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/en/tags/mcp/">#mcp</a></div></div>
+</footer>
+</article>
+
+  </main>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/en/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav><span class="lang-dropdown footer-lang">
+      <button class="lang-toggle" type="button" aria-label="Select language" aria-expanded="false">
+        <span class="lang-name">English</span>
+        <svg class="lang-arrow" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1338 6.16015C16.3217 5.95783 16.6375 5.94599 16.8399 6.13378C17.0421 6.32166 17.054 6.6375 16.8662 6.83984L10.3662 13.8398L10.2891 13.9082C10.2053 13.9675 10.1043 14 9.99999 14C9.86101 14 9.72836 13.9417 9.63377 13.8398L3.13374 6.83984L3.07221 6.75976C2.95129 6.56111 2.98312 6.29824 3.16011 6.13378C3.33708 5.96954 3.60085 5.95776 3.78999 6.09277L3.86616 6.16015L9.99999 12.7666L16.1338 6.16015Z"></path></svg>
+      </button>
+      <span class="lang-menu" role="menu"><a href="/en/blog/mcp/" role="menuitem" class="lang-active">
+            <span class="lang-item-name">English</span>
+            <span class="lang-item-check"></span>
+          </a><a href="/kr/blog/mcp/" role="menuitem" class="">
+            <span class="lang-item-name">한국어</span>
+            <span class="lang-item-check"></span>
+          </a></span>
+    </span></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
+
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script></body>
+</html>

@@ -1,730 +1,226 @@
 <!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="https://grrru.github.io/images/favicon-32X32.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
 <title>JSON RPC | Grrru Blog</title>
-<meta name="title" content="JSON RPC" />
-<meta name="description" content="JSON
-JavaScript Object Notation의 약자로, key-value 쌍의 집합.
 
+<link rel="stylesheet" href="/css/style.34d638306027d0aab6fb13dd71a53072cf9b40625c44cbfbe9915ab5a5fdf041.css"><link rel="stylesheet" href="/css/pygments-friendly.8a524ea06b3e0ded4ac287fa92ac82550c9f0fe09820b2787e3a1484ba27a28b.css">
+      <script defer src="/js/main.3a35234d925ee11ffb302a37a387cfdb9ae838561b2df6f26dc6898328c9f0d3.js"></script>
 
 
-
-
-1{
-2  &#34;이름&#34;: &#34;홍길동&#34;,
-3  &#34;나이&#34;: 25,
-4  &#34;성별&#34;: &#34;남성&#34;,
-5  &#34;직업&#34;: &#34;학생&#34;,
-6  &#34;취미&#34;: [&#34;독서&#34;, &#34;영화&#34;, &#34;운동&#34;]
-7}JSON은 구문이 간결하고 XML보다 빠르게 파싱된다.
-
-JSON RPC
-RPC는 Remote Procedure Call의 약자로, 별도의 원격 제어 코딩 없이 네트워크로 연결된 다른 컴퓨터의 프로그램(함수/프로시저)를 로컬 함수처럼 호출하는 통신 기술이다.
-JSON RPC 동작 구조
-
-클라이언트는 JSON 형태의 메시지를 생성하고 서버로 전송한다.
-서버는 메시지를 처리하고 결과를 다시 JSON 형태의 메시지로 만들어 클라이언트에 전달한다.
-
-JSON RPC 구성 요소
-
-요청
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-method: 실행할 원격 프로시저명
-params: 함수에 전달할 매개변수
-id: 클라이언트가 설정한 고유 식별자
-
-
-응답
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-result: 결과 데이터
-error: 메소드 실패 시 에러 객체
-id: 요청 객체와 동일한 식별자
-
-
-JSON RPC 장점
-간단하고 직관적이며 언어 독립적이고 네트워크 통신에 효율적이며 확장성이 높고 에러 처리가 용이하다." />
-<meta name="author" content="grrru" />
-<meta name="keywords" content="JSON-RPC," />
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta property="og:title" content="JSON RPC" />
-<meta property="og:description" content="JSON
-JavaScript Object Notation의 약자로, key-value 쌍의 집합.
-
-
-
-
-
-1{
-2  &#34;이름&#34;: &#34;홍길동&#34;,
-3  &#34;나이&#34;: 25,
-4  &#34;성별&#34;: &#34;남성&#34;,
-5  &#34;직업&#34;: &#34;학생&#34;,
-6  &#34;취미&#34;: [&#34;독서&#34;, &#34;영화&#34;, &#34;운동&#34;]
-7}JSON은 구문이 간결하고 XML보다 빠르게 파싱된다.
-
-JSON RPC
-RPC는 Remote Procedure Call의 약자로, 별도의 원격 제어 코딩 없이 네트워크로 연결된 다른 컴퓨터의 프로그램(함수/프로시저)를 로컬 함수처럼 호출하는 통신 기술이다.
-JSON RPC 동작 구조
-
-클라이언트는 JSON 형태의 메시지를 생성하고 서버로 전송한다.
-서버는 메시지를 처리하고 결과를 다시 JSON 형태의 메시지로 만들어 클라이언트에 전달한다.
-
-JSON RPC 구성 요소
-
-요청
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-method: 실행할 원격 프로시저명
-params: 함수에 전달할 매개변수
-id: 클라이언트가 설정한 고유 식별자
-
-
-응답
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-result: 결과 데이터
-error: 메소드 실패 시 에러 객체
-id: 요청 객체와 동일한 식별자
-
-
-JSON RPC 장점
-간단하고 직관적이며 언어 독립적이고 네트워크 통신에 효율적이며 확장성이 높고 에러 처리가 용이하다." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://grrru.github.io/blog/json-rpc/" />
-
-<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_8d7d13d481984b6e.webp"/><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2026-01-30T00:00:00+00:00" />
-<meta property="article:modified_time" content="2026-01-30T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
-<meta property="fb:admins" content="0000000000" />
-
-
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_8d7d13d481984b6e.webp"/>
-<meta name="twitter:title" content="JSON RPC"/>
-<meta name="twitter:description" content="JSON
-JavaScript Object Notation의 약자로, key-value 쌍의 집합.
-
-
-
-
-
-1{
-2  &#34;이름&#34;: &#34;홍길동&#34;,
-3  &#34;나이&#34;: 25,
-4  &#34;성별&#34;: &#34;남성&#34;,
-5  &#34;직업&#34;: &#34;학생&#34;,
-6  &#34;취미&#34;: [&#34;독서&#34;, &#34;영화&#34;, &#34;운동&#34;]
-7}JSON은 구문이 간결하고 XML보다 빠르게 파싱된다.
-
-JSON RPC
-RPC는 Remote Procedure Call의 약자로, 별도의 원격 제어 코딩 없이 네트워크로 연결된 다른 컴퓨터의 프로그램(함수/프로시저)를 로컬 함수처럼 호출하는 통신 기술이다.
-JSON RPC 동작 구조
-
-클라이언트는 JSON 형태의 메시지를 생성하고 서버로 전송한다.
-서버는 메시지를 처리하고 결과를 다시 JSON 형태의 메시지로 만들어 클라이언트에 전달한다.
-
-JSON RPC 구성 요소
-
-요청
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-method: 실행할 원격 프로시저명
-params: 함수에 전달할 매개변수
-id: 클라이언트가 설정한 고유 식별자
-
-
-응답
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-result: 결과 데이터
-error: 메소드 실패 시 에러 객체
-id: 요청 객체와 동일한 식별자
-
-
-JSON RPC 장점
-간단하고 직관적이며 언어 독립적이고 네트워크 통신에 효율적이며 확장성이 높고 에러 처리가 용이하다."/>
-<meta name="twitter:site" content="@example"/>
-
-
-
-<meta itemprop="name" content="JSON RPC">
-<meta itemprop="description" content="JSON
-JavaScript Object Notation의 약자로, key-value 쌍의 집합.
-
-
-
-
-
-1{
-2  &#34;이름&#34;: &#34;홍길동&#34;,
-3  &#34;나이&#34;: 25,
-4  &#34;성별&#34;: &#34;남성&#34;,
-5  &#34;직업&#34;: &#34;학생&#34;,
-6  &#34;취미&#34;: [&#34;독서&#34;, &#34;영화&#34;, &#34;운동&#34;]
-7}JSON은 구문이 간결하고 XML보다 빠르게 파싱된다.
-
-JSON RPC
-RPC는 Remote Procedure Call의 약자로, 별도의 원격 제어 코딩 없이 네트워크로 연결된 다른 컴퓨터의 프로그램(함수/프로시저)를 로컬 함수처럼 호출하는 통신 기술이다.
-JSON RPC 동작 구조
-
-클라이언트는 JSON 형태의 메시지를 생성하고 서버로 전송한다.
-서버는 메시지를 처리하고 결과를 다시 JSON 형태의 메시지로 만들어 클라이언트에 전달한다.
-
-JSON RPC 구성 요소
-
-요청
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-method: 실행할 원격 프로시저명
-params: 함수에 전달할 매개변수
-id: 클라이언트가 설정한 고유 식별자
-
-
-응답
-
-
-jsonrpc: 버전 (e.g. &ldquo;2.0&rdquo;)
-result: 결과 데이터
-error: 메소드 실패 시 에러 객체
-id: 요청 객체와 동일한 식별자
-
-
-JSON RPC 장점
-간단하고 직관적이며 언어 독립적이고 네트워크 통신에 효율적이며 확장성이 높고 에러 처리가 용이하다."><meta itemprop="datePublished" content="2026-01-30T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2026-01-30T00:00:00+00:00" />
-<meta itemprop="wordCount" content="137">
-
-<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_8d7d13d481984b6e.webp"/>
-
-
-<meta itemprop="keywords" content="JSON-RPC," />
-
-<meta name="referrer" content="no-referrer-when-downgrade" />
-
-  
-  <link href="/original.min.css" rel="stylesheet">
-
-  
-    
-    <link href="/syntax.min.css" rel="stylesheet">
-  
-
-  
-
-  
-<style>
-   
-  :root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --heading-color: #1a1a1a;
-    --link-color: #0066cc;
-    --link-visited-color: #551a8b;
-    --border-color: #333333;
-    --blockquote-color: #666666;
-    --code-bg: #f5f5f5;
-    --code-text: #333333;
-    --input-bg: #f5f5f5;
-    --input-text: #333333;
-    --helptext-color: #666666;
-    --skip-link-bg: #ffffff;
-    --figcaption-color: #666666;
-  }
-
-   
-  [data-theme="dark"] {
-    --bg-color: #1d1f27;
-    --text-color: #c9d1d9;
-    --heading-color: #eeeeee;
-    --link-color: #8cc2dd;
-    --link-visited-color: #8b6fcb;
-    --border-color: #c9d1d9;
-    --blockquote-color: #cccccc;
-    --code-bg: #282a36;
-    --code-text: #f8f8f2;
-    --input-bg: #252525;
-    --input-text: #dddddd;
-    --helptext-color: #aaaaaa;
-    --skip-link-bg: #1d1f27;
-    --figcaption-color: #cccccc;
-  }
-
-   
-  body {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  strong,
-  b {
-    color: var(--heading-color) !important;
-  }
-
-  a {
-    color: var(--link-color) !important;
-  }
-
-  ul.blog-posts li a:visited {
-    color: var(--link-visited-color) !important;
-  }
-
-  table,
-  th,
-  td {
-    border-color: var(--border-color) !important;
-  }
-
-  blockquote {
-    border-left-color: #999 !important;
-    color: var(--blockquote-color) !important;
-  }
-
-  code {
-    background-color: var(--code-bg) !important;
-    color: var(--code-text) !important;
-  }
-
-  textarea,
-  input {
-    background-color: var(--input-bg) !important;
-    color: var(--input-text) !important;
-  }
-
-  .helptext {
-    color: var(--helptext-color) !important;
-  }
-
-  .skip-link {
-    background-color: var(--skip-link-bg) !important;
-  }
-
-  figcaption>p {
-    color: var(--figcaption-color) !important;
-  }
-
-   
-  .theme-switch {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: inline-block;
-    width: 52px;
-    height: 26px;
-    cursor: pointer;
-  }
-
-  .theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .theme-switch .slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 26px;
-    transition: background-color 0.3s;
-  }
-
-  .theme-switch .slider::before {
-    content: '';
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background-color: var(--bg-color);
-    border-radius: 50%;
-    transition: transform 0.3s;
-  }
-
-  .theme-switch input:checked+.slider::before {
-    transform: translateX(26px);
-  }
-
-  .theme-switch .icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    color: var(--text-color);
-    transition: opacity 0.3s;
-  }
-
-  .theme-switch .moon {
-    left: 5px;
-    opacity: 1;
-  }
-
-  .theme-switch .sun {
-    right: 5px;
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .moon {
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .sun {
-    opacity: 1;
-  }
-
-  .theme-switch:focus-within .slider {
-    outline: 2px solid var(--link-color);
-    outline-offset: 2px;
-  }
-
-   
-  .highlight {
-    position: relative;
-  }
-
-  .code-copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 8px;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    cursor: pointer;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.2s, background-color 0.2s;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .highlight:hover .code-copy-btn {
-    opacity: 1;
-  }
-
-  .code-copy-btn:hover {
-    background-color: var(--input-bg);
-  }
-
-  .code-copy-btn:active {
-    transform: scale(0.95);
-  }
-
-  .code-copy-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .code-copy-btn.copied {
-    color: #22c55e;
-    border-color: #22c55e;
-  }
-</style>
-
-
-<script>
-  (function () {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  })();
-</script></head>
-
+</head>
 <body>
-  <header><a class="skip-link" href="#main-content">Skip to main content</a>
-
-<a href="/" class="title"><h1>Grrru Blog</h1></a>
-<nav>
-  <a href="/">Home</a>
-
-  <a href="/blog/">Blog</a>
-
-
-
-
-
-
-
-
-
-</nav>
-</header>
-  <main id="main-content">
-
-<h1>JSON RPC</h1>
-<p class="byline">
-  <time datetime='2026-01-30' pubdate>
-    2026-01-30
-  </time>
-  · grrru
-</p>
-
-<content>
-  <h2 id="json">JSON</h2>
-<p>JavaScript Object Notation의 약자로, <code>key-value</code> 쌍의 집합.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>{
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>  <span style="color:#ca9ee6">&#34;이름&#34;</span>: <span style="color:#a6d189">&#34;홍길동&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>  <span style="color:#ca9ee6">&#34;나이&#34;</span>: <span style="color:#ef9f76">25</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>  <span style="color:#ca9ee6">&#34;성별&#34;</span>: <span style="color:#a6d189">&#34;남성&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>  <span style="color:#ca9ee6">&#34;직업&#34;</span>: <span style="color:#a6d189">&#34;학생&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>  <span style="color:#ca9ee6">&#34;취미&#34;</span>: [<span style="color:#a6d189">&#34;독서&#34;</span>, <span style="color:#a6d189">&#34;영화&#34;</span>, <span style="color:#a6d189">&#34;운동&#34;</span>]
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span>}</span></span></code></pre></div><p>JSON은 구문이 간결하고 XML보다 빠르게 파싱된다.</p>
-<hr>
-<h2 id="json-rpc">JSON RPC</h2>
-<p><code>RPC</code>는 Remote Procedure Call의 약자로, 별도의 원격 제어 코딩 없이 네트워크로 연결된 다른 컴퓨터의 프로그램(함수/프로시저)를 로컬 함수처럼 호출하는 통신 기술이다.</p>
-<h3 id="json-rpc-동작-구조">JSON RPC 동작 구조</h3>
-<ul>
-<li>클라이언트는 JSON 형태의 메시지를 생성하고 서버로 전송한다.</li>
-<li>서버는 메시지를 처리하고 결과를 다시 JSON 형태의 메시지로 만들어 클라이언트에 전달한다.</li>
-</ul>
-<h3 id="json-rpc-구성-요소">JSON RPC 구성 요소</h3>
-<ol>
-<li>요청</li>
-</ol>
-<ul>
-<li><code>jsonrpc</code>: 버전 (e.g. &ldquo;2.0&rdquo;)</li>
-<li><code>method</code>: 실행할 원격 프로시저명</li>
-<li><code>params</code>: 함수에 전달할 매개변수</li>
-<li><code>id</code>: 클라이언트가 설정한 고유 식별자</li>
-</ul>
-<ol>
-<li>응답</li>
-</ol>
-<ul>
-<li><code>jsonrpc</code>: 버전 (e.g. &ldquo;2.0&rdquo;)</li>
-<li><code>result</code>: 결과 데이터</li>
-<li><code>error</code>: 메소드 실패 시 에러 객체</li>
-<li><code>id</code>: 요청 객체와 동일한 식별자</li>
-</ul>
-<hr>
-<h2 id="json-rpc-장점">JSON RPC 장점</h2>
-<p>간단하고 직관적이며 언어 독립적이고 네트워크 통신에 효율적이며 확장성이 높고 에러 처리가 용이하다.</p>
-<hr>
-<h2 id="reference">Reference</h2>
-<ul>
-<li><a href="https://lab.wallarm.com/what/json-rpc%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80/?lang=ko"># JSON RPC란 무엇인가?</a></li>
-</ul>
-<hr>
-
-</content>
-<p>
-  
-    <a class="blog-tags" href="/tags/json-rpc/">#json-rpc</a>
-  
-</p>
-
-
-  <p>
-    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"JSON%20RPC"'>
-      Reply to this post by email ↪
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/">
+      <h1>Grrru Blog</h1>
     </a>
-  </p>
+  </div>
 
+  <nav class="site-nav"><a href="/">Home</a>
+     <a href="/blog/">Blog</a>
+    <a href="/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
 
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title">JSON RPC</h1>
+    <p class="post-meta">
+      <time datetime="2026-01-30">
+        January 30, 2026
+      </time>
+    </p>
+  </header><div class="post-content">
+    <h2 id="json">
+  JSON
+</h2>
+<p>Stands for JavaScript Object Notation, a collection of <code>key-value</code> pairs.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Hong Gil-dong&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;age&#34;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;gender&#34;</span><span class="p">:</span> <span class="s2">&#34;male&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;job&#34;</span><span class="p">:</span> <span class="s2">&#34;student&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;hobbies&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;reading&#34;</span><span class="p">,</span> <span class="s2">&#34;movies&#34;</span><span class="p">,</span> <span class="s2">&#34;exercise&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div>
+<p>JSON has a concise syntax and is parsed faster than XML.</p>
+<hr>
+<h2 id="json-rpc">
+  JSON RPC
+</h2>
+<p><code>RPC</code> stands for Remote Procedure Call, a communication technology that allows calling programs (functions/procedures) on another computer connected via a network as if they were local functions, without separate remote control coding.</p>
+<h3 id="how-json-rpc-works">
+  How JSON RPC Works
+</h3>
+<ul>
+<li>The client creates a JSON-formatted message and sends it to the server.</li>
+<li>The server processes the message and sends the result back to the client as a JSON-formatted message.</li>
+</ul>
+<h3 id="json-rpc-components">
+  JSON RPC Components
+</h3>
+<ol>
+<li>Request</li>
+</ol>
+<ul>
+<li><code>jsonrpc</code>: Version (e.g., &ldquo;2.0&rdquo;)</li>
+<li><code>method</code>: Name of the remote procedure to be executed</li>
+<li><code>params</code>: Parameters to be passed to the function</li>
+<li><code>id</code>: A unique identifier set by the client</li>
+</ul>
+<ol>
+<li>Response</li>
+</ol>
+<ul>
+<li><code>jsonrpc</code>: Version (e.g., &ldquo;2.0&rdquo;)</li>
+<li><code>result</code>: Result data</li>
+<li><code>error</code>: Error object in case of method failure</li>
+<li><code>id</code>: The same identifier as in the request object</li>
+</ul>
+<hr>
+<h2 id="advantages-of-json-rpc">
+  Advantages of JSON RPC
+</h2>
+<p>It is simple, intuitive, language-independent, efficient for network communication, highly scalable, and easy to handle errors.</p>
+<hr>
+<h2 id="reference">
+  Reference
+</h2>
+<ul>
+<li><a href="https://lab.wallarm.com/what/json-rpc%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80/?lang=ko"># What is JSON RPC?</a></li>
+</ul>
+<hr>
+
+  </div>
+
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/tags/json-rpc/">#json-rpc</a></div></div>
+</footer>
+</article>
 
   </main>
-  <footer><small>
-  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
-</small></footer>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav><span class="lang-dropdown footer-lang">
+      <button class="lang-toggle" type="button" aria-label="Select language" aria-expanded="false">
+        <span class="lang-name">English</span>
+        <svg class="lang-arrow" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1338 6.16015C16.3217 5.95783 16.6375 5.94599 16.8399 6.13378C17.0421 6.32166 17.054 6.6375 16.8662 6.83984L10.3662 13.8398L10.2891 13.9082C10.2053 13.9675 10.1043 14 9.99999 14C9.86101 14 9.72836 13.9417 9.63377 13.8398L3.13374 6.83984L3.07221 6.75976C2.95129 6.56111 2.98312 6.29824 3.16011 6.13378C3.33708 5.96954 3.60085 5.95776 3.78999 6.09277L3.86616 6.16015L9.99999 12.7666L16.1338 6.16015Z"></path></svg>
+      </button>
+      <span class="lang-menu" role="menu"><a href="/blog/json-rpc/" role="menuitem" class="lang-active">
+            <span class="lang-item-name">English</span>
+            <span class="lang-item-check"></span>
+          </a><a href="/kr/blog/json-rpc/" role="menuitem" class="">
+            <span class="lang-item-name">한국어</span>
+            <span class="lang-item-check"></span>
+          </a></span>
+    </span></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
 
-  
-<script>
-    (function () {
-        
-        const toggleWrapper = document.createElement('label');
-        toggleWrapper.className = 'theme-switch';
-        toggleWrapper.setAttribute('aria-label', 'Toggle theme');
-        toggleWrapper.setAttribute('title', 'Toggle light/dark mode');
+  </footer>
 
-        toggleWrapper.innerHTML = `
-            <input type="checkbox" id="theme-toggle-checkbox">
-            <span class="slider">
-                <svg class="icon moon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-                <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5"/>
-                    <line x1="12" y1="1" x2="12" y2="3"/>
-                    <line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/>
-                    <line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                </svg>
-            </span>
-        `;
-
-        const checkbox = toggleWrapper.querySelector('#theme-toggle-checkbox');
-
-        
-        function updateCheckbox() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            checkbox.checked = isDark;
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
 
-        
-        checkbox.addEventListener('change', function () {
-            const newTheme = this.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
         });
 
-        
-        document.body.appendChild(toggleWrapper);
-
-        
-        updateCheckbox();
-
-        
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-                if (!localStorage.getItem('theme')) {
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-                    updateCheckbox();
-                }
-            });
-        }
-    })();
-</script>
-
-
-<script>
-    (function () {
-        
-        const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>`;
-
-        
-        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>`;
-
-        
-        document.querySelectorAll('.highlight').forEach(function (highlightBlock) {
-            
-            if (highlightBlock.querySelector('.code-copy-btn')) return;
-
-            
-            const button = document.createElement('button');
-            button.className = 'code-copy-btn';
-            button.type = 'button';
-            button.setAttribute('aria-label', 'Copy code to clipboard');
-            button.innerHTML = copyIcon;
-
-            
-            button.addEventListener('click', function () {
-                
-                const codeElement = highlightBlock.querySelector('code');
-                if (!codeElement) return;
-
-                let codeText = '';
-
-                
-                
-                
-                const lineWrappers = codeElement.querySelectorAll('span[style*="display:flex"]');
-
-                if (lineWrappers.length > 0) {
-                    lineWrappers.forEach(function (wrapper) {
-                        const spans = wrapper.querySelectorAll(':scope > span');
-                        if (spans.length >= 2) {
-                            
-                            codeText += spans[spans.length - 1].textContent;
-                        } else if (spans.length === 1) {
-                            
-                            codeText += spans[0].textContent;
-                        }
-                    });
-                } else {
-                    
-                    codeText = codeElement.textContent;
-                }
-
-                
-                navigator.clipboard.writeText(codeText.trim()).then(function () {
-                    
-                    button.innerHTML = checkIcon;
-                    button.classList.add('copied');
-
-                    
-                    setTimeout(function () {
-                        button.innerHTML = copyIcon;
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(function (err) {
-                    console.error('Failed to copy code:', err);
-                });
-            });
-
-            
-            highlightBlock.appendChild(button);
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
         });
-    })();
-</script></body>
-
+      }
+    });
+  </script></body>
 </html>

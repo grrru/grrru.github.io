@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Grrru Blog</title>
+    <link>/en/categories/</link>
+    <description>Recent content in Categories on Grrru Blog</description>
+    <generator>Hugo</generator>
+    <language>en-US</language>
+    <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
+    <webMaster>gruns0989@naver.com (grrru)</webMaster>
+    <copyright>Grrru (CC BY 4.0)</copyright>
+    <lastBuildDate>Tue, 03 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/en/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mcp</title>
+      <link>/en/categories/mcp/</link>
+      <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>/en/categories/mcp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Backend</title>
+      <link>/en/categories/backend/</link>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>/en/categories/backend/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Linux</title>
+      <link>/en/categories/linux/</link>
+      <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>/en/categories/linux/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

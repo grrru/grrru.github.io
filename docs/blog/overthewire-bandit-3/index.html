@@ -1,959 +1,1352 @@
 <!DOCTYPE html>
-<html lang="en-US">
-
-<head>
-  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="https://grrru.github.io/images/favicon-32X32.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
 <title>OverTheWire Bandit (3) | Grrru Blog</title>
-<meta name="title" content="OverTheWire Bandit (3)" />
-<meta name="description" content="Level 21
-A program is running automatically at regular intervals from cron, the time-based job scheduler. Look in /etc/cron.d/ for the configuration and see what command is being executed.
 
-주기적으로 실행되는 crontab이 힌트를 줄 것이다.
-/etc/cron.d를 보라니깐 거기로 가본다.
-
-
-
-
-
-1cd /etc/cron.d/
-2ll
-3
-4-rw-r--r--   1 root root   120 Oct 14 09:26 cronjob_bandit22cronjob_bandit22를 까본다. (-644로 other이 읽을 수 있다.)
-
-
-
-
-
-1cat cronjob_bandit22
-2@reboot bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-3* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-
-
-
-
-1cat /usr/bin/cronjob_bandit22.sh
-2
-3#!/bin/bash
-4chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-5cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgvsh 파일을 까보면 /etc/bandit_pass/bandit22 파일을 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv에 매 분마다 넣고 있음을 볼 수 있다." />
-<meta name="author" content="grrru" />
-<meta name="keywords" content="linux,overthewire,bandit," />
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta property="og:title" content="OverTheWire Bandit (3)" />
-<meta property="og:description" content="Level 21
-A program is running automatically at regular intervals from cron, the time-based job scheduler. Look in /etc/cron.d/ for the configuration and see what command is being executed.
-
-주기적으로 실행되는 crontab이 힌트를 줄 것이다.
-/etc/cron.d를 보라니깐 거기로 가본다.
-
-
-
-
-
-1cd /etc/cron.d/
-2ll
-3
-4-rw-r--r--   1 root root   120 Oct 14 09:26 cronjob_bandit22cronjob_bandit22를 까본다. (-644로 other이 읽을 수 있다.)
-
-
-
-
-
-1cat cronjob_bandit22
-2@reboot bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-3* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-
-
-
-
-1cat /usr/bin/cronjob_bandit22.sh
-2
-3#!/bin/bash
-4chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-5cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgvsh 파일을 까보면 /etc/bandit_pass/bandit22 파일을 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv에 매 분마다 넣고 있음을 볼 수 있다." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://grrru.github.io/blog/overthewire-bandit-3/" />
-
-<meta property="og:image" content="https://grrru.github.io/images/social_card_bg_hu_31bc1f0a0dcc45a8.webp"/><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2026-01-11T00:00:00+00:00" />
-<meta property="article:modified_time" content="2026-01-11T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
-<meta property="fb:admins" content="0000000000" />
-
-
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://grrru.github.io/images/social_card_bg_hu_31bc1f0a0dcc45a8.webp"/>
-<meta name="twitter:title" content="OverTheWire Bandit (3)"/>
-<meta name="twitter:description" content="Level 21
-A program is running automatically at regular intervals from cron, the time-based job scheduler. Look in /etc/cron.d/ for the configuration and see what command is being executed.
-
-주기적으로 실행되는 crontab이 힌트를 줄 것이다.
-/etc/cron.d를 보라니깐 거기로 가본다.
-
-
-
-
-
-1cd /etc/cron.d/
-2ll
-3
-4-rw-r--r--   1 root root   120 Oct 14 09:26 cronjob_bandit22cronjob_bandit22를 까본다. (-644로 other이 읽을 수 있다.)
-
-
-
-
-
-1cat cronjob_bandit22
-2@reboot bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-3* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-
-
-
-
-1cat /usr/bin/cronjob_bandit22.sh
-2
-3#!/bin/bash
-4chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-5cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgvsh 파일을 까보면 /etc/bandit_pass/bandit22 파일을 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv에 매 분마다 넣고 있음을 볼 수 있다."/>
-<meta name="twitter:site" content="@example"/>
-
-
-
-<meta itemprop="name" content="OverTheWire Bandit (3)">
-<meta itemprop="description" content="Level 21
-A program is running automatically at regular intervals from cron, the time-based job scheduler. Look in /etc/cron.d/ for the configuration and see what command is being executed.
-
-주기적으로 실행되는 crontab이 힌트를 줄 것이다.
-/etc/cron.d를 보라니깐 거기로 가본다.
-
-
-
-
-
-1cd /etc/cron.d/
-2ll
-3
-4-rw-r--r--   1 root root   120 Oct 14 09:26 cronjob_bandit22cronjob_bandit22를 까본다. (-644로 other이 읽을 수 있다.)
-
-
-
-
-
-1cat cronjob_bandit22
-2@reboot bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-3* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-
-
-
-
-1cat /usr/bin/cronjob_bandit22.sh
-2
-3#!/bin/bash
-4chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-5cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgvsh 파일을 까보면 /etc/bandit_pass/bandit22 파일을 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv에 매 분마다 넣고 있음을 볼 수 있다."><meta itemprop="datePublished" content="2026-01-11T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2026-01-11T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1286">
-
-<meta itemprop="image" content="https://grrru.github.io/images/social_card_bg_hu_31bc1f0a0dcc45a8.webp"/>
-
-
-<meta itemprop="keywords" content="linux,overthewire,bandit," />
-
-<meta name="referrer" content="no-referrer-when-downgrade" />
-
-  
-  <link href="/original.min.css" rel="stylesheet">
-
-  
-    
-    <link href="/syntax.min.css" rel="stylesheet">
-  
-
-  
-
-  
-<style>
-   
-  :root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --heading-color: #1a1a1a;
-    --link-color: #0066cc;
-    --link-visited-color: #551a8b;
-    --border-color: #333333;
-    --blockquote-color: #666666;
-    --code-bg: #f5f5f5;
-    --code-text: #333333;
-    --input-bg: #f5f5f5;
-    --input-text: #333333;
-    --helptext-color: #666666;
-    --skip-link-bg: #ffffff;
-    --figcaption-color: #666666;
-  }
-
-   
-  [data-theme="dark"] {
-    --bg-color: #1d1f27;
-    --text-color: #c9d1d9;
-    --heading-color: #eeeeee;
-    --link-color: #8cc2dd;
-    --link-visited-color: #8b6fcb;
-    --border-color: #c9d1d9;
-    --blockquote-color: #cccccc;
-    --code-bg: #282a36;
-    --code-text: #f8f8f2;
-    --input-bg: #252525;
-    --input-text: #dddddd;
-    --helptext-color: #aaaaaa;
-    --skip-link-bg: #1d1f27;
-    --figcaption-color: #cccccc;
-  }
-
-   
-  body {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  strong,
-  b {
-    color: var(--heading-color) !important;
-  }
-
-  a {
-    color: var(--link-color) !important;
-  }
-
-  ul.blog-posts li a:visited {
-    color: var(--link-visited-color) !important;
-  }
-
-  table,
-  th,
-  td {
-    border-color: var(--border-color) !important;
-  }
-
-  blockquote {
-    border-left-color: #999 !important;
-    color: var(--blockquote-color) !important;
-  }
-
-  code {
-    background-color: var(--code-bg) !important;
-    color: var(--code-text) !important;
-  }
-
-  textarea,
-  input {
-    background-color: var(--input-bg) !important;
-    color: var(--input-text) !important;
-  }
-
-  .helptext {
-    color: var(--helptext-color) !important;
-  }
-
-  .skip-link {
-    background-color: var(--skip-link-bg) !important;
-  }
-
-  figcaption>p {
-    color: var(--figcaption-color) !important;
-  }
-
-   
-  .theme-switch {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: inline-block;
-    width: 52px;
-    height: 26px;
-    cursor: pointer;
-  }
-
-  .theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .theme-switch .slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 26px;
-    transition: background-color 0.3s;
-  }
-
-  .theme-switch .slider::before {
-    content: '';
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background-color: var(--bg-color);
-    border-radius: 50%;
-    transition: transform 0.3s;
-  }
-
-  .theme-switch input:checked+.slider::before {
-    transform: translateX(26px);
-  }
-
-  .theme-switch .icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    color: var(--text-color);
-    transition: opacity 0.3s;
-  }
-
-  .theme-switch .moon {
-    left: 5px;
-    opacity: 1;
-  }
-
-  .theme-switch .sun {
-    right: 5px;
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .moon {
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .sun {
-    opacity: 1;
-  }
-
-  .theme-switch:focus-within .slider {
-    outline: 2px solid var(--link-color);
-    outline-offset: 2px;
-  }
-
-   
-  .highlight {
-    position: relative;
-  }
-
-  .code-copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 8px;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    cursor: pointer;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.2s, background-color 0.2s;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .highlight:hover .code-copy-btn {
-    opacity: 1;
-  }
-
-  .code-copy-btn:hover {
-    background-color: var(--input-bg);
-  }
-
-  .code-copy-btn:active {
-    transform: scale(0.95);
-  }
-
-  .code-copy-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .code-copy-btn.copied {
-    color: #22c55e;
-    border-color: #22c55e;
-  }
-</style>
-
-
-<script>
-  (function () {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-theme', 'dark');
+<link rel="stylesheet" href="/css/style.34d638306027d0aab6fb13dd71a53072cf9b40625c44cbfbe9915ab5a5fdf041.css"><link rel="stylesheet" href="/css/pygments-friendly.8a524ea06b3e0ded4ac287fa92ac82550c9f0fe09820b2787e3a1484ba27a28b.css"><link href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" rel="stylesheet"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\\\[", right: "\\\\]", display: true},
+          {left: "\\\\(", right: "\\\\)", display: false}
+        ],
+        throwOnError: false,
+        ignoredTags: ["script","noscript","style","textarea","pre","code"]
+      });
     }
-  })();
-</script></head>
+  });
+  </script>
+      <script defer src="/js/main.3a35234d925ee11ffb302a37a387cfdb9ae838561b2df6f26dc6898328c9f0d3.js"></script>
 
+
+</head>
 <body>
-  <header><a class="skip-link" href="#main-content">Skip to main content</a>
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/">
+      <h1>Grrru Blog</h1>
+    </a>
+  </div>
 
-<a href="/" class="title"><h1>Grrru Blog</h1></a>
-<nav>
-  <a href="/">Home</a>
+  <nav class="site-nav"><a href="/">Home</a>
+     <a href="/blog/">Blog</a>
+    <a href="/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
 
-  <a href="/blog/">Blog</a>
-
-
-
-
-
-
-
-
-
-</nav>
-</header>
-  <main id="main-content">
-
-<h1>OverTheWire Bandit (3)</h1>
-<p class="byline">
-  <time datetime='2026-01-11' pubdate>
-    2026-01-11
-  </time>
-  · grrru
-</p>
-
-<content>
-  <h3 id="level-21">Level 21</h3>
-<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title">OverTheWire Bandit (3)</h1>
+    <p class="post-meta">
+      <time datetime="2026-01-11">
+        January 11, 2026
+      </time>
+    </p>
+  </header><div class="post-content">
+    <h3 id="level-21">
+  Level 21
+</h3>
+<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
 <hr>
-<p>주기적으로 실행되는 crontab이 힌트를 줄 것이다.<br>
-<code>/etc/cron.d</code>를 보라니깐 거기로 가본다.</p>
+<p>A periodically running crontab will provide a hint.
+It says to look in <code>/etc/cron.d/</code>, so let&rsquo;s go there.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nb">cd</span> /etc/cron.d/
+</span></span><span class="line"><span class="cl">ll
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">-rw-r--r--   <span class="m">1</span> root root   <span class="m">120</span> Oct <span class="m">14</span> 09:26 cronjob_bandit22</span></span></code></pre></div></div>
+<p>Inspect <code>cronjob_bandit22</code> (it&rsquo;s readable by others with 644 permissions).</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat cronjob_bandit22
+</span></span><span class="line"><span class="cl">@reboot bandit22 /usr/bin/cronjob_bandit22.sh <span class="p">&amp;</span>&gt; /dev/null
+</span></span><span class="line"><span class="cl">* * * * * bandit22 /usr/bin/cronjob_bandit22.sh <span class="p">&amp;</span>&gt; /dev/null</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /usr/bin/cronjob_bandit22.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">644</span> /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+</span></span><span class="line"><span class="cl">cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</span></span></code></pre></div></div>
+<p>Examining the <code>.sh</code> file shows that the contents of <code>/etc/bandit_pass/bandit22</code> are being placed into <code>/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</code> every minute.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#99d1db">cd</span> /etc/cron.d/
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>ll
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>-rw-r--r--   <span style="color:#ef9f76">1</span> root root   <span style="color:#ef9f76">120</span> Oct <span style="color:#ef9f76">14</span> 09:26 cronjob_bandit22</span></span></code></pre></div><p><code>cronjob_bandit22</code>를 까본다. (-644로 other이 읽을 수 있다.)</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat cronjob_bandit22
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>@reboot bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &amp;&gt; /dev/null</span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /usr/bin/cronjob_bandit22.sh
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span><span style="color:#737994;font-style:italic">#!/bin/bash</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>chmod <span style="color:#ef9f76">644</span> /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</span></span></code></pre></div><p>sh 파일을 까보면 <code>/etc/bandit_pass/bandit22</code> 파일을 <code>/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</code>에 매 분마다 넣고 있음을 볼 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</span></span></code></pre></div><hr>
-<h3 id="level-22">Level 22</h3>
-<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
-<p><strong>NOTE:</strong> Looking at shell scripts written by other people is a very useful skill. The script for this level is intentionally made easy to read. If you are having problems understanding what it does, try executing it to see the debug information it prints.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</span></span></code></pre></div></div>
 <hr>
-<p>남이 쓴 sh를 읽는 건 useful skill이다!</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/cron.d/cronjob_bandit23
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>@reboot bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null</span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /usr/bin/cronjob_bandit23.sh
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#737994;font-style:italic">#!/bin/bash</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#f2d5cf">myname</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span>whoami<span style="color:#ca9ee6">)</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span><span style="color:#f2d5cf">mytarget</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span><span style="color:#99d1db">echo</span> I am user <span style="color:#f2d5cf">$myname</span> | md5sum | cut -d <span style="color:#a6d189">&#39; &#39;</span> -f 1<span style="color:#ca9ee6">)</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span><span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;Copying passwordfile /etc/bandit_pass/</span><span style="color:#f2d5cf">$myname</span><span style="color:#a6d189"> to /tmp/</span><span style="color:#f2d5cf">$mytarget</span><span style="color:#a6d189">&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">8</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">9</span><span>cat /etc/bandit_pass/<span style="color:#f2d5cf">$myname</span> &gt; /tmp/<span style="color:#f2d5cf">$mytarget</span></span></span></code></pre></div><p>그냥 shell 스크립트에 적힌대로 따라해서 비밀번호 위치를 알아내(면 안된다!)..
-sh 내에서 실행한 <code>whoami</code>는 crontab으로 실행되고 있는데 crontab을 실행시키는 주체가 <code>bandit23</code>이다. (<code>* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null</code>)
-따라서 myname=bandit23으로 넣어줘야 한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#f2d5cf">myname</span><span style="color:#99d1db;font-weight:bold">=</span>bandit23
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#f2d5cf">mytarget</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span><span style="color:#99d1db">echo</span> I am user <span style="color:#f2d5cf">$myname</span> | md5sum | cut -d <span style="color:#a6d189">&#39; &#39;</span> -f 1<span style="color:#ca9ee6">)</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>cat /tmp/<span style="color:#f2d5cf">$mytarget</span></span></span></code></pre></div><h3 id="level-23">Level 23</h3>
-<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
-<p><strong>NOTE:</strong> This level requires you to create your own first shell-script. This is a very big step and you should be proud of yourself when you beat this level!</p>
-<p><strong>NOTE 2:</strong> Keep in mind that your shell script is removed once executed, so you may want to keep a copy around…</p>
+<h3 id="level-22">
+  Level 22
+</h3>
+<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
+<p><strong>NOTE:</strong> Looking at shell scripts written by other people is a very useful skill. The script for this level is intentionally made easy to read. If you are having problems understanding what it does, try executing it to see the debug information it prints.</p>
 <hr>
-<p>습관적으로 열어본다.</p>
+<p>Reading shell scripts written by others is a useful skill!</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /etc/cron.d/cronjob_bandit23
+</span></span><span class="line"><span class="cl">@reboot bandit23 /usr/bin/cronjob_bandit23.sh  <span class="p">&amp;</span>&gt; /dev/null
+</span></span><span class="line"><span class="cl">* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  <span class="p">&amp;</span>&gt; /dev/null</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /usr/bin/cronjob_bandit23.sh
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">myname</span><span class="o">=</span><span class="k">$(</span>whoami<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">mytarget</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> I am user <span class="nv">$myname</span> <span class="p">|</span> md5sum <span class="p">|</span> cut -d <span class="s1">&#39; &#39;</span> -f 1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Copying passwordfile /etc/bandit_pass/</span><span class="nv">$myname</span><span class="s2"> to /tmp/</span><span class="nv">$mytarget</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cat /etc/bandit_pass/<span class="nv">$myname</span> &gt; /tmp/<span class="nv">$mytarget</span></span></span></code></pre></div></div>
+<p>You can find the password location by following the script&hellip; but wait!
+The <code>whoami</code> command in the script is being run by a cronjob, and the entity running the cronjob is <code>bandit23</code>. (<code>* * * * * bandit23 /usr/bin/cronjob_bandit23.sh &amp;&gt; /dev/null</code>)
+Therefore, you must use <code>myname=bandit23</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nv">myname</span><span class="o">=</span>bandit23
+</span></span><span class="line"><span class="cl"><span class="nv">mytarget</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> I am user <span class="nv">$myname</span> <span class="p">|</span> md5sum <span class="p">|</span> cut -d <span class="s1">&#39; &#39;</span> -f 1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">cat /tmp/<span class="nv">$mytarget</span></span></span></code></pre></div></div>
+<h3 id="level-23">
+  Level 23
+</h3>
+<p>A program is running automatically at regular intervals from <strong>cron</strong>, the time-based job scheduler. Look in <strong>/etc/cron.d/</strong> for the configuration and see what command is being executed.</p>
+<p><strong>NOTE:</strong> This level requires you to create your own first shell-script. This is a very big step and you should be proud of yourself when you beat this level!</p>
+<p><strong>NOTE 2:</strong> Keep in mind that your shell script is removed once executed, so you may want to keep a copy around…</p>
+<hr>
+<p>Open it out of habit.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /etc/cron.d/cronjob_bandit24
+</span></span><span class="line"><span class="cl">@reboot bandit24 /usr/bin/cronjob_bandit24.sh <span class="p">&amp;</span>&gt; /dev/null
+</span></span><span class="line"><span class="cl">* * * * * bandit24 /usr/bin/cronjob_bandit24.sh <span class="p">&amp;</span>&gt; /dev/null</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/cron.d/cronjob_bandit24
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>@reboot bandit24 /usr/bin/cronjob_bandit24.sh &amp;&gt; /dev/null
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>* * * * * bandit24 /usr/bin/cronjob_bandit24.sh &amp;&gt; /dev/null</span></span></code></pre></div>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /usr/bin/cronjob_bandit24.sh
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">myname</span><span class="o">=</span><span class="k">$(</span>whoami<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/spool/<span class="nv">$myname</span>/foo
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Executing and deleting all scripts in /var/spool/</span><span class="nv">$myname</span><span class="s2">/foo:&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> i in * .*<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;.&#34;</span> -a <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;..&#34;</span> <span class="o">]</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Handling </span><span class="nv">$i</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">owner</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>stat --format <span class="s2">&#34;%U&#34;</span> ./<span class="nv">$i</span><span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">owner</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;bandit23&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            timeout -s <span class="m">9</span> <span class="m">60</span> ./<span class="nv">$i</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">        rm -f ./<span class="nv">$i</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></div></div>
+<p>Examining <code>cronjob_bandit24.sh</code> reveals a script that iterates through all files (<code>*</code>, <code>.*</code>) in the <code>/var/spool/bandit24/foo</code> directory. For files other than <code>.</code> and <code>..</code>, if the <code>owner</code> is <code>bandit23</code>, it runs the file with a 60-second timeout using <code>-s 9</code> (SIGKILL) and then deletes the file.
+The file we need to read is in <code>/etc/bandit_pass/bandit24</code>, which can be read by <code>bandit24</code>.
+Since the crontab is running as <code>bandit24</code> and executes all files under <code>/foo</code>, we can create a shell script that <code>bandit24</code> can execute, place it under <code>/foo</code>, and have it write the password file to a file of our choice.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">drwxrwx-wt <span class="m">5420</span> root root <span class="m">10244096</span> Jan <span class="m">10</span> 07:31 tmp/</span></span></code></pre></div></div>
+<p>The <code>/tmp</code> directory has <code>-wt</code> permissions for <code>others</code>, where <code>t</code> is the sticky bit, meaning only the owner can delete files under <code>/tmp</code>. Create <code>/tmp/grrru.sh</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">vi /tmp/grrru.sh</span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">touch /tmp/asdfghjkl
+</span></span><span class="line"><span class="cl">cat /etc/bandit_pass/bandit24 &gt; /tmp/asdfghjkl</span></span></code></pre></div></div>
+<p>I created a script that simply copies the password to a file I created. Since the entity executing <code>grrru.sh</code> will be <code>bandit24</code> (via the cronjob), I need to give <code>others</code> the <code>x</code> (execute) permission.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>cat /usr/bin/cronjob_bandit24.sh
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span><span style="color:#737994;font-style:italic">#!/bin/bash</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span><span style="color:#f2d5cf">myname</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#ca9ee6">$(</span>whoami<span style="color:#ca9ee6">)</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span><span style="color:#99d1db">cd</span> /var/spool/<span style="color:#f2d5cf">$myname</span>/foo
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span><span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;Executing and deleting all scripts in /var/spool/</span><span style="color:#f2d5cf">$myname</span><span style="color:#a6d189">/foo:&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span><span style="color:#ca9ee6">for</span> i in * .*;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span><span style="color:#ca9ee6">do</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>    <span style="color:#ca9ee6">if</span> <span style="color:#99d1db;font-weight:bold">[</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span> !<span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#34;.&#34;</span> -a <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span> !<span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#34;..&#34;</span> <span style="color:#99d1db;font-weight:bold">]</span>;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>    <span style="color:#ca9ee6">then</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>        <span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;Handling </span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>        <span style="color:#f2d5cf">owner</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#ca9ee6">$(</span>stat --format <span style="color:#a6d189">&#34;%U&#34;</span> ./<span style="color:#f2d5cf">$i</span><span style="color:#ca9ee6">)</span><span style="color:#a6d189">&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>        <span style="color:#ca9ee6">if</span> <span style="color:#99d1db;font-weight:bold">[</span> <span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">owner</span><span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">=</span> <span style="color:#a6d189">&#34;bandit23&#34;</span> <span style="color:#99d1db;font-weight:bold">]</span>; <span style="color:#ca9ee6">then</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span>            timeout -s <span style="color:#ef9f76">9</span> <span style="color:#ef9f76">60</span> ./<span style="color:#f2d5cf">$i</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>        <span style="color:#ca9ee6">fi</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>        rm -f ./<span style="color:#f2d5cf">$i</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">18</span><span>    <span style="color:#ca9ee6">fi</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">19</span><span><span style="color:#ca9ee6">done</span></span></span></code></pre></div><p><code>cronjob_bandit24.sh</code>를 열어 보면 긴 스크립트가 나오는데, <code>/var/spool/bandit24/foo</code> 디렉토리의 모든 파일(<code>*</code>, <code>.*</code>)을 순회하면서 <code>.</code>, <code>..</code>를 제외한 파일들에 대해 <code>owner</code>가 <code>bandit23</code>이면 timeout 60초를 걸고 <code>-s 9</code> (SIGKILL) 강제종료하고 그 파일을 실행시킨 후 강제 삭제한다.<br>
-우리가 읽어야 할 파일이 <code>/etc/bandit_pass/bandit24</code>에 있는데 <code>bandit24</code>로 읽을 수 있다.<br>
-crontab은 <code>bandit24</code>로 실행되고 있고 <code>/foo</code> 하위 모든 파일을 실행시키므로, <code>bandit24</code>이 실행 가능한 shell script를 만들고 <code>/foo</code> 하위에 넣어둔 뒤 password 파일을 우리가 원하는 파일로 쓰도록 하면 된다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">chmod <span class="m">665</span> /tmp/grrru.sh
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ll grrru.sh
+</span></span><span class="line"><span class="cl">-rw-rw-r-x <span class="m">1</span> bandit23 bandit23 <span class="m">127</span> Jan <span class="m">10</span> 07:41 grrru.sh*</span></span></code></pre></div></div>
+<p>Copy <code>grrru.sh</code> to the directory scanned by the crontab.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cp /tmp/grrru.sh /var/spool/bandit24/foo/</span></span></code></pre></div></div>
+<p>After waiting for about a minute, the cronjob will run, execute <code>grrru.sh</code>, and then delete it.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>drwxrwx-wt <span style="color:#ef9f76">5420</span> root root <span style="color:#ef9f76">10244096</span> Jan <span style="color:#ef9f76">10</span> 07:31 tmp/</span></span></code></pre></div><p><code>/tmp</code> 디렉토리는 <code>other</code>의 권한이 <code>-wt</code>인데 여기서 <code>t</code>는 sticky bit로, <code>/tmp</code> 하위 파일들은 owner만이 삭제가 가능하다. <code>/tmp/grrru.sh</code>를 만든다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>vi /tmp/grrru.sh</span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#737994;font-style:italic">#!/bin/bash
-</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#737994;font-style:italic"></span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>touch /tmp/asdfghjkl
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>cat /etc/bandit_pass/bandit24 &gt; /tmp/asdfghjkl</span></span></code></pre></div><p>대충 비밀번호 가져올 파일 하나 생성해서 넣어주는 식으로 만들었다. <code>grrru.sh</code>를 실행할 주체는 <code>bandit24</code>(cronjob이 실행하므로)이므로 <code>other</code>에 <code>x</code>권한을 줘야 한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>chmod <span style="color:#ef9f76">665</span> /tmp/grrru.sh
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>ll grrru.sh
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>-rw-rw-r-x <span style="color:#ef9f76">1</span> bandit23 bandit23 <span style="color:#ef9f76">127</span> Jan <span style="color:#ef9f76">10</span> 07:41 grrru.sh*</span></span></code></pre></div><p>crontab이 순회하는 디렉토리로 <code>grrru.sh</code>를 복사한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cp /tmp/grrru.sh /var/spool/bandit24/foo/</span></span></code></pre></div><p>이러고 1분 기다리면 cronjob이 돌아서 <code>grrru.sh</code>를 실행해준 뒤 삭제한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /tmp/asdfghjkl</span></span></code></pre></div><hr>
-<h3 id="level-24">Level 24</h3>
-<p>A daemon is listening on port 30002 and will give you the password for bandit25 if given the password for bandit24 and a secret numeric 4-digit pincode. There is no way to retrieve the pincode except by going through all of the 10000 combinations, called brute-forcing.<br>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /tmp/asdfghjkl</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-24">
+  Level 24
+</h3>
+<p>A daemon is listening on port 30002 and will give you the password for bandit25 if given the password for bandit24 and a secret numeric 4-digit pincode. There is no way to retrieve the pincode except by going through all of the 10000 combinations, called brute-forcing.
 You do not need to create new connections each time</p>
 <hr>
-<p><code>localhost:30002</code>로 <code>$PASSWORD 0000</code> 꼴의 데이터를 보내면 답을 주는데, 정답 pin을 찾아야 다음 비밀번호를 알려준다.</p>
+<p>Sending data in the format <code>$PASSWORD 0000</code> to <code>localhost:30002</code> will return a response, and you must find the correct PIN to get the next password.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Wrong! Please enter the correct current password and pincode. Try again.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Correct!
+</span></span><span class="line"><span class="cl">The password of user bandit25 is iCi86ttT4KSNe1armKiwbQNmB3YJP3q4</span></span></code></pre></div></div>
+<p>While you could send 0000 to 9999 one by one, since you don&rsquo;t need to reconnect for each PIN once a connection is established, let&rsquo;s write a script to send them all at once.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">vi /tmp/grrru24.sh</span></span></code></pre></div></div>
+<p>Create the <code>grrru24.sh</code> file and generate the strings to be sent line by line.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">rm -f /tmp/grrru24
+</span></span><span class="line"><span class="cl">touch /tmp/grrru24
+</span></span><span class="line"><span class="cl">chmod <span class="m">600</span> /tmp/grrru24
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">PASSWORD</span><span class="o">=</span>gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="o">((</span><span class="nv">i</span><span class="o">=</span>0<span class="p">;</span> i&lt;10000<span class="p">;</span> i++<span class="o">))</span><span class="p">;</span><span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nb">printf</span> <span class="s2">&#34;%s %04d\n&#34;</span> <span class="s2">&#34;</span><span class="nv">$PASSWORD</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span> &gt;&gt; /tmp/grrru24
+</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></div></div>
+<p>I thought I might miss <code>Correct!</code> if it appeared in the middle, but it showed up at the very end (it might vary for each person).</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>Wrong! Please enter the correct current password and pincode. Try again.
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>Correct!
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>The password of user bandit25 is iCi86ttT4KSNe1armKiwbQNmB3YJP3q4</span></span></code></pre></div><p>0000 ~ 9999를 하나씩 보낼 수도 있지만, connection을 한 번 만들면 pin 하나 보낼 때마다 또 연결할 필요가 없다고 하니 script를 작성해서 한 번에 보내보자.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>vi /tmp/grrru24.sh</span></span></code></pre></div><p><code>grrru24</code> 파일을 만들고 한 줄씩 전송할 문자열을 생성해둔다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span><span style="color:#737994;font-style:italic">#!/bin/bash
-</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span><span style="color:#737994;font-style:italic"></span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>rm -f /tmp/grrru24
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>touch /tmp/grrru24
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>chmod <span style="color:#ef9f76">600</span> /tmp/grrru24
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span><span style="color:#f2d5cf">PASSWORD</span><span style="color:#99d1db;font-weight:bold">=</span>gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span><span style="color:#ca9ee6">for</span> <span style="color:#99d1db;font-weight:bold">((</span><span style="color:#f2d5cf">i</span><span style="color:#99d1db;font-weight:bold">=</span>0; i&lt;10000; i++<span style="color:#99d1db;font-weight:bold">))</span>;<span style="color:#ca9ee6">do</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>        <span style="color:#99d1db">echo</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>        <span style="color:#99d1db">printf</span> <span style="color:#a6d189">&#34;%s %04d\n&#34;</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$PASSWORD</span><span style="color:#a6d189">&#34;</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$i</span><span style="color:#a6d189">&#34;</span> &gt;&gt; /tmp/grrru24
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span><span style="color:#ca9ee6">done</span></span></span></code></pre></div><p>뭔가 중간에 <code>Correct!</code>가 나와서 못찾을 줄 알았는데 맨 아랫 줄에 나왔다. (사람마다 다를수도,,)</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./grrru24.sh</span></span></code></pre></div><hr>
-<h3 id="level-25">Level 25</h3>
-<p>Logging in to bandit26 from bandit25 should be fairly easy… The shell for user bandit26 is not <strong>/bin/bash</strong>, but something else. Find out what it is, how it works and how to break out of it.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">./grrru24.sh</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-25">
+  Level 25
+</h3>
+<p>Logging in to bandit26 from bandit25 should be fairly easy… The shell for user bandit26 is not <strong>/bin/bash</strong>, but something else. Find out what it is, how it works and how to break out of it.</p>
 <blockquote>
-<p>NOTE: if you’re a Windows user and typically use Powershell to <code>ssh</code> into bandit: Powershell is known to cause issues with the intended solution to this level. You should use command prompt instead.</p>
+<p>NOTE: if you’re a Windows user and typically use Powershell to <code>ssh</code> into bandit: Powershell is known to cause issues with the intended solution to this level. You should use command prompt instead.</p>
 </blockquote>
 <hr>
-<p><code>bandit26</code>의 기본 쉘은 <code>/bin/bash</code>가 아니다. 어떤 쉘을 기본으로 사용하는지 먼저 확인한다.</p>
+<p>The default shell for <code>bandit26</code> is not <code>/bin/bash</code>. First, check which shell is being used.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /etc/passwd <span class="p">|</span> grep bandit26
+</span></span><span class="line"><span class="cl">bandit26:x:11026:11026:bandit level 26:/home/bandit26:/usr/bin/showtext</span></span></code></pre></div></div>
+<p>It is using <code>/usr/bin/showtext</code> as the default shell.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">cat /usr/bin/showtext
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/sh</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>linux
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">exec</span> more ~/text.txt
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span> <span class="m">0</span></span></span></code></pre></div></div>
+<blockquote>
+<p>The <code>login shell</code> executed immediately after logging into a machine can be any executable file (ELF binary or <code>.sh</code> script) with execution permissions, not just shell programs like <code>/bin/bash</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">file /usr/bin/showtext
+</span></span><span class="line"><span class="cl">/usr/bin/showtext: POSIX shell script, ASCII text executable</span></span></code></pre></div></div>
+</blockquote>
+<p>In <code>/usr/bin/showtext</code>, it executes <code>more ~/text.txt</code> and then exits immediately.</p>
+<p>When connecting as <code>bandit25</code>, there is a <code>bandit26.sshkey</code> in the HOME directory. Since you need to solve Level 25 with this, you should either fetch it to your local machine via <code>scp</code> or connect via SSH directly from the <code>bandit25</code> shell.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">ssh bandit26@bandit.labs.overthewire.org -p <span class="m">2220</span> -i bandit26.sshkey</span></span></code></pre></div></div>
+<p>Logging in via the <code>ssh</code> command above exits immediately after showing some ASCII art for <code>bandit26</code>. This is output via the <code>more</code> command. When the standard output is a <code>TTY (terminal)</code>, the <code>more</code> command calculates the screen height; if the screen height is smaller than the number of lines to output, it enters pager mode with a <code>--More--</code> prompt.
+So, reconnect after reducing the screen height. Since the ASCII art is about 6 lines high, setting it to something smaller than 6 should work.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /etc/passwd | grep bandit26
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>bandit26:x:11026:11026:bandit level 26:/home/bandit26:/usr/bin/showtext</span></span></code></pre></div><p><code>/usr/bin/showtext</code>를 기본 쉘로 사용하고 있다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">_                     _ _ _   ___   __
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> <span class="p">|</span>                   <span class="p">|</span> <span class="o">(</span>_<span class="o">)</span> <span class="p">|</span> <span class="p">|</span>__ <span class="se">\ </span>/ /
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> <span class="p">|</span>__   __ _ _ __   __<span class="p">|</span> <span class="p">|</span>_<span class="p">|</span> <span class="p">|</span>_   <span class="o">)</span> / /_
+</span></span><span class="line"><span class="cl">--More--<span class="o">(</span>50%<span class="o">)</span></span></span></code></pre></div></div>
+<p>It entered Paging mode with <code>--More--</code>. Pressing <code>Enter</code> shows one line at a time, and pressing the <code>Up Arrow</code> goes back up.
+While the <code>more</code> command is running in Linux, pressing <code>v</code> opens the <code>vi</code> editor at the current position to edit the file.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">v</span></span></code></pre></div></div>
+<p>In the <code>vi</code> editor, typing <code>:set shell?</code> shows the current shell setting.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">:set shell?
+</span></span><span class="line"><span class="cl"><span class="nv">shell</span><span class="o">=</span>/usr/bin/showtext</span></span></code></pre></div></div>
+<p>Since the current logged-in ID is <code>bandit26</code>, if you change the shell to <code>/bin/bash</code> within the <code>vi</code> editor, you can execute a new shell within the current <code>vi</code> session using <code>:sh</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">:set <span class="nv">shell</span><span class="o">=</span>/bin/bash
+</span></span><span class="line"><span class="cl">:sh</span></span></code></pre></div></div>
+<p>Retrieve the desired password.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>cat /usr/bin/showtext
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#737994;font-style:italic">#!/bin/sh</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#99d1db">export</span> <span style="color:#f2d5cf">TERM</span><span style="color:#99d1db;font-weight:bold">=</span>linux
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">5</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">6</span><span><span style="color:#99d1db">exec</span> more ~/text.txt
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">7</span><span><span style="color:#99d1db">exit</span> <span style="color:#ef9f76">0</span></span></span></code></pre></div><blockquote>
-<p>머신에 로그인한 직후 실행되는 <code>기본 쉘(login shell)</code>은<br>
-<code>/bin/bash</code> 같은 쉘 프로그램뿐 아니라,
-실행 권한이 있는 임의의 실행 파일(ELF 바이너리 또는 <code>.sh</code> 스크립트)도 될 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>file /usr/bin/showtext
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>/usr/bin/showtext: POSIX shell script, ASCII text executable</span></span></code></pre></div></blockquote>
-<p><code>/usr/bin/showtext</code>에서는 <code>more ~/text.txt</code>를 실행 후 즉시 종료된다.</p>
-<p><code>bandit25</code>로 접속하면 HOME 디렉토리에 <code>bandit26.key</code>가 있는데 이걸로 Level 25를 풀어야 하므로 <code>scp</code>로 local에 가져오거나 <code>bandit25</code> 쉘에서 바로 ssh 접속하거나 해야 한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>ssh bandit26@bandit.labs.overthewire.org -p <span style="color:#ef9f76">2220</span> -i bandit26.sshkey</span></span></code></pre></div><p>위 <code>ssh</code> 접속을 하면 바로 나와지는데, <code>bandit26</code>이라는 아스키아트(?)를 보여주고 바로 종료된다. <code>more</code> 커맨드를 통해 출력된 그림인데, <code>more</code> 커맨드는 표준 출력이 <code>TTY(터미널)</code>인 경우에 화면 높이를 계산해서 출력해야 할 줄 수보다 화면 높이가 작다면 <code>--More--</code>이 뜨면서 pager 모드로 전환된다고 한다.<br>
-그래서 화면 높이를 작게 줄여서 다시 접속한다. ASCII 아트 높이가 6이니깐 6보다 작으면 될 듯 하다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>  _                     _ _ _   ___   __
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span> | |                   | <span style="color:#99d1db;font-weight:bold">(</span>_<span style="color:#99d1db;font-weight:bold">)</span> | |__ <span style="color:#8caaee">\ </span>/ /
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span> | |__   __ _ _ __   __| |_| |_   <span style="color:#99d1db;font-weight:bold">)</span> / /_
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span>--More--<span style="color:#99d1db;font-weight:bold">(</span>50%<span style="color:#99d1db;font-weight:bold">)</span></span></span></code></pre></div><p><code>--More--</code>과 함꼐 Paging 모드로 들어왔다. <code>Enter</code>를 치면 한 줄씩 보여주고, <code>위 화살표</code>를 누르면 다시 올라간다.<br>
-리눅스에서 <code>more</code> 명령어 실행 중 <code>v</code>를 누르면 현재 위치에서 <code>vi</code> 편집기를 실행하여 파일을 편집할 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>v</span></span></code></pre></div><p><code>vi</code> 편집기에서 <code>:set shell?</code>를 하면 현재 쉘 설정을 볼 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>:set shell?
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#f2d5cf">shell</span><span style="color:#99d1db;font-weight:bold">=</span>/usr/bin/showtext</span></span></code></pre></div><p>현재 접속 id가 <code>bandit26</code>이므로 <code>vi</code> 편집기 내에서 shell을 <code>/bin/bash</code>로 바꾸면 <code>:sh</code>를 통해 현재 <code>vi</code> 세션 내에서 새로운 쉘을 실행할 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>:set <span style="color:#f2d5cf">shell</span><span style="color:#99d1db;font-weight:bold">=</span>/bin/bash
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>:sh</span></span></code></pre></div><p>원하는 비밀번호를 가져온다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>bandit26@bandit:~$ cat /etc/bandit_pass/bandit26
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ</span></span></code></pre></div><blockquote>
-<p>여기서 나가지 않고 Level 26을 바로 할 수 있다.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">bandit26@bandit:~$ cat /etc/bandit_pass/bandit26
+</span></span><span class="line"><span class="cl">s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ</span></span></code></pre></div></div>
+<blockquote>
+<p>You can proceed to Level 26 directly from here without exiting.</p>
 </blockquote>
 <hr>
-<h3 id="level-26">Level 26</h3>
+<h3 id="level-26">
+  Level 26
+</h3>
 <p>Good job getting a shell! Now hurry and grab the password for bandit27!</p>
 <hr>
-<p><code>HOME</code>으로 가서 <code>ls</code>를 실행하면 <code>bandit27-do</code>가 보인다.</p>
+<p>Go to <code>HOME</code> and run <code>ls</code> to see <code>bandit27-do</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">file ./bandit27-do
+</span></span><span class="line"><span class="cl">./bandit27-do: setuid ELF 32-bit LSB executable, Intel 80386, version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked, interpreter /lib/ld-linux.so.2, BuildID<span class="o">[</span>sha1<span class="o">]=</span>35d353cf6d732f515a73f50ed205265fe1e68f90, <span class="k">for</span> GNU/Linux 3.2.0, not stripped</span></span></code></pre></div></div>
+<p>It&rsquo;s the <code>setuid</code> file we saw before.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">./bandit27-do id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>11026<span class="o">(</span>bandit26<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>11026<span class="o">(</span>bandit26<span class="o">)</span> <span class="nv">euid</span><span class="o">=</span>11027<span class="o">(</span>bandit27<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>11026<span class="o">(</span>bandit26<span class="o">)</span></span></span></code></pre></div></div>
+<p>In Linux/Unix-like operating systems, executing a file with specific permissions like <code>setuid</code> allows temporarily gaining the permissions (EUID) of the file owner or another user to access system resources.
+Since it&rsquo;s set to <code>euid=11027(bandit27)</code>, you can use this file to read the <code>bandit27</code> password file.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>file ./bandit27-do
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>./bandit27-do: setuid ELF 32-bit LSB executable, Intel 80386, version <span style="color:#ef9f76">1</span> <span style="color:#99d1db;font-weight:bold">(</span>SYSV<span style="color:#99d1db;font-weight:bold">)</span>, dynamically linked, interpreter /lib/ld-linux.so.2, BuildID<span style="color:#99d1db;font-weight:bold">[</span>sha1<span style="color:#99d1db;font-weight:bold">]=</span>35d353cf6d732f515a73f50ed205265fe1e68f90, <span style="color:#ca9ee6">for</span> GNU/Linux 3.2.0, not stripped</span></span></code></pre></div><p>저번에 봤던 <code>setuid</code>파일이다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./bandit27-do id
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#f2d5cf">uid</span><span style="color:#99d1db;font-weight:bold">=</span>11026<span style="color:#99d1db;font-weight:bold">(</span>bandit26<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">gid</span><span style="color:#99d1db;font-weight:bold">=</span>11026<span style="color:#99d1db;font-weight:bold">(</span>bandit26<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">euid</span><span style="color:#99d1db;font-weight:bold">=</span>11027<span style="color:#99d1db;font-weight:bold">(</span>bandit27<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">groups</span><span style="color:#99d1db;font-weight:bold">=</span>11026<span style="color:#99d1db;font-weight:bold">(</span>bandit26<span style="color:#99d1db;font-weight:bold">)</span></span></span></code></pre></div><p>리눅스/유닉스 계열 운영체제에서 <code>setuid</code>같은 특정 권한이 설정된 파일을 실행하면 일시적으로 파일 소유자나 다른 사용자의 권한(EUID)를 획득해서 시스템 리소스에 접근할 수 있다.<br>
-<code>euid=11027(bandit27)</code>로 되어있으므로 이 파일을 이용해서 <code>bandit27</code> 파일을 읽을 수 있다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>./bandit27-do cat /etc/bandit_pass/bandit27</span></span></code></pre></div><hr>
-<h3 id="level-27">Level 27</h3>
-<p>There is a git repository at <code>ssh://bandit27-git@bandit.labs.overthewire.org/home/bandit27-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit27-git</code> is the same as for the user <code>bandit27</code>.</p>
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">./bandit27-do cat /etc/bandit_pass/bandit27</span></span></code></pre></div></div>
+<hr>
+<h3 id="level-27">
+  Level 27
+</h3>
+<p>There is a git repository at <code>ssh://bandit27-git@bandit.labs.overthewire.org/home/bandit27-git/repo</code> via the port <code>2220</code>. The password for the user <code>bandit27-git</code> is the same as for the user <code>bandit27</code>.</p>
 <p>Clone the repository and find the password for the next level.</p>
 <hr>
-<p><code>bandit27</code>로 접속해서 <code>git clone</code>을 시도했다.</p>
+<p>I attempted <code>git clone</code> after connecting as <code>bandit27</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
+</span></span><span class="line"><span class="cl">git clone ssh://bandit27-git@bandit.labs.overthewire.org:2220/home/bandit27-git/repo</span></span></code></pre></div></div>
+<p>However, it said that SSH connection from localhost to localhost is blocked to conserve resources.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
 
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">!!! You are trying to log into this SSH server with a password on port 2220 from localhost.
+</span></span><span class="line"><span class="cl">!!! Connecting from localhost is blocked to conserve resources. 
+</span></span><span class="line"><span class="cl">!!! Please log out and log in again.</span></span></code></pre></div></div>
+<p>So I just performed the <code>git clone</code> directly from my local machine and read the <code>README</code>.</p>
 
+  </div>
 
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#99d1db">cd</span> /tmp
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>git clone ssh://bandit27-git@bandit.labs.overthewire.org:2220/home/bandit27-git/repo</span></span></code></pre></div><p>근데 이러니깐 localhost에서 localhost로 <code>ssh</code> 접속은 리소스 절약을 위해 차단되었다고 한다.</p>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span>!!! You are trying to log into this SSH server with a password on port 2220 from localhost.
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span>!!! Connecting from localhost is blocked to conserve resources. 
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span>!!! Please log out and log in again.</span></span></code></pre></div><p>그래서 그냥 local 머신에서 바로 <code>git clone</code>해서 <code>README</code>를 읽었다.</p>
-
-</content>
-<p>
-  
-    <a class="blog-tags" href="/tags/linux/">#linux</a>
-  
-    <a class="blog-tags" href="/tags/overthewire/">#overthewire</a>
-  
-    <a class="blog-tags" href="/tags/bandit/">#bandit</a>
-  
-</p>
-
-
-  <p>
-    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"OverTheWire%20Bandit%20%283%29"'>
-      Reply to this post by email ↪
-    </a>
-  </p>
-
-
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/tags/linux/">#linux</a><a rel="nofollow" href="/tags/overthewire/">#overthewire</a><a rel="nofollow" href="/tags/bandit/">#bandit</a></div></div>
+</footer>
+</article>
 
   </main>
-  <footer><small>
-  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
-</small></footer>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav><span class="lang-dropdown footer-lang">
+      <button class="lang-toggle" type="button" aria-label="Select language" aria-expanded="false">
+        <span class="lang-name">English</span>
+        <svg class="lang-arrow" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1338 6.16015C16.3217 5.95783 16.6375 5.94599 16.8399 6.13378C17.0421 6.32166 17.054 6.6375 16.8662 6.83984L10.3662 13.8398L10.2891 13.9082C10.2053 13.9675 10.1043 14 9.99999 14C9.86101 14 9.72836 13.9417 9.63377 13.8398L3.13374 6.83984L3.07221 6.75976C2.95129 6.56111 2.98312 6.29824 3.16011 6.13378C3.33708 5.96954 3.60085 5.95776 3.78999 6.09277L3.86616 6.16015L9.99999 12.7666L16.1338 6.16015Z"></path></svg>
+      </button>
+      <span class="lang-menu" role="menu"><a href="/blog/overthewire-bandit-3/" role="menuitem" class="lang-active">
+            <span class="lang-item-name">English</span>
+            <span class="lang-item-check"></span>
+          </a><a href="/kr/blog/overthewire-bandit-3/" role="menuitem" class="">
+            <span class="lang-item-name">한국어</span>
+            <span class="lang-item-check"></span>
+          </a></span>
+    </span></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
 
-  
-<script>
-    (function () {
-        
-        const toggleWrapper = document.createElement('label');
-        toggleWrapper.className = 'theme-switch';
-        toggleWrapper.setAttribute('aria-label', 'Toggle theme');
-        toggleWrapper.setAttribute('title', 'Toggle light/dark mode');
+  </footer>
 
-        toggleWrapper.innerHTML = `
-            <input type="checkbox" id="theme-toggle-checkbox">
-            <span class="slider">
-                <svg class="icon moon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-                <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5"/>
-                    <line x1="12" y1="1" x2="12" y2="3"/>
-                    <line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/>
-                    <line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                </svg>
-            </span>
-        `;
-
-        const checkbox = toggleWrapper.querySelector('#theme-toggle-checkbox');
-
-        
-        function updateCheckbox() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            checkbox.checked = isDark;
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
 
-        
-        checkbox.addEventListener('change', function () {
-            const newTheme = this.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
         });
 
-        
-        document.body.appendChild(toggleWrapper);
-
-        
-        updateCheckbox();
-
-        
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-                if (!localStorage.getItem('theme')) {
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-                    updateCheckbox();
-                }
-            });
-        }
-    })();
-</script>
-
-
-<script>
-    (function () {
-        
-        const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>`;
-
-        
-        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>`;
-
-        
-        document.querySelectorAll('.highlight').forEach(function (highlightBlock) {
-            
-            if (highlightBlock.querySelector('.code-copy-btn')) return;
-
-            
-            const button = document.createElement('button');
-            button.className = 'code-copy-btn';
-            button.type = 'button';
-            button.setAttribute('aria-label', 'Copy code to clipboard');
-            button.innerHTML = copyIcon;
-
-            
-            button.addEventListener('click', function () {
-                
-                const codeElement = highlightBlock.querySelector('code');
-                if (!codeElement) return;
-
-                let codeText = '';
-
-                
-                
-                
-                const lineWrappers = codeElement.querySelectorAll('span[style*="display:flex"]');
-
-                if (lineWrappers.length > 0) {
-                    lineWrappers.forEach(function (wrapper) {
-                        const spans = wrapper.querySelectorAll(':scope > span');
-                        if (spans.length >= 2) {
-                            
-                            codeText += spans[spans.length - 1].textContent;
-                        } else if (spans.length === 1) {
-                            
-                            codeText += spans[0].textContent;
-                        }
-                    });
-                } else {
-                    
-                    codeText = codeElement.textContent;
-                }
-
-                
-                navigator.clipboard.writeText(codeText.trim()).then(function () {
-                    
-                    button.innerHTML = checkIcon;
-                    button.classList.add('copied');
-
-                    
-                    setTimeout(function () {
-                        button.innerHTML = copyIcon;
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(function (err) {
-                    console.error('Failed to copy code:', err);
-                });
-            });
-
-            
-            highlightBlock.appendChild(button);
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
         });
-    })();
-</script></body>
-
+      }
+    });
+  </script></body>
 </html>

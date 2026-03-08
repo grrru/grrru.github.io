@@ -1,673 +1,232 @@
 <!DOCTYPE html>
-<html lang="en-US">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=53868&amp;path=livereload" data-no-instant defer></script>
-  <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" href="http://localhost:53868/images/favicon-32X32.png" />
-<title>Grrru Blog</title>
-<meta name="title" content="Grrru Blog" />
-<meta name="description" content="변수 확장
-
-
-
-
-
-1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
-2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
-3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
-4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
-
-
-
-
- 1add_path_bash() {
- 2  local mode=&#34;append&#34;
- 3
- 4  case &#34;${1-}&#34; in
- 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
- 6    --append|-a)  mode=&#34;append&#34;; shift ;;
- 7  esac
- 8
- 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
-10  local p=&#34;$1&#34;
-11  [[ -d &#34;$p&#34; ]] || return 0
-12
-13  case &#34;::$PATH::&#34; in
-14    *::&#34;$p&#34;::*) return 0 ;;
-15  esac
-16
-17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
-18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
-19  else
-20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
-21  fi
-22}" />
-<meta name="author" content="grrru" />
-<meta name="keywords" content="linux,shell," />
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta property="og:title" content="" />
-<meta property="og:description" content="변수 확장
-
-
-
-
-
-1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
-2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
-3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
-4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
-
-
-
-
- 1add_path_bash() {
- 2  local mode=&#34;append&#34;
- 3
- 4  case &#34;${1-}&#34; in
- 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
- 6    --append|-a)  mode=&#34;append&#34;; shift ;;
- 7  esac
- 8
- 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
-10  local p=&#34;$1&#34;
-11  [[ -d &#34;$p&#34; ]] || return 0
-12
-13  case &#34;::$PATH::&#34; in
-14    *::&#34;$p&#34;::*) return 0 ;;
-15  esac
-16
-17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
-18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
-19  else
-20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
-21  fi
-22}" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost:53868/blog/posix-%EB%AC%B8%EB%B2%95/" />
-
-<meta property="og:image" content="http://localhost:53868/images/social_card_bg_hu_ac11031a856297cb.webp"/><meta property="article:section" content="blog" />
-<meta property="article:published_time" content="2026-01-14T00:00:00+00:00" />
-<meta property="article:modified_time" content="2026-01-14T00:00:00+00:00" /><meta property="og:site_name" content="Bear Cub" />
-<meta property="fb:admins" content="0000000000" />
-
-
-
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="http://localhost:53868/images/social_card_bg_hu_ac11031a856297cb.webp"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="변수 확장
-
-
-
-
-
-1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
-2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
-3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
-4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
-
-
-
-
- 1add_path_bash() {
- 2  local mode=&#34;append&#34;
- 3
- 4  case &#34;${1-}&#34; in
- 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
- 6    --append|-a)  mode=&#34;append&#34;; shift ;;
- 7  esac
- 8
- 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
-10  local p=&#34;$1&#34;
-11  [[ -d &#34;$p&#34; ]] || return 0
-12
-13  case &#34;::$PATH::&#34; in
-14    *::&#34;$p&#34;::*) return 0 ;;
-15  esac
-16
-17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
-18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
-19  else
-20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
-21  fi
-22}"/>
-<meta name="twitter:site" content="@example"/>
-
-
-
-<meta itemprop="name" content="">
-<meta itemprop="description" content="변수 확장
-
-
-
-
-
-1${VAR:-word} # 기본값 할당: VAR가 비어있으면 word 사용
-2${VAR:=word} # 기본값 대입: VAR가 비어있으면 word를 아예 저장함
-3${VAR:?word} # 에러 출력: VAR가 비어있으면 word를 출력하고 종료
-4${VAR:&#43;word} # 대체값 사용: VAR가 있을 때만 word 사용
-
-
-
-
- 1add_path_bash() {
- 2  local mode=&#34;append&#34;
- 3
- 4  case &#34;${1-}&#34; in
- 5    --prepend|-p) mode=&#34;prepend&#34;; shift ;;
- 6    --append|-a)  mode=&#34;append&#34;; shift ;;
- 7  esac
- 8
- 9  [[ -z &#34;${1-}&#34; ]] &amp;&amp; return 0
-10  local p=&#34;$1&#34;
-11  [[ -d &#34;$p&#34; ]] || return 0
-12
-13  case &#34;::$PATH::&#34; in
-14    *::&#34;$p&#34;::*) return 0 ;;
-15  esac
-16
-17  if [[ &#34;$mode&#34; == &#34;prepend&#34; ]]; then
-18    export PATH=&#34;$p${PATH:&#43;:$PATH}&#34;
-19  else
-20    export PATH=&#34;${PATH:&#43;$PATH:}$p&#34;
-21  fi
-22}"><meta itemprop="datePublished" content="2026-01-14T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2026-01-14T00:00:00+00:00" />
-<meta itemprop="wordCount" content="111">
-
-<meta itemprop="image" content="http://localhost:53868/images/social_card_bg_hu_ac11031a856297cb.webp"/>
-
-
-<meta itemprop="keywords" content="linux,shell," />
-
-<meta name="referrer" content="no-referrer-when-downgrade" />
-
-  
-  <link href="/original.min.css" rel="stylesheet">
-
-  
-    
-    <link href="/syntax.min.css" rel="stylesheet">
-  
-
-  
-
-  
-<style>
-   
-  :root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --heading-color: #1a1a1a;
-    --link-color: #0066cc;
-    --link-visited-color: #551a8b;
-    --border-color: #333333;
-    --blockquote-color: #666666;
-    --code-bg: #f5f5f5;
-    --code-text: #333333;
-    --input-bg: #f5f5f5;
-    --input-text: #333333;
-    --helptext-color: #666666;
-    --skip-link-bg: #ffffff;
-    --figcaption-color: #666666;
-  }
-
-   
-  [data-theme="dark"] {
-    --bg-color: #1d1f27;
-    --text-color: #c9d1d9;
-    --heading-color: #eeeeee;
-    --link-color: #8cc2dd;
-    --link-visited-color: #8b6fcb;
-    --border-color: #c9d1d9;
-    --blockquote-color: #cccccc;
-    --code-bg: #282a36;
-    --code-text: #f8f8f2;
-    --input-bg: #252525;
-    --input-text: #dddddd;
-    --helptext-color: #aaaaaa;
-    --skip-link-bg: #1d1f27;
-    --figcaption-color: #cccccc;
-  }
-
-   
-  body {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  strong,
-  b {
-    color: var(--heading-color) !important;
-  }
-
-  a {
-    color: var(--link-color) !important;
-  }
-
-  ul.blog-posts li a:visited {
-    color: var(--link-visited-color) !important;
-  }
-
-  table,
-  th,
-  td {
-    border-color: var(--border-color) !important;
-  }
-
-  blockquote {
-    border-left-color: #999 !important;
-    color: var(--blockquote-color) !important;
-  }
-
-  code {
-    background-color: var(--code-bg) !important;
-    color: var(--code-text) !important;
-  }
-
-  textarea,
-  input {
-    background-color: var(--input-bg) !important;
-    color: var(--input-text) !important;
-  }
-
-  .helptext {
-    color: var(--helptext-color) !important;
-  }
-
-  .skip-link {
-    background-color: var(--skip-link-bg) !important;
-  }
-
-  figcaption>p {
-    color: var(--figcaption-color) !important;
-  }
-
-   
-  .theme-switch {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: inline-block;
-    width: 52px;
-    height: 26px;
-    cursor: pointer;
-  }
-
-  .theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .theme-switch .slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 26px;
-    transition: background-color 0.3s;
-  }
-
-  .theme-switch .slider::before {
-    content: '';
-    position: absolute;
-    height: 20px;
-    width: 20px;
-    left: 2px;
-    bottom: 2px;
-    background-color: var(--bg-color);
-    border-radius: 50%;
-    transition: transform 0.3s;
-  }
-
-  .theme-switch input:checked+.slider::before {
-    transform: translateX(26px);
-  }
-
-  .theme-switch .icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    color: var(--text-color);
-    transition: opacity 0.3s;
-  }
-
-  .theme-switch .moon {
-    left: 5px;
-    opacity: 1;
-  }
-
-  .theme-switch .sun {
-    right: 5px;
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .moon {
-    opacity: 0.5;
-  }
-
-  .theme-switch input:checked+.slider .sun {
-    opacity: 1;
-  }
-
-  .theme-switch:focus-within .slider {
-    outline: 2px solid var(--link-color);
-    outline-offset: 2px;
-  }
-
-   
-  .highlight {
-    position: relative;
-  }
-
-  .code-copy-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 4px 8px;
-    background-color: var(--code-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    color: var(--text-color);
-    cursor: pointer;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.2s, background-color 0.2s;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .highlight:hover .code-copy-btn {
-    opacity: 1;
-  }
-
-  .code-copy-btn:hover {
-    background-color: var(--input-bg);
-  }
-
-  .code-copy-btn:active {
-    transform: scale(0.95);
-  }
-
-  .code-copy-btn svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .code-copy-btn.copied {
-    color: #22c55e;
-    border-color: #22c55e;
-  }
-</style>
-
-
-<script>
-  (function () {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-theme', 'dark');
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title> | Grrru Blog</title>
+
+<link rel="stylesheet" href="/css/style.6fa461a74f0a5c915a4ded24d4c840441f496d8a3bdf8eddc26e40cfa8a1d8b6.css"><link rel="stylesheet" href="/css/pygments-friendly.8a524ea06b3e0ded4ac287fa92ac82550c9f0fe09820b2787e3a1484ba27a28b.css"><link href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css" rel="stylesheet"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\\\[", right: "\\\\]", display: true},
+          {left: "\\\\(", right: "\\\\)", display: false}
+        ],
+        throwOnError: false,
+        ignoredTags: ["script","noscript","style","textarea","pre","code"]
+      });
     }
-  })();
-</script></head>
+  });
+  </script>
+      <script defer src="/js/main.3a35234d925ee11ffb302a37a387cfdb9ae838561b2df6f26dc6898328c9f0d3.js"></script>
 
+
+</head>
 <body>
-  <header><a class="skip-link" href="#main-content">Skip to main content</a>
-
-<a href="/" class="title"><h1>Grrru Blog</h1></a>
-<nav>
-  <a href="/">Home</a>
-
-  <a href="/blog/">Blog</a>
-
-
-
-
-
-
-
-
-
-</nav>
-</header>
-  <main id="main-content">
-
-<h1></h1>
-<p class="byline">
-  <time datetime='2026-01-14' pubdate>
-    2026-01-14
-  </time>
-  · grrru
-</p>
-
-<content>
-  <h2 id="변수-확장">변수 확장</h2>
-
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">1</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span><span style="color:#ca9ee6">:-</span><span style="color:#f2d5cf">word</span><span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 기본값 할당: VAR가 비어있으면 word 사용</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">2</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span>:=word<span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 기본값 대입: VAR가 비어있으면 word를 아예 저장함</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">3</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span>:?word<span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 에러 출력: VAR가 비어있으면 word를 출력하고 종료</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">4</span><span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">VAR</span>:+word<span style="color:#a6d189">}</span> <span style="color:#737994;font-style:italic"># 대체값 사용: VAR가 있을 때만 word 사용</span></span></span></code></pre></div>
-
-
-
-
-<div class="highlight"><pre tabindex="0" style="color:#c6d0f5;background-color:#303446;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 1</span><span>add_path_bash<span style="color:#99d1db;font-weight:bold">()</span> <span style="color:#99d1db;font-weight:bold">{</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 2</span><span>  <span style="color:#99d1db">local</span> <span style="color:#f2d5cf">mode</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;append&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 4</span><span>  <span style="color:#ca9ee6">case</span> <span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">1</span>-<span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span> in
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 5</span><span>    --prepend|-p<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#f2d5cf">mode</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;prepend&#34;</span>; <span style="color:#99d1db">shift</span> ;;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 6</span><span>    --append|-a<span style="color:#99d1db;font-weight:bold">)</span>  <span style="color:#f2d5cf">mode</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;append&#34;</span>; <span style="color:#99d1db">shift</span> ;;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 7</span><span>  <span style="color:#ca9ee6">esac</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 8</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7"> 9</span><span>  <span style="color:#99d1db;font-weight:bold">[[</span> -z <span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">1</span>-<span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">]]</span> <span style="color:#99d1db;font-weight:bold">&amp;&amp;</span> <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">0</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">10</span><span>  <span style="color:#99d1db">local</span> <span style="color:#f2d5cf">p</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$1</span><span style="color:#a6d189">&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">11</span><span>  <span style="color:#99d1db;font-weight:bold">[[</span> -d <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">]]</span> <span style="color:#99d1db;font-weight:bold">||</span> <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">0</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">12</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">13</span><span>  <span style="color:#ca9ee6">case</span> <span style="color:#a6d189">&#34;::</span><span style="color:#f2d5cf">$PATH</span><span style="color:#a6d189">::&#34;</span> in
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">14</span><span>    *::<span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">&#34;</span>::*<span style="color:#99d1db;font-weight:bold">)</span> <span style="color:#ca9ee6">return</span> <span style="color:#ef9f76">0</span> ;;
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">15</span><span>  <span style="color:#ca9ee6">esac</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">16</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">17</span><span>  <span style="color:#ca9ee6">if</span> <span style="color:#99d1db;font-weight:bold">[[</span> <span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$mode</span><span style="color:#a6d189">&#34;</span> <span style="color:#99d1db;font-weight:bold">==</span> <span style="color:#a6d189">&#34;prepend&#34;</span> <span style="color:#99d1db;font-weight:bold">]]</span>; <span style="color:#ca9ee6">then</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">18</span><span>    <span style="color:#99d1db">export</span> <span style="color:#f2d5cf">PATH</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">PATH</span>:+:<span style="color:#f2d5cf">$PATH</span><span style="color:#a6d189">}</span><span style="color:#a6d189">&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">19</span><span>  <span style="color:#ca9ee6">else</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">20</span><span>    <span style="color:#99d1db">export</span> <span style="color:#f2d5cf">PATH</span><span style="color:#99d1db;font-weight:bold">=</span><span style="color:#a6d189">&#34;</span><span style="color:#a6d189">${</span><span style="color:#f2d5cf">PATH</span>:+<span style="color:#f2d5cf">$PATH</span>:<span style="color:#a6d189">}</span><span style="color:#f2d5cf">$p</span><span style="color:#a6d189">&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">21</span><span>  <span style="color:#ca9ee6">fi</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#838ba7">22</span><span><span style="color:#99d1db;font-weight:bold">}</span></span></span></code></pre></div>
-</content>
-<p>
-  
-    <a class="blog-tags" href="/tags/linux/">#linux</a>
-  
-    <a class="blog-tags" href="/tags/shell/">#shell</a>
-  
-</p>
-
-
-  <p>
-    <a href='mailto:gruns0989@naver.com?subject=Reply%20to%20"Grrru%20Blog"'>
-      Reply to this post by email ↪
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/">
+      <h1>Grrru Blog</h1>
     </a>
-  </p>
+  </div>
 
+  <nav class="site-nav"><a href="/">Home</a>
+     <a href="/blog/">Blog</a>
+    <a href="/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
 
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title"></h1>
+    <p class="post-meta">
+      <time datetime="2026-01-14">
+        January 14, 2026
+      </time>
+    </p>
+  </header><div class="post-content">
+    <h2 id="변수-확장">
+  변수 확장
+</h2>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="si">${</span><span class="nv">VAR</span><span class="k">:-</span><span class="nv">word</span><span class="si">}</span> <span class="c1"># 기본값 할당: VAR가 비어있으면 word 사용</span>
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">VAR</span><span class="p">:=word</span><span class="si">}</span> <span class="c1"># 기본값 대입: VAR가 비어있으면 word를 아예 저장함</span>
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">VAR</span><span class="p">:?word</span><span class="si">}</span> <span class="c1"># 에러 출력: VAR가 비어있으면 word를 출력하고 종료</span>
+</span></span><span class="line"><span class="cl"><span class="si">${</span><span class="nv">VAR</span><span class="p">:+word</span><span class="si">}</span> <span class="c1"># 대체값 사용: VAR가 있을 때만 word 사용</span></span></span></code></pre></div></div>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">add_path_bash<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">local</span> <span class="nv">mode</span><span class="o">=</span><span class="s2">&#34;append&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">case</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">1</span><span class="p">-</span><span class="si">}</span><span class="s2">&#34;</span> in
+</span></span><span class="line"><span class="cl">    --prepend<span class="p">|</span>-p<span class="o">)</span> <span class="nv">mode</span><span class="o">=</span><span class="s2">&#34;prepend&#34;</span><span class="p">;</span> <span class="nb">shift</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    --append<span class="p">|</span>-a<span class="o">)</span>  <span class="nv">mode</span><span class="o">=</span><span class="s2">&#34;append&#34;</span><span class="p">;</span> <span class="nb">shift</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">esac</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="si">${</span><span class="nv">1</span><span class="p">-</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="k">return</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">local</span> <span class="nv">p</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">[[</span> -d <span class="s2">&#34;</span><span class="nv">$p</span><span class="s2">&#34;</span> <span class="o">]]</span> <span class="o">||</span> <span class="k">return</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">case</span> <span class="s2">&#34;::</span><span class="nv">$PATH</span><span class="s2">::&#34;</span> in
+</span></span><span class="line"><span class="cl">    *::<span class="s2">&#34;</span><span class="nv">$p</span><span class="s2">&#34;</span>::*<span class="o">)</span> <span class="k">return</span> <span class="m">0</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">esac</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$mode</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;prepend&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$p</span><span class="si">${</span><span class="nv">PATH</span><span class="p">:+:</span><span class="nv">$PATH</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">PATH</span><span class="p">:+</span><span class="nv">$PATH</span><span class="p">:</span><span class="si">}</span><span class="nv">$p</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div></div>
+
+  </div>
+
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/tags/linux/">#linux</a><a rel="nofollow" href="/tags/shell/">#shell</a></div></div>
+</footer>
+</article>
 
   </main>
-  <footer><small>
-  Grrru (CC BY 4.0) | Made with <a href="https://github.com/clente/hugo-bearcub">Bear Cub</a>
-</small></footer>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
 
-  
-<script>
-    (function () {
-        
-        const toggleWrapper = document.createElement('label');
-        toggleWrapper.className = 'theme-switch';
-        toggleWrapper.setAttribute('aria-label', 'Toggle theme');
-        toggleWrapper.setAttribute('title', 'Toggle light/dark mode');
+  </footer>
 
-        toggleWrapper.innerHTML = `
-            <input type="checkbox" id="theme-toggle-checkbox">
-            <span class="slider">
-                <svg class="icon moon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                </svg>
-                <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="5"/>
-                    <line x1="12" y1="1" x2="12" y2="3"/>
-                    <line x1="12" y1="21" x2="12" y2="23"/>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                    <line x1="1" y1="12" x2="3" y2="12"/>
-                    <line x1="21" y1="12" x2="23" y2="12"/>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                </svg>
-            </span>
-        `;
-
-        const checkbox = toggleWrapper.querySelector('#theme-toggle-checkbox');
-
-        
-        function updateCheckbox() {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            checkbox.checked = isDark;
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         }
 
-        
-        checkbox.addEventListener('change', function () {
-            const newTheme = this.checked ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
         });
 
-        
-        document.body.appendChild(toggleWrapper);
-
-        
-        updateCheckbox();
-
-        
-        if (window.matchMedia) {
-            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-                if (!localStorage.getItem('theme')) {
-                    document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-                    updateCheckbox();
-                }
-            });
-        }
-    })();
-</script>
-
-
-<script>
-    (function () {
-        
-        const copyIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>`;
-
-        
-        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>`;
-
-        
-        document.querySelectorAll('.highlight').forEach(function (highlightBlock) {
-            
-            if (highlightBlock.querySelector('.code-copy-btn')) return;
-
-            
-            const button = document.createElement('button');
-            button.className = 'code-copy-btn';
-            button.type = 'button';
-            button.setAttribute('aria-label', 'Copy code to clipboard');
-            button.innerHTML = copyIcon + '<span>Copy</span>';
-
-            
-            button.addEventListener('click', function () {
-                
-                const codeElement = highlightBlock.querySelector('code');
-                if (!codeElement) return;
-
-                
-                let codeText = '';
-                const lines = codeElement.querySelectorAll('.line');
-                if (lines.length > 0) {
-                    lines.forEach(function (line) {
-                        codeText += line.textContent + '\n';
-                    });
-                } else {
-                    codeText = codeElement.textContent;
-                }
-
-                
-                navigator.clipboard.writeText(codeText.trim()).then(function () {
-                    
-                    button.innerHTML = checkIcon + '<span>Copied!</span>';
-                    button.classList.add('copied');
-
-                    
-                    setTimeout(function () {
-                        button.innerHTML = copyIcon + '<span>Copy</span>';
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(function (err) {
-                    console.error('Failed to copy code:', err);
-                });
-            });
-
-            
-            highlightBlock.appendChild(button);
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
         });
-    })();
-</script></body>
-
+      }
+    });
+  </script></body>
 </html>

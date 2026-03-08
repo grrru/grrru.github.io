@@ -2,22 +2,19 @@
 date: 2026-01-13
 draft: false
 title: OverTheWire Bandit (4)
-categories: Linux
-tags:
-  - linux
-  - overthewire
-  - bandit
-author: grrru
+categories: ["Linux"]
+tags: ["linux", "overthewire", "bandit"]
+author: "grrru"
 ---
 
 ### Level 28
-There is a git repository at `ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo` via the port `2220`. The password for the user `bandit28-git` is the same as for the user `bandit28`.
+There is a git repository at `ssh://bandit28-git@bandit.labs.overthewire.org/home/bandit28-git/repo` via the port `2220`. The password for the user `bandit28-git` is the same as for the user `bandit28`.
 
 Clone the repository and find the password for the next level.
 
 ---
 
-`git clone` 후 `README.md`를 까봤다.
+After `git clone`, I checked `README.md`.
 
 ```bash
 git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo
@@ -35,8 +32,8 @@ Some notes for level29 of bandit.
 - username: bandit29
 - password: xxxxxxxxxx
 ```
-`README.md`에는 별 내용이 없다.  
-`git log`를 확인했더니 `fix info leak`라는 커밋이 있다.
+There wasn't much in `README.md`.
+I checked `git log` and found a commit titled `fix info leak`.
 
 ```text
 * commit b0354c7be30f500854c5fc971c57e9cbe632fef6 (HEAD -> master, origin/master, origin/HEAD)
@@ -58,27 +55,27 @@ Some notes for level29 of bandit.
       initial commit of README.md
 ```
 
-이전 커밋으로 되돌려 본다.
+I reverted to the previous commit.
 ```bash
 git reset --hard HEAD~1
 cat README.md
 ```
 
 ### Level 29
-There is a git repository at `ssh://bandit29-git@bandit.labs.overthewire.org/home/bandit29-git/repo` via the port `2220`. The password for the user `bandit29-git` is the same as for the user `bandit29`.
+There is a git repository at `ssh://bandit29-git@bandit.labs.overthewire.org/home/bandit29-git/repo` via the port `2220`. The password for the user `bandit29-git` is the same as for the user `bandit29`.
 
 Clone the repository and find the password for the next level.
 
 ---
 
-Level 28과 똑같이 `git`을 뒤져가며 찾는 문제다.  
-`dev` branch로 바꾼 후에 `log`를 뒤져서 찾아냈다.
+Similar to Level 28, this problem involves searching through `git`.
+I found it by switching to the `dev` branch and digging through the `log`.
 ```bash
 git switch dev
 git log -p
 ```
 
-`git log`에서 `-p` 옵션은 `diff`를 상세하게 보여주는 옵션이다.
+The `-p` option in `git log` shows the `diff` in detail.
 ```text
 What the -p option produces is slightly different from the traditional diff format:
 ```
@@ -86,26 +83,26 @@ What the -p option produces is slightly different from the traditional diff form
 ---
 
 ### Level 30
-There is a git repository at `ssh://bandit30-git@bandit.labs.overthewire.org/home/bandit30-git/repo` via the port `2220`. The password for the user `bandit30-git` is the same as for the user `bandit30`.
+There is a git repository at `ssh://bandit30-git@bandit.labs.overthewire.org/home/bandit30-git/repo` via the port `2220`. The password for the user `bandit30-git` is the same as for the user `bandit30`.
 
 Clone the repository and find the password for the next level.
 
 ---
 
-`git branch -rvv`해도 branch는 하나밖에 없고 `git log`를 봐도 아무것도 없다.
+Running `git branch -rvv` showed only one branch, and `git log` showed nothing.
 
 ```bash
 git --no-pager log
 ```
-> `git --no-pager`로 보면 commit id를 `pager` 없이 바로 출력할 수 있다.
+> Using `git --no-pager` outputs the commit ID directly without a `pager`.
 
-`git tag`를 하니 단서가 나온다.
+Running `git tag` provided a clue.
 ```bash
 git tag
 secret
 ```
 
-그냥 바로 password같은 문자열이 나온다..!
+The password-like string appeared immediately!
 ```bash
 git show secret
 ```
@@ -113,13 +110,13 @@ git show secret
 ---
 
 ### Level 31
-There is a git repository at `ssh://bandit31-git@bandit.labs.overthewire.org/home/bandit31-git/repo` via the port `2220`. The password for the user `bandit31-git` is the same as for the user `bandit31`.
+There is a git repository at `ssh://bandit31-git@bandit.labs.overthewire.org/home/bandit31-git/repo` via the port `2220`. The password for the user `bandit31-git` is the same as for the user `bandit31`.
 
 Clone the repository and find the password for the next level.
 
 ---
 
-`git clone`해오면 `README.md`가 있다.
+After `git clone`, there is a `README.md`.
 
 ```text
 This time your task is to push a file to the remote repository.
@@ -130,7 +127,7 @@ Details:
     Branch: master
 ```
 
-push를 하라는데, 이게 맞나 긴가민가했지만 써있는대로 `key.txt` 만들고 `May I come in?`이라고 쓰고 add했다.
+The task was to push. I was a bit unsure, but I created `key.txt` as instructed, wrote `May I come in?`, and added it.
 ```bash
 git add key.txt
 The following paths are ignored by one of your .gitignore files:
@@ -138,7 +135,7 @@ key.txt
 hint: Use -f if you really want to add them.
 hint: Disable this message with "git config set advice.addIgnoredFile false"
 ```
-`.gitignore`에서 `*.txt`가 있어서 `-f`를 써야 한다.
+Since `*.txt` is in `.gitignore`, I had to use `-f`.
 
 ```bash
 git add -f key.txt
@@ -147,15 +144,15 @@ git push
 
 remote: Well done! Here is the password for the next level:
 ```
-push는 안되지만 password를 알려준다.
+The push doesn't actually happen, but it gives you the password.
 
 ---
 
 ### Level 32
-After all this `git` stuff, it’s time for another escape. Good luck!
+After all this `git` stuff, it’s time for another escape. Good luck!
 
 ---
-`git` 문제는 끝났다!
+The `git` problems are over!
 
 ```bash
 ssh bandit32@bandit.labs.overthewire.org -p 2220
@@ -165,17 +162,17 @@ WELCOME TO THE UPPERCASE SHELL
 >>
 ```
 
-접속하면 `UPPERCASE SHELL`라는 쉘이 실행된다. 입력하는 모든 command를 대문자로 치환하는 쉘이다.
+Upon connecting, the `UPPERCASE SHELL` is executed. This shell converts every command you type into uppercase.
 
 ```bash
 >> $SHELL
 WELCOME TO THE UPPERCASE SHELL
 ```
 
-> 문제 해결 후 회상  
+> Reflections after solving:
 
-`$0`을 입력하면 현재 실행 중인 쉘의 실행 경로가 입력되어 쉘이 재실행된다.  
-이 문제의 세팅을 보면 login shell은 `uppershell`이다. 
+Typing `$0` executes the current shell's path, restarting the shell.
+Looking at the settings for this problem, the login shell is `uppershell`.
 ```bash
 cat /etc/passwd | grep bandit32
 bandit32:x:11032:11032:bandit level 32:/home/bandit32:/home/bandit32/uppershell
@@ -190,21 +187,21 @@ $ echo $0
 sh
 ```
 
-`$0`을 실행하면 `sh`가 실행되는데, 이는 이 명령을 실행하던 shell이 `sh`였다는 뜻이다.  
-로그인 직후 `uppershell`가 실행되고 얘가 `sh`를 실행했다는 뜻(?)인 듯 하다.  
-여기서 `/usr/bin/bash`를 실행하면 bandit에서 보던 `bash` shell이 실행된다.
+Executing `$0` runs `sh`, which means the shell executing this command was `sh`.
+It seems that `uppershell` was executed immediately after login and it, in turn, executed `sh`.
+Executing `/usr/bin/bash` from here starts the `bash` shell used in bandit.
 ```bash
 $ /usr/bin/bash
 bandit33@bandit:~$
 ```
 
-> 해결 방법
+> Solution:
 ```bash
 $0
 cat /etc/bandit_pass/bandit33
 ```
 
-exit하는 것도 어렵다
+Even exiting is tricky.
 ```bash
 ps aux
 

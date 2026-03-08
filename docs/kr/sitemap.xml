@@ -2,147 +2,264 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://grrru.github.io/kr/</loc>
+    <loc>/kr/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/"
+                />
+  </url><url>
+    <loc>/kr/blog/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/blog/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/blog/"
+                />
+  </url><url>
+    <loc>/kr/categories/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/categories/"
+                />
+  </url><url>
+    <loc>/kr/categories/mcp/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/categories/mcp/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/categories/mcp/"
+                />
+  </url><url>
+    <loc>/kr/tags/mcp/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/mcp/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/mcp/"
+                />
+  </url><url>
+    <loc>/kr/blog/mcp/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/blog/mcp/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/blog/mcp/"
+                />
+  </url><url>
+    <loc>/kr/tags/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/"
+                />
+  </url><url>
+    <loc>/kr/categories/backend/</loc>
+    <lastmod>2026-01-30T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/categories/backend/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/categories/backend/"
+                />
+  </url><url>
+    <loc>/kr/blog/json-rpc/</loc>
+    <lastmod>2026-01-30T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/blog/json-rpc/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/blog/json-rpc/"
+                />
+  </url><url>
+    <loc>/kr/tags/json-rpc/</loc>
+    <lastmod>2026-01-30T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/json-rpc/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/json-rpc/"
+                />
+  </url><url>
+    <loc>/kr/tags/bandit/</loc>
+    <lastmod>2026-01-13T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/bandit/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/bandit/"
+                />
+  </url><url>
+    <loc>/kr/categories/linux/</loc>
+    <lastmod>2026-01-13T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/categories/linux/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/categories/linux/"
+                />
+  </url><url>
+    <loc>/kr/tags/linux/</loc>
+    <lastmod>2026-01-13T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/linux/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/linux/"
+                />
+  </url><url>
+    <loc>/kr/tags/overthewire/</loc>
+    <lastmod>2026-01-13T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/tags/overthewire/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/tags/overthewire/"
+                />
+  </url><url>
+    <loc>/kr/blog/overthewire-bandit-4/</loc>
+    <lastmod>2026-01-13T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/blog/overthewire-bandit-4/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/blog/overthewire-bandit-4/"
+                />
+  </url><url>
+    <loc>/kr/blog/overthewire-bandit-3/</loc>
+    <lastmod>2026-01-11T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="/en/blog/overthewire-bandit-3/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="/kr/blog/overthewire-bandit-3/"
+                />
+  </url><url>
+    <loc>/kr/blog/overthewire-bandit-2/</loc>
     <lastmod>2026-01-07T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="https://grrru.github.io/"
+                href="/en/blog/overthewire-bandit-2/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/"
+                hreflang="ko-KR"
+                href="/kr/blog/overthewire-bandit-2/"
                 />
   </url><url>
-    <loc>https://grrru.github.io/kr/tags/bandit/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/tags/bandit/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/tags/bandit/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/kr/blog/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/blog/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/blog/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/kr/categories/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/categories/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/kr/categories/linux/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/categories/linux/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/categories/linux/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/kr/tags/overthewire/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/tags/overthewire/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/tags/overthewire/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/kr/blog/overthewire-bandit-2/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/blog/overthewire-bandit-2/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/blog/overthewire-bandit-2/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/kr/tags/</loc>
-    <lastmod>2026-01-07T00:00:00+00:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-US"
-                href="https://grrru.github.io/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/tags/"
-                />
-  </url><url>
-    <loc>https://grrru.github.io/kr/blog/overthewire-bandit-1/</loc>
+    <loc>/kr/blog/overthewire-bandit-1/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="https://grrru.github.io/blog/overthewire-bandit-1/"
+                href="/en/blog/overthewire-bandit-1/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/blog/overthewire-bandit-1/"
+                hreflang="ko-KR"
+                href="/kr/blog/overthewire-bandit-1/"
                 />
   </url><url>
-    <loc>https://grrru.github.io/kr/blog/scp/</loc>
+    <loc>/kr/blog/scp/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="https://grrru.github.io/blog/scp/"
+                href="/en/blog/scp/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/blog/scp/"
+                hreflang="ko-KR"
+                href="/kr/blog/scp/"
                 />
   </url><url>
-    <loc>https://grrru.github.io/kr/tags/scp/</loc>
+    <loc>/kr/tags/scp/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="https://grrru.github.io/tags/scp/"
+                href="/en/tags/scp/"
                 />
     <xhtml:link
                 rel="alternate"
-                hreflang="kr-KR"
-                href="https://grrru.github.io/kr/tags/scp/"
+                hreflang="ko-KR"
+                href="/kr/tags/scp/"
                 />
   </url>
 </urlset>

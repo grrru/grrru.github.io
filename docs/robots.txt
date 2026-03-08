@@ -1,3 +1,1 @@
 User-agent: *
-Allow: /
-Sitemap: https://grrru.github.io/sitemap.xml
