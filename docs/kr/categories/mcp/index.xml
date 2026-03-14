@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Mcp on Grrru Blog</title>
-    <link>//localhost:1313/kr/categories/mcp/</link>
+    <link>/kr/categories/mcp/</link>
     <description>Recent content in Mcp on Grrru Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
@@ -10,12 +10,12 @@
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
     <lastBuildDate>Tue, 03 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/kr/categories/mcp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/kr/categories/mcp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MCP (Model Context Protocol)</title>
-      <link>//localhost:1313/kr/blog/mcp/</link>
+      <link>/kr/blog/mcp/</link>
       <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>//localhost:1313/kr/blog/mcp/</guid>
+      <guid>/kr/blog/mcp/</guid>
       <description>&lt;h2 id=&#34;0-들어가며&#34;&gt;&#xA;  0. 들어가며&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;2022년 말 ChatGPT가 세상에 등장했을 때, 사람들은 AI가 마치 사람처럼 대화할 수 있다는 사실에 놀랐다. 하지만 곧 한계가 드러났다. LLM(Large Language Model)은 본질적으로 &lt;strong&gt;텍스트를 생성하는 모델&lt;/strong&gt;일 뿐이었다. 최신 날씨를 알 수 없고, 데이터베이스를 조회할 수 없으며, 이메일을 보낼 수도 없었다. 학습 데이터의 시점에 갇힌, 똑똑하지만 고립된 존재였다.&lt;/p&gt;&#xA;&lt;p&gt;이 글은 LLM이 외부 세계와 연결되기 위해 거쳐 온 여정을 다룬다. Function Calling의 등장, AI Agent와 Tools 생태계의 폭발, 그리고 마침내 등장한 &lt;strong&gt;MCP(Model Context Protocol)&lt;/strong&gt; 까지. 이 흐름을 이해하면, MCP가 단순한 새 기술이 아니라 필연적인 귀결이었음을 알 수 있다.&lt;/p&gt;</description>
     </item>
   </channel>

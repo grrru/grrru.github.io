@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Grrru Blog</title>
-    <link>//localhost:1313/kr/categories/</link>
+    <link>/kr/categories/</link>
     <description>Recent content in Categories on Grrru Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
@@ -10,33 +10,33 @@
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
     <lastBuildDate>Sat, 14 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/kr/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/kr/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Rabbitmq</title>
-      <link>//localhost:1313/kr/categories/rabbitmq/</link>
+      <link>/kr/categories/rabbitmq/</link>
       <pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>//localhost:1313/kr/categories/rabbitmq/</guid>
+      <guid>/kr/categories/rabbitmq/</guid>
       <description></description>
     </item>
     <item>
       <title>Mcp</title>
-      <link>//localhost:1313/kr/categories/mcp/</link>
+      <link>/kr/categories/mcp/</link>
       <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>//localhost:1313/kr/categories/mcp/</guid>
+      <guid>/kr/categories/mcp/</guid>
       <description></description>
     </item>
     <item>
       <title>Backend</title>
-      <link>//localhost:1313/kr/categories/backend/</link>
+      <link>/kr/categories/backend/</link>
       <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>//localhost:1313/kr/categories/backend/</guid>
+      <guid>/kr/categories/backend/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>//localhost:1313/kr/categories/linux/</link>
+      <link>/kr/categories/linux/</link>
       <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>//localhost:1313/kr/categories/linux/</guid>
+      <guid>/kr/categories/linux/</guid>
       <description></description>
     </item>
   </channel>
