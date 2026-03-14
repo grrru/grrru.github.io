@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>RabbitMQ | Grrru Blog</title>
+
+<link rel="stylesheet" href="/css/style.2156fe4f98507f9874cbb7a070da556df265efd09400f2cf3e4b21b8f0c6dddc.css"><link rel="stylesheet" href="/css/pygments-friendly.8a524ea06b3e0ded4ac287fa92ac82550c9f0fe09820b2787e3a1484ba27a28b.css">
+      <script defer src="/js/main.3a35234d925ee11ffb302a37a387cfdb9ae838561b2df6f26dc6898328c9f0d3.js"></script>
+      <script defer src="/js/toc-toggle.254c2c086d255a5bbfa1f805b9d1314faaa1bbfee8ac7a44aca92f996d06dc54.js"></script>
+
+
+</head>
+<body>
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/en/">
+      <h1>Grrru Blog</h1>
+    </a>
+  </div>
+
+  <nav class="site-nav"><a href="/en/">Home</a>
+     <a href="/en/blog/">Blog</a>
+    <a href="/en/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
+
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title">RabbitMQ</h1>
+    <p class="post-meta">
+      <time datetime="2026-03-14">
+        March 14, 2026
+      </time>
+    </p>
+  </header>
+  <div class="toc-wrapper">
+    <button id="toc-toggle-button" type="button" aria-expanded="false" title="Toggle Contents">
+      Contents <span id="toc-toggle-arrow">▼</span>
+    </button>
+    <div id="toc-container" role="navigation" aria-label="Table of Contents">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-what-is-rabbitmq">1. What is RabbitMQ?</a></li>
+    <li><a href="#2-core-components">2. Core Components</a>
+      <ul>
+        <li><a href="#connection-vs-channel">Connection vs Channel</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-exchange-types">3. Exchange Types</a>
+      <ul>
+        <li><a href="#31-default-exchange-nameless-exchange">3.1 Default Exchange (Nameless Exchange)</a></li>
+        <li><a href="#32-direct-exchange">3.2 Direct Exchange</a></li>
+        <li><a href="#33-fanout-exchange">3.3 Fanout Exchange</a></li>
+        <li><a href="#34-topic-exchange">3.4 Topic Exchange</a></li>
+        <li><a href="#35-headers-exchange">3.5 Headers Exchange</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-binding">4. Binding</a>
+      <ul>
+        <li><a href="#binding-required-for-non-default-exchanges">Binding Required for Non-Default Exchanges</a></li>
+        <li><a href="#queuebind-parameters">QueueBind Parameters</a></li>
+        <li><a href="#multiple-bindings-for-a-single-queue">Multiple Bindings for a Single Queue</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-queue-declaration">5. Queue Declaration</a>
+      <ul>
+        <li><a href="#important-properties">Important Properties</a></li>
+        <li><a href="#queue-arguments-amqptable">Queue Arguments (<code>amqp.Table</code>)</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-message-publishing-and-consumption">6. Message Publishing and Consumption</a>
+      <ul>
+        <li><a href="#publishing">Publishing</a></li>
+        <li><a href="#consuming">Consuming</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-acknowledgement-and-qos">7. Acknowledgement and QoS</a>
+      <ul>
+        <li><a href="#ack--reject--nack">Ack / Reject / Nack</a></li>
+        <li><a href="#qos-prefetch">QoS (Prefetch)</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-dead-letter-exchange-dlx">8. Dead Letter Exchange (DLX)</a>
+      <ul>
+        <li><a href="#using-default-exchange-as-dlx">Using Default Exchange as DLX</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-ttl-time-to-live">9. TTL (Time To Live)</a>
+      <ul>
+        <li><a href="#queue-level-ttl">Queue-Level TTL</a></li>
+        <li><a href="#message-level-ttl">Message-Level TTL</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-delayed-retry-pattern-using-dlx--ttl">10. Delayed Retry Pattern Using DLX + TTL</a>
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#solution">Solution</a></li>
+        <li><a href="#implementation">Implementation</a></li>
+        <li><a href="#full-message-flow">Full Message Flow</a></li>
+      </ul>
+    </li>
+    <li><a href="#11-policy-vs-queue-arguments">11. Policy vs Queue Arguments</a>
+      <ul>
+        <li><a href="#queue-arguments-configured-in-code">Queue Arguments (configured in code)</a></li>
+        <li><a href="#policy-configured-on-the-server">Policy (configured on the server)</a></li>
+        <li><a href="#which-one-to-use">Which One to Use?</a></li>
+      </ul>
+    </li>
+    <li><a href="#12-references">12. References</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    <h1 id="rabbitmq-concept-overview">
+  RabbitMQ Concept Overview
+</h1>
+<h2 id="1-what-is-rabbitmq">
+  1. What is RabbitMQ?
+</h2>
+<p>RabbitMQ is an open-source <strong>message broker</strong> based on the Advanced Message Queuing Protocol (AMQP).
+When a <strong>Producer</strong> sends a message, RabbitMQ stores it in a queue, and a <strong>Consumer</strong> retrieves and processes it.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Producer → [Exchange] → [Queue] → Consumer</span></span></code></pre></div></div>
+<p>By placing a message broker between services, the Producer and Consumer do not communicate directly.
+This reduces coupling between systems and enables asynchronous processing.</p>
+<hr>
+<h2 id="2-core-components">
+  2. Core Components
+</h2>
+<table>
+  <thead>
+      <tr>
+          <th>Component</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Connection</strong></td>
+          <td>TCP connection between the application and the RabbitMQ server</td>
+      </tr>
+      <tr>
+          <td><strong>Channel</strong></td>
+          <td>Virtual connection on top of a Connection. Multiple channels can exist within one connection</td>
+      </tr>
+      <tr>
+          <td><strong>Exchange</strong></td>
+          <td>Target where Producers send messages. It routes messages to queues according to routing rules</td>
+      </tr>
+      <tr>
+          <td><strong>Queue</strong></td>
+          <td>Buffer where messages are stored. Consumers retrieve messages from here</td>
+      </tr>
+      <tr>
+          <td><strong>Binding</strong></td>
+          <td>Rule that connects an Exchange and a Queue, usually based on a routing key</td>
+      </tr>
+      <tr>
+          <td><strong>Routing Key</strong></td>
+          <td>Key specified when publishing a message. The Exchange uses it to decide which queue receives the message</td>
+      </tr>
+  </tbody>
+</table>
+
+<h3 id="connection-vs-channel">
+  Connection vs Channel
+</h3>
+<p>A <strong>Connection</strong> is a TCP socket and relatively expensive to create.
+A <strong>Channel</strong> is a lightweight logical stream inside a connection. Actual operations such as queue declaration and message publishing happen through channels.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// Dial accepts a string in the AMQP URI format and returns a new Connection</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// over TCP using PlainAuth.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">conn</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">amqp</span><span class="p">.</span><span class="nf">Dial</span><span class="p">(</span><span class="s">&#34;amqp://user:pass@localhost:5672&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">defer</span><span class="w"> </span><span class="nx">conn</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">conn</span><span class="p">.</span><span class="nf">Channel</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">defer</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span></span></span></code></pre></div></div>
+<hr>
+<h2 id="3-exchange-types">
+  3. Exchange Types
+</h2>
+<h3 id="31-default-exchange-nameless-exchange">
+  3.1 Default Exchange (Nameless Exchange)
+</h3>
+<p>A special exchange with an empty name (<code>&quot;&quot;</code>).
+Every queue is automatically bound to the Default Exchange using <strong>its queue name as the routing key</strong>.</p>
+<p>This allows publishing messages directly to a queue without explicitly declaring an exchange.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// Send a message directly to &#34;task_queue&#34; via Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">           </span><span class="c1">// exchange: empty string = Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// routing key = queue name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="nx">Body</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<hr>
+<h3 id="32-direct-exchange">
+  3.2 Direct Exchange
+</h3>
+<p>Routes messages only to queues whose <strong>binding key exactly matches the routing key</strong>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Exchange(direct) --[routing_key=&#34;error&#34;]--&gt; error_queue
+</span></span><span class="line"><span class="cl">                 --[routing_key=&#34;info&#34;]---&gt; info_queue</span></span></code></pre></div></div>
+<hr>
+<h3 id="33-fanout-exchange">
+  3.3 Fanout Exchange
+</h3>
+<p>Ignores routing keys and delivers messages to <strong>all bound queues</strong>.</p>
+<p>Commonly used for <strong>broadcast scenarios</strong>.</p>
+<hr>
+<h3 id="34-topic-exchange">
+  3.4 Topic Exchange
+</h3>
+<p>Supports <strong>pattern-based routing</strong> using wildcards.</p>
+<ul>
+<li><code>*</code> → exactly one word</li>
+<li><code>#</code> → zero or more words</li>
+</ul>
+<p>Examples:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">routing_key=&#34;order.created&#34; → matches &#34;order.*&#34;
+</span></span><span class="line"><span class="cl">routing_key=&#34;order.item.shipped&#34; → matches &#34;order.#&#34;</span></span></code></pre></div></div>
+<hr>
+<h3 id="35-headers-exchange">
+  3.5 Headers Exchange
+</h3>
+<p>Routes messages based on <strong>header key-value pairs</strong> instead of routing keys.
+This type is rarely used.</p>
+<hr>
+<h2 id="4-binding">
+  4. Binding
+</h2>
+<p>A <strong>Binding</strong> defines the routing rule between an Exchange and a Queue.</p>
+<p>When an Exchange receives a message, it checks its bindings to determine where the message should be routed.</p>
+<hr>
+<h3 id="binding-required-for-non-default-exchanges">
+  Binding Required for Non-Default Exchanges
+</h3>
+<p>The Default Exchange automatically binds every queue using:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">routing_key = queue_name</span></span></code></pre></div></div>
+<p>However, for any other exchange type, you must explicitly configure:</p>
+<ol>
+<li>Exchange declaration</li>
+<li>Queue declaration</li>
+<li>Binding</li>
+</ol>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// 1. Declare Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">ExchangeDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;direct&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">true</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// 2. Declare Queues</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="s">&#34;error_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="s">&#34;info_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// 3. Bind Queues to Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;error_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;error&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;info_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;info&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span></span></span></code></pre></div></div>
+<p>Result:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Publisher --[routing_key=&#34;error&#34;]--&gt; log_exchange → error_queue
+</span></span><span class="line"><span class="cl">Publisher --[routing_key=&#34;info&#34;]--&gt; log_exchange → info_queue</span></span></code></pre></div></div>
+<hr>
+<h3 id="queuebind-parameters">
+  QueueBind Parameters
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;error_queue&#34;</span><span class="p">,</span><span class="w">  </span><span class="c1">// queue: queue name for binding</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;error&#34;</span><span class="p">,</span><span class="w">        </span><span class="c1">// key: binding key for routing</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// exchange: exchange name for binding</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">          </span><span class="c1">// noWait</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">            </span><span class="c1">// args</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p>Meaning of <strong>binding key</strong> depends on exchange type:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Exchange Type</th>
+          <th>Binding Key Role</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Direct</td>
+          <td>Must match routing key exactly</td>
+      </tr>
+      <tr>
+          <td>Topic</td>
+          <td>Pattern matching (<code>order.*</code>, <code>log.#</code>)</td>
+      </tr>
+      <tr>
+          <td>Fanout</td>
+          <td>Ignored</td>
+      </tr>
+      <tr>
+          <td>Headers</td>
+          <td>Ignored</td>
+      </tr>
+  </tbody>
+</table>
+
+<hr>
+<h3 id="multiple-bindings-for-a-single-queue">
+  Multiple Bindings for a Single Queue
+</h3>
+<p>A queue can have multiple bindings.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;all_logs&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;error&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;all_logs&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;warn&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;all_logs&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;info&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span></span></span></code></pre></div></div>
+<p><code>all_logs</code> receives messages with routing keys <code>&quot;error&quot;</code>, <code>&quot;warn&quot;</code>, and <code>&quot;info&quot;</code>.</p>
+<hr>
+<h2 id="5-queue-declaration">
+  5. Queue Declaration
+</h2>
+<p><code>QueueDeclare</code> is <strong>idempotent</strong>.</p>
+<p>Calling it multiple times with the same name and attributes returns the existing queue.
+However, if attributes differ, RabbitMQ throws an error.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">q</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// name: Queue name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">true</span><span class="p">,</span><span class="w">         </span><span class="c1">// durable: survives broker restart</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// autoDelete: delete when last consumer disconnects</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// exclusive: accessible only by the declaring connection</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// noWait: return immediately without waiting for server confirmation</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">          </span><span class="c1">// args: optional arguments (amqp.Table)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<hr>
+<h3 id="important-properties">
+  Important Properties
+</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Property</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>durable</code></td>
+          <td>Queue survives broker restart</td>
+      </tr>
+      <tr>
+          <td><code>autoDelete</code></td>
+          <td>Queue is deleted when the last consumer disconnects</td>
+      </tr>
+      <tr>
+          <td><code>exclusive</code></td>
+          <td>Queue accessible only by the declaring connection</td>
+      </tr>
+  </tbody>
+</table>
+
+<hr>
+<h3 id="queue-arguments-amqptable">
+  Queue Arguments (<code>amqp.Table</code>)
+</h3>
+<p>Optional features can be set via <code>amqp.Table</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w">             </span><span class="nb">int32</span><span class="p">(</span><span class="mi">60000</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;main_queue&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-max-length&#34;</span><span class="p">:</span><span class="w">              </span><span class="nb">int32</span><span class="p">(</span><span class="mi">10000</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<p>Keys prefixed with <code>x-</code> are <strong>RabbitMQ extension arguments</strong>.</p>
+<hr>
+<h2 id="6-message-publishing-and-consumption">
+  6. Message Publishing and Consumption
+</h2>
+<h3 id="publishing">
+  Publishing
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">cancel</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nf">WithTimeout</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">defer</span><span class="w"> </span><span class="nf">cancel</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">body</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">           </span><span class="c1">// exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// routing key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// mandatory: return error if no queue matches</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// immediate: return error if no consumer available (deprecated)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">DeliveryMode</span><span class="p">:</span><span class="w"> </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Persistent</span><span class="p">,</span><span class="w"> </span><span class="c1">// persist message to disk</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">ContentType</span><span class="p">:</span><span class="w">  </span><span class="s">&#34;application/json&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">Body</span><span class="p">:</span><span class="w">         </span><span class="nx">body</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p>Setting <code>DeliveryMode = Persistent</code> stores messages on disk.</p>
+<p>This only guarantees durability if the queue itself is <strong>durable</strong>.</p>
+<hr>
+<h3 id="consuming">
+  Consuming
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">msgs</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">Consume</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// queue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">           </span><span class="c1">// consumer tag (auto-generated if empty)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// auto-ack: false requires manual acknowledgement</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// exclusive: only one consumer on this queue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// no-local</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// no-wait</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">          </span><span class="c1">// args</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">for</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">msgs</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w"> </span><span class="c1">// false = do not requeue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">continue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nf">Ack</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w"> </span><span class="c1">// false = acknowledge only this message (multiple=false)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<hr>
+<h2 id="7-acknowledgement-and-qos">
+  7. Acknowledgement and QoS
+</h2>
+<h3 id="ack--reject--nack">
+  Ack / Reject / Nack
+</h3>
+<blockquote>
+<p>Method of <code>amqp.Delivery</code></p>
+</blockquote>
+<table>
+  <thead>
+      <tr>
+          <th>Method</th>
+          <th>Behavior</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>d.Ack(multiple)</code></td>
+          <td>Confirm successful processing. If <code>multiple=true</code>, acknowledges all unacked messages up to this one</td>
+      </tr>
+      <tr>
+          <td><code>d.Reject(requeue)</code></td>
+          <td>Reject message. If <code>requeue=true</code>, puts it back in the queue. If <code>false</code>, discards it or routes to DLX</td>
+      </tr>
+      <tr>
+          <td><code>d.Nack(multiple, requeue)</code></td>
+          <td>Extended version of <code>Reject</code>. Supports rejecting multiple messages at once</td>
+      </tr>
+  </tbody>
+</table>
+
+<p>RabbitMQ needs to know whether a delivered message was successfully processed in order to guarantee <strong>at-least-once delivery</strong>.</p>
+<p>A consumer process may crash immediately after receiving a message, or an internal error may occur before processing completes — in either case the message would be silently lost.</p>
+<p>To prevent this, RabbitMQ holds the message in an <strong>unacknowledged (unacked)</strong> state until it receives an Ack. If the consumer&rsquo;s connection drops before an Ack is sent, RabbitMQ re-queues the message.</p>
+<hr>
+<h3 id="qos-prefetch">
+  QoS (Prefetch)
+</h3>
+<p><code>Qos</code> limits the number of unacked messages a consumer can hold at a time.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">Qos</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="mi">1</span><span class="p">,</span><span class="w">     </span><span class="c1">// prefetch count: receive only 1 message at a time</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w">     </span><span class="c1">// prefetch size: no limit (in bytes)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="c1">// global: if false, applies only to consumers on this channel</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p><strong><code>prefetch count = 1</code></strong>: the consumer will not receive a new message until it sends an Ack for the previous one. This enforces sequential, one-at-a-time processing.</p>
+<blockquote>
+<p><strong>Note</strong>: With <code>Qos=1</code>, blocking operations like <code>time.Sleep</code> inside the consumer will stall all message processing. See <a href="/en/blog/rabbitmq/#10-delayed-retry-pattern-using-dlx--ttl">Section 10</a> for the solution.</p>
+</blockquote>
+<hr>
+<h2 id="8-dead-letter-exchange-dlx">
+  8. Dead Letter Exchange (DLX)
+</h2>
+<p>A message becomes <strong>dead letter</strong> when:</p>
+<ol>
+<li>Consumer rejects with <code>requeue=false</code> or <code>Nack(requeue=false)</code></li>
+<li>Message TTL expires</li>
+<li>Queue exceeds <code>x-max-length</code></li>
+</ol>
+<p>RabbitMQ then routes the message to a <strong>Dead Letter Exchange(DLX)</strong>.</p>
+<p>DLX is configured via the <code>x-dead-letter-exchange</code> argument when declaring a queue.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;dlx_exchange&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;dead_letter_queue&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<hr>
+<h3 id="using-default-exchange-as-dlx">
+  Using Default Exchange as DLX
+</h3>
+<p>Setting <code>x-dead-letter-exchange</code> to an empty string (<code>&quot;&quot;</code>) uses the <strong>Default Exchange</strong> as the DLX.</p>
+<p>Since the Default Exchange routes messages using the queue name as the routing key, no explicit Exchange declaration or Binding is needed — just set <code>x-dead-letter-routing-key</code> to the target queue name.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">           </span><span class="c1">// Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// dead letters are delivered to this queue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<p>This approach is useful for simple structures where the dead letter destination is fixed.</p>
+<p>Official docs: <a href="https://www.rabbitmq.com/docs/dlx">Dead Lettering — RabbitMQ</a></p>
+<hr>
+<h2 id="9-ttl-time-to-live">
+  9. TTL (Time To Live)
+</h2>
+<p>TTL limits how long a message can stay in a queue. When TTL expires, the message becomes a <strong>dead letter</strong>.</p>
+<h3 id="queue-level-ttl">
+  Queue-Level TTL
+</h3>
+<p>Setting <code>x-message-ttl</code> when declaring a queue applies the same TTL to all messages in that queue.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;delay_60s&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w"> </span><span class="nb">int32</span><span class="p">(</span><span class="mi">60000</span><span class="p">),</span><span class="w"> </span><span class="c1">// expires after 60s (milliseconds)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<h3 id="message-level-ttl">
+  Message-Level TTL
+</h3>
+<p>Setting the <code>Expiration</code> field at publish time applies a TTL to that individual message.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;some_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">Expiration</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;60000&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// milliseconds, specified as a string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">Body</span><span class="p">:</span><span class="w">       </span><span class="nx">body</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p>If both queue-level and message-level TTL are set, <strong>the shorter one applies</strong>.</p>
+<blockquote>
+<p><strong>Key insight</strong>: TTL alone discards expired messages. But combined with DLX, <strong>expired messages are not discarded — they are forwarded to another queue via DLX</strong>. This combination is the foundation of the delayed retry pattern.</p>
+</blockquote>
+<p>Official docs: <a href="https://www.rabbitmq.com/docs/ttl">TTL — RabbitMQ</a></p>
+<hr>
+<h2 id="10-delayed-retry-pattern-using-dlx--ttl">
+  10. Delayed Retry Pattern Using DLX + TTL
+</h2>
+<blockquote>
+<p><strong>Note</strong>: Before diving in — RabbitMQ used to have a <a href="https://github.com/rabbitmq/rabbitmq-delayed-message-exchange"><code>rabbitmq_delayed_message_exchange</code></a> plugin that handled delayed messaging natively, which would have made this whole pattern unnecessary. Unfortunately, it has been archived.</p>
+<p>The officially suggested open-source alternative is exactly the DLX + TTL combination — though that&rsquo;s for basic delays and retries, not specifically for exponential backoff with multiple queues(?). What follows is an implementation that builds on that foundation.</p>
+</blockquote>
+<h3 id="problem">
+  Problem
+</h3>
+<p>When an external API call fails and a retry is needed, using <code>time.Sleep</code> inside the consumer causes:</p>
+<ul>
+<li>With <code>Qos=1</code>, the consumer blocks and all other message processing halts</li>
+<li>The longer the retry delay (e.g. exponential backoff), the more throughput degrades</li>
+</ul>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// problematic code: consumer stalls during sleep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">case</span><span class="w"> </span><span class="nx">ActionRetry</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">sleepSeconds</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="nx">MaxBackoff</span><span class="p">,</span><span class="w"> </span><span class="nx">tryCount</span><span class="o">*</span><span class="nx">tryCount</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">sleepSeconds</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span><span class="w"> </span><span class="c1">// blocking!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nf">republish</span><span class="p">(</span><span class="nx">ch</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="p">)</span></span></span></code></pre></div></div>
+<h3 id="solution">
+  Solution
+</h3>
+<p>Place the message into a separate queue with a TTL. <strong>RabbitMQ manages the wait</strong>, and once the TTL expires, the message is returned to the main queue via DLX. The consumer returns immediately with no blocking.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Main Queue ←──────────────── [Default Exchange]
+</span></span><span class="line"><span class="cl">    │                              ↑
+</span></span><span class="line"><span class="cl">    │ (retry needed)               │ (TTL expired → dead letter)
+</span></span><span class="line"><span class="cl">    ↓                              │
+</span></span><span class="line"><span class="cl">Retry Queue (TTL=3s)   ────────────┘
+</span></span><span class="line"><span class="cl">Retry Queue (TTL=9s)   ────────────┘
+</span></span><span class="line"><span class="cl">Retry Queue (TTL=27s)  ────────────┘
+</span></span><span class="line"><span class="cl">    ...</span></span></code></pre></div></div>
+<hr>
+<h3 id="implementation">
+  Implementation
+</h3>
+<h4 id="step-1-define-retry-queues">
+  Step 1: Define Retry Queues
+</h4>
+<p>Define delay queues using 3^n exponential backoff.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="kd">const</span><span class="w"> </span><span class="nx">MaxBackoff</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3600</span><span class="w"> </span><span class="c1">// max delay in seconds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// tryCount → delay(3^n): 1→3s, 2→9s, 3→27s, 4→81s, 5→243s, 6→729s, 7→2187s, 8+→3600s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">var</span><span class="w"> </span><span class="nx">RetryQueues</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">Name</span><span class="w"> </span><span class="kt">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">TTL</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="c1">// milliseconds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_3s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">3_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_9s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">9_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_27s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">27_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_81s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">81_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_243s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">243_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_729s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">729_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_2187s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">2_187_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_3600s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">3_600_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">func</span><span class="w"> </span><span class="nf">retryQueueIndex</span><span class="p">(</span><span class="nx">tryCount</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">delays</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w"> </span><span class="mi">81</span><span class="p">,</span><span class="w"> </span><span class="mi">243</span><span class="p">,</span><span class="w"> </span><span class="mi">729</span><span class="p">,</span><span class="w"> </span><span class="mi">2187</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">tryCount</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">backoff</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">tryCount</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">backoff</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">// 3^tryCount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">backoff</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nx">MaxBackoff</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">RetryQueues</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">delays</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">backoff</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">i</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">RetryQueues</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<h4 id="step-2-declare-retry-infrastructure">
+  Step 2: Declare Retry Infrastructure
+</h4>
+<p>Configure TTL and DLX on each retry queue. When TTL expires, the message returns to the main queue via Default Exchange.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="kd">const</span><span class="w"> </span><span class="nx">MainQueue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#34;task_queue&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">func</span><span class="w"> </span><span class="nf">declareRetryInfra</span><span class="p">(</span><span class="nx">ch</span><span class="w"> </span><span class="o">*</span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Channel</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">rq</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">RetryQueues</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">rq</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w">             </span><span class="nb">int32</span><span class="p">(</span><span class="nx">rq</span><span class="p">.</span><span class="nx">TTL</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">        </span><span class="c1">// Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">MainQueue</span><span class="p">,</span><span class="w"> </span><span class="c1">// route back to main queue on expiry</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<ul>
+<li><code>x-message-ttl</code>: message becomes dead letter after this duration (ms)</li>
+<li><code>x-dead-letter-exchange: &quot;&quot;</code>: dead letter is forwarded to Default Exchange</li>
+<li><code>x-dead-letter-routing-key: &quot;task_queue&quot;</code>: Default Exchange uses routing key as queue name, so message lands in the main queue</li>
+</ul>
+<h4 id="step-3-publish-retry-message">
+  Step 3: Publish Retry Message
+</h4>
+<p>Send the message to the appropriate retry queue based on <code>tryCount</code>.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">sendRetry</span><span class="p">(</span><span class="nx">ch</span><span class="w"> </span><span class="o">*</span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Channel</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="w"> </span><span class="nx">TaskPayload</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">retryQueueIndex</span><span class="p">(</span><span class="nx">payload</span><span class="p">.</span><span class="nx">TryCount</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">queueName</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">RetryQueues</span><span class="p">[</span><span class="nx">idx</span><span class="p">].</span><span class="nx">Name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;retry tryCount=%d → %s&#34;</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="p">.</span><span class="nx">TryCount</span><span class="p">,</span><span class="w"> </span><span class="nx">queueName</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">cancel</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nf">WithTimeout</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nf">cancel</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">body</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">        </span><span class="c1">// Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">queueName</span><span class="p">,</span><span class="w"> </span><span class="c1">// routing key = retry queue name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">DeliveryMode</span><span class="p">:</span><span class="w"> </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Persistent</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">ContentType</span><span class="p">:</span><span class="w">  </span><span class="s">&#34;application/json&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">Body</span><span class="p">:</span><span class="w">         </span><span class="nx">body</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<h4 id="step-4-call-from-consumer">
+  Step 4: Call from Consumer
+</h4>
+<p>Replace the blocking <code>time.Sleep</code> with a <code>sendRetry</code> call.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="k">for</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">msgs</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">payload</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">parsePayload</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">result</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">ActionOK</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Ack</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">ActionFailed</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w"> </span><span class="c1">// discard, no retry</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">ActionRetry</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w">        </span><span class="c1">// remove current message from queue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">payload</span><span class="p">.</span><span class="nx">TryCount</span><span class="o">++</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nf">sendRetry</span><span class="p">(</span><span class="nx">ch</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="p">)</span><span class="w"> </span><span class="c1">// enqueue to TTL queue and return immediately — no blocking</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<h3 id="full-message-flow">
+  Full Message Flow
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">1. Producer publishes message to task_queue
+</span></span><span class="line"><span class="cl">2. Consumer receives and processes message
+</span></span><span class="line"><span class="cl">3. Failure (ActionRetry):
+</span></span><span class="line"><span class="cl">   a. d.Reject(false) removes the original message
+</span></span><span class="line"><span class="cl">   b. Increment tryCount and call sendRetry
+</span></span><span class="line"><span class="cl">   c. Select retry queue based on tryCount (e.g. retry_27s)
+</span></span><span class="line"><span class="cl">   d. Publish message to retry queue via Default Exchange
+</span></span><span class="line"><span class="cl">4. Message waits in retry queue for TTL (e.g. 27s)
+</span></span><span class="line"><span class="cl">5. TTL expires → dead letter triggered
+</span></span><span class="line"><span class="cl">6. Forwarded to Default Exchange via x-dead-letter-exchange=&#34;&#34;
+</span></span><span class="line"><span class="cl">7. Routed to main queue via x-dead-letter-routing-key=&#34;task_queue&#34;
+</span></span><span class="line"><span class="cl">8. Consumer receives again → back to step 2</span></span></code></pre></div></div>
+<hr>
+<h2 id="11-policy-vs-queue-arguments">
+  11. Policy vs Queue Arguments
+</h2>
+<p>There are two ways to configure queue settings like TTL and DLX.</p>
+<h3 id="queue-arguments-configured-in-code">
+  Queue Arguments (configured in code)
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w">          </span><span class="nb">int32</span><span class="p">(</span><span class="mi">60000</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<ul>
+<li>Defined directly in code at queue declaration time</li>
+<li>If the queue already exists with different arguments, RabbitMQ returns an error (the queue must be deleted and recreated to change arguments)</li>
+<li>Configuration lives in one place alongside the code</li>
+</ul>
+<h3 id="policy-configured-on-the-server">
+  Policy (configured on the server)
+</h3>
+<p>Apply settings to multiple queues at once via pattern matching, using the RabbitMQ Management UI or CLI:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">rabbitmqctl set_policy my-ttl <span class="s2">&#34;^retry_.*&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="s1">&#39;{&#34;message-ttl&#34;: 60000, &#34;dead-letter-exchange&#34;: &#34;&#34;}&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --apply-to queues</span></span></code></pre></div></div>
+<ul>
+<li>Can be changed at runtime without redeployment</li>
+<li>A single pattern applies to multiple queues at once</li>
+<li>If both Queue Arguments and Policy are set, <strong>the more conservative value wins</strong></li>
+</ul>
+<h3 id="which-one-to-use">
+  Which One to Use?
+</h3>
+<table>
+  <thead>
+      <tr>
+          <th>Situation</th>
+          <th>Recommendation</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Different TTL per queue (e.g. retry queues)</td>
+          <td><strong>Queue Arguments</strong> — manage per-queue config in one place in code</td>
+      </tr>
+      <tr>
+          <td>Same settings across many queues</td>
+          <td><strong>Policy</strong> — apply with a single pattern</td>
+      </tr>
+      <tr>
+          <td>Settings change frequently in production</td>
+          <td><strong>Policy</strong> — no redeployment needed</td>
+      </tr>
+  </tbody>
+</table>
+
+<p>For patterns like the delayed retry covered in this document — where each queue has a different TTL — using Policy splits configuration across code and server, making it harder to manage. Queue Arguments are the better fit here.</p>
+<p>That said, the official RabbitMQ docs strongly recommend Policy for production use.</p>
+<p>For retry queues with different TTL values, <strong>Queue Arguments are usually simpler to manage in code</strong>, even though RabbitMQ documentation strongly recommends policies</p>
+<hr>
+<h2 id="12-references">
+  12. References
+</h2>
+<ul>
+<li><a href="https://www.rabbitmq.com/docs">RabbitMQ Official Documentation</a></li>
+<li><a href="https://www.rabbitmq.com/docs/queues#optional-arguments">Queues — Optional Arguments</a></li>
+<li><a href="https://www.rabbitmq.com/docs/dlx">Dead Lettering</a></li>
+<li><a href="https://www.rabbitmq.com/docs/ttl">TTL (Time-To-Live)</a></li>
+<li><a href="https://www.rabbitmq.com/docs/parameters#policies">Policies and Parameters</a></li>
+<li><a href="https://www.rabbitmq.com/tutorials/amqp-concepts">AMQP 0-9-1 Model Explained</a></li>
+<li><a href="https://github.com/rabbitmq/amqp091-go">Go AMQP Client (amqp091-go)</a></li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/en/tags/message-broker/">#message broker</a><a rel="nofollow" href="/en/tags/queue/">#queue</a></div></div>
+</footer>
+</article>
+
+  </main>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/en/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav><span class="lang-dropdown footer-lang">
+      <button class="lang-toggle" type="button" aria-label="Select language" aria-expanded="false">
+        <span class="lang-name">English</span>
+        <svg class="lang-arrow" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1338 6.16015C16.3217 5.95783 16.6375 5.94599 16.8399 6.13378C17.0421 6.32166 17.054 6.6375 16.8662 6.83984L10.3662 13.8398L10.2891 13.9082C10.2053 13.9675 10.1043 14 9.99999 14C9.86101 14 9.72836 13.9417 9.63377 13.8398L3.13374 6.83984L3.07221 6.75976C2.95129 6.56111 2.98312 6.29824 3.16011 6.13378C3.33708 5.96954 3.60085 5.95776 3.78999 6.09277L3.86616 6.16015L9.99999 12.7666L16.1338 6.16015Z"></path></svg>
+      </button>
+      <span class="lang-menu" role="menu"><a href="/en/blog/rabbitmq/" role="menuitem" class="lang-active">
+            <span class="lang-item-name">English</span>
+            <span class="lang-item-check"></span>
+          </a><a href="/kr/blog/rabbitmq/" role="menuitem" class="">
+            <span class="lang-item-name">한국어</span>
+            <span class="lang-item-check"></span>
+          </a></span>
+    </span></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
+
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script></body>
+</html>

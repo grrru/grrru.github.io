@@ -2,290 +2,342 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/en/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/"
+                href="//localhost:1313/kr/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/"
+                href="//localhost:1313/en/"
                 />
   </url><url>
-    <loc>/en/tags/ai/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/blog/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/ai/"
+                href="//localhost:1313/kr/blog/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/ai/"
+                href="//localhost:1313/en/blog/"
                 />
   </url><url>
-    <loc>/en/blog/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/categories/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/"
+                href="//localhost:1313/kr/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/"
+                href="//localhost:1313/en/categories/"
                 />
   </url><url>
-    <loc>/en/categories/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/tags/message-broker/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/categories/"
+                href="//localhost:1313/kr/tags/message-broker/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/categories/"
+                href="//localhost:1313/en/tags/message-broker/"
                 />
   </url><url>
-    <loc>/en/tags/llm/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/tags/queue/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/llm/"
+                href="//localhost:1313/kr/tags/queue/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/llm/"
+                href="//localhost:1313/en/tags/queue/"
                 />
   </url><url>
-    <loc>/en/categories/mcp/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/categories/rabbitmq/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/categories/mcp/"
+                href="//localhost:1313/kr/categories/rabbitmq/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/categories/mcp/"
+                href="//localhost:1313/en/categories/rabbitmq/"
                 />
   </url><url>
-    <loc>/en/tags/mcp/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/blog/rabbitmq/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/mcp/"
+                href="//localhost:1313/kr/blog/rabbitmq/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/mcp/"
+                href="//localhost:1313/en/blog/rabbitmq/"
                 />
   </url><url>
-    <loc>/en/blog/mcp/</loc>
-    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <loc>//localhost:1313/en/tags/</loc>
+    <lastmod>2026-03-14T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/mcp/"
+                href="//localhost:1313/kr/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/mcp/"
+                href="//localhost:1313/en/tags/"
                 />
   </url><url>
-    <loc>/en/tags/</loc>
+    <loc>//localhost:1313/en/tags/ai/</loc>
     <lastmod>2026-03-03T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/"
+                href="//localhost:1313/kr/tags/ai/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/"
+                href="//localhost:1313/en/tags/ai/"
                 />
   </url><url>
-    <loc>/en/categories/backend/</loc>
+    <loc>//localhost:1313/en/tags/llm/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="//localhost:1313/kr/tags/llm/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="//localhost:1313/en/tags/llm/"
+                />
+  </url><url>
+    <loc>//localhost:1313/en/categories/mcp/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="//localhost:1313/kr/categories/mcp/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="//localhost:1313/en/categories/mcp/"
+                />
+  </url><url>
+    <loc>//localhost:1313/en/tags/mcp/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="//localhost:1313/kr/tags/mcp/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="//localhost:1313/en/tags/mcp/"
+                />
+  </url><url>
+    <loc>//localhost:1313/en/blog/mcp/</loc>
+    <lastmod>2026-03-03T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ko-KR"
+                href="//localhost:1313/kr/blog/mcp/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-US"
+                href="//localhost:1313/en/blog/mcp/"
+                />
+  </url><url>
+    <loc>//localhost:1313/en/categories/backend/</loc>
     <lastmod>2026-01-30T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/categories/backend/"
+                href="//localhost:1313/kr/categories/backend/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/categories/backend/"
+                href="//localhost:1313/en/categories/backend/"
                 />
   </url><url>
-    <loc>/en/blog/json-rpc/</loc>
+    <loc>//localhost:1313/en/blog/json-rpc/</loc>
     <lastmod>2026-01-30T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/json-rpc/"
+                href="//localhost:1313/kr/blog/json-rpc/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/json-rpc/"
+                href="//localhost:1313/en/blog/json-rpc/"
                 />
   </url><url>
-    <loc>/en/tags/json-rpc/</loc>
+    <loc>//localhost:1313/en/tags/json-rpc/</loc>
     <lastmod>2026-01-30T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/json-rpc/"
+                href="//localhost:1313/kr/tags/json-rpc/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/json-rpc/"
+                href="//localhost:1313/en/tags/json-rpc/"
                 />
   </url><url>
-    <loc>/en/tags/bandit/</loc>
+    <loc>//localhost:1313/en/tags/bandit/</loc>
     <lastmod>2026-01-13T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/bandit/"
+                href="//localhost:1313/kr/tags/bandit/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/bandit/"
+                href="//localhost:1313/en/tags/bandit/"
                 />
   </url><url>
-    <loc>/en/categories/linux/</loc>
+    <loc>//localhost:1313/en/categories/linux/</loc>
     <lastmod>2026-01-13T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/categories/linux/"
+                href="//localhost:1313/kr/categories/linux/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/categories/linux/"
+                href="//localhost:1313/en/categories/linux/"
                 />
   </url><url>
-    <loc>/en/tags/linux/</loc>
+    <loc>//localhost:1313/en/tags/linux/</loc>
     <lastmod>2026-01-13T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/linux/"
+                href="//localhost:1313/kr/tags/linux/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/linux/"
+                href="//localhost:1313/en/tags/linux/"
                 />
   </url><url>
-    <loc>/en/tags/overthewire/</loc>
+    <loc>//localhost:1313/en/tags/overthewire/</loc>
     <lastmod>2026-01-13T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/overthewire/"
+                href="//localhost:1313/kr/tags/overthewire/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/overthewire/"
+                href="//localhost:1313/en/tags/overthewire/"
                 />
   </url><url>
-    <loc>/en/blog/overthewire-bandit-4/</loc>
+    <loc>//localhost:1313/en/blog/overthewire-bandit-4/</loc>
     <lastmod>2026-01-13T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/overthewire-bandit-4/"
+                href="//localhost:1313/kr/blog/overthewire-bandit-4/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/overthewire-bandit-4/"
+                href="//localhost:1313/en/blog/overthewire-bandit-4/"
                 />
   </url><url>
-    <loc>/en/blog/overthewire-bandit-3/</loc>
+    <loc>//localhost:1313/en/blog/overthewire-bandit-3/</loc>
     <lastmod>2026-01-11T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/overthewire-bandit-3/"
+                href="//localhost:1313/kr/blog/overthewire-bandit-3/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/overthewire-bandit-3/"
+                href="//localhost:1313/en/blog/overthewire-bandit-3/"
                 />
   </url><url>
-    <loc>/en/blog/overthewire-bandit-2/</loc>
+    <loc>//localhost:1313/en/blog/overthewire-bandit-2/</loc>
     <lastmod>2026-01-07T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/overthewire-bandit-2/"
+                href="//localhost:1313/kr/blog/overthewire-bandit-2/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/overthewire-bandit-2/"
+                href="//localhost:1313/en/blog/overthewire-bandit-2/"
                 />
   </url><url>
-    <loc>/en/blog/overthewire-bandit-1/</loc>
+    <loc>//localhost:1313/en/blog/overthewire-bandit-1/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/overthewire-bandit-1/"
+                href="//localhost:1313/kr/blog/overthewire-bandit-1/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/overthewire-bandit-1/"
+                href="//localhost:1313/en/blog/overthewire-bandit-1/"
                 />
   </url><url>
-    <loc>/en/blog/scp/</loc>
+    <loc>//localhost:1313/en/blog/scp/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/blog/scp/"
+                href="//localhost:1313/kr/blog/scp/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/blog/scp/"
+                href="//localhost:1313/en/blog/scp/"
                 />
   </url><url>
-    <loc>/en/tags/scp/</loc>
+    <loc>//localhost:1313/en/tags/scp/</loc>
     <lastmod>2025-12-28T00:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="ko-KR"
-                href="/kr/tags/scp/"
+                href="//localhost:1313/kr/tags/scp/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-US"
-                href="/en/tags/scp/"
+                href="//localhost:1313/en/tags/scp/"
                 />
   </url>
 </urlset>

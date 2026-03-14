@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Message Broker on Grrru Blog</title>
+    <link>//localhost:1313/kr/tags/message-broker/</link>
+    <description>Recent content in Message Broker on Grrru Blog</description>
+    <generator>Hugo</generator>
+    <language>ko-KR</language>
+    <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
+    <webMaster>gruns0989@naver.com (grrru)</webMaster>
+    <copyright>Grrru (CC BY 4.0)</copyright>
+    <lastBuildDate>Sat, 14 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="//localhost:1313/kr/tags/message-broker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RabbitMQ</title>
+      <link>//localhost:1313/kr/blog/rabbitmq/</link>
+      <pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>//localhost:1313/kr/blog/rabbitmq/</guid>
+      <description>&lt;h1 id=&#34;rabbitmq-개념-정리&#34;&gt;&#xA;  RabbitMQ 개념 정리&#xA;&lt;/h1&gt;&#xA;&lt;h2 id=&#34;1-rabbitmq란&#34;&gt;&#xA;  1. RabbitMQ란?&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;RabbitMQ는 AMQP(Advanced Message Queuing Protocol) 기반의 오픈소스 메시지 브로커다. Producer가 메시지를 보내면 RabbitMQ가 이를 큐에 저장하고, Consumer가 큐에서 메시지를 꺼내 처리하는 구조다.&lt;/p&gt;&#xA;&lt;div class=&#34;codeblock&#34;&gt;&#xA;  &lt;div class=&#34;codeblock-actions&#34;&gt;&#xA;    &lt;button type=&#34;button&#34;&#xA;            class=&#34;codeblock-action codeblock-action--wrap&#34;&#xA;            data-wrap-toggle&#xA;            data-icon-button&#xA;            aria-pressed=&#34;false&#34;&#xA;            title=&#34;Enable soft wrap&#34;&#xA;            data-wrap-title=&#34;Enable soft wrap&#34;&#xA;            data-nowrap-title=&#34;Disable soft wrap&#34;&gt;&#xA;      &lt;svg viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;path d=&#34;M4 6h16M4 10h12a4 4 0 0 1 0 8h-2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34;/&gt;&#xA;        &lt;path d=&#34;M14 18l-2-2m2 2l-2 2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;&#xA;      &lt;/svg&gt;&#xA;    &lt;/button&gt;&#xA;&#xA;    &lt;button type=&#34;button&#34;&#xA;            class=&#34;codeblock-action codeblock-action--copy&#34;&#xA;            data-copy-code&#xA;            data-icon-button&#xA;            title=&#34;Copy code&#34;&#xA;            data-copied-title=&#34;COPIED&#34;&gt;&#xA;      &lt;svg class=&#34;icon-copy&#34; viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;rect x=&#34;9&#34; y=&#34;9&#34; width=&#34;13&#34; height=&#34;13&#34; rx=&#34;2&#34; ry=&#34;2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34;&gt;&lt;/rect&gt;&#xA;        &lt;path d=&#34;M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34;&gt;&lt;/path&gt;&#xA;      &lt;/svg&gt;&#xA;      &lt;svg class=&#34;icon-check&#34; viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;path d=&#34;M20 6L9 17l-5-5&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&lt;/path&gt;&#xA;      &lt;/svg&gt;&#xA;    &lt;/button&gt;&#xA;  &lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Producer → [Exchange] → [Queue] → Consumer&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&#xA;&lt;p&gt;메시지 브로커를 사이에 두면 Producer와 Consumer가 서로 직접 통신하지 않아도 되므로, 두 시스템 간의 결합도를 낮추고 비동기 처리가 가능해진다.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

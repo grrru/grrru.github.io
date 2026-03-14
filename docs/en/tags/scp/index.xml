@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Scp on Grrru Blog</title>
-    <link>/en/tags/scp/</link>
+    <link>//localhost:1313/en/tags/scp/</link>
     <description>Recent content in Scp on Grrru Blog</description>
     <generator>Hugo</generator>
     <language>en-US</language>
@@ -10,12 +10,12 @@
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
     <lastBuildDate>Sun, 28 Dec 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/en/tags/scp/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="//localhost:1313/en/tags/scp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>scp</title>
-      <link>/en/blog/scp/</link>
+      <link>//localhost:1313/en/blog/scp/</link>
       <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/en/blog/scp/</guid>
+      <guid>//localhost:1313/en/blog/scp/</guid>
       <description>&lt;h2 id=&#34;current-situation&#34;&gt;&#xA;  Current Situation&#xA;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;server1 -&amp;gt; server2: SSH private key available&lt;/li&gt;&#xA;&lt;li&gt;server2 -&amp;gt; server1: SSH private key NOT available&lt;/li&gt;&#xA;&lt;li&gt;Goal: Move files from server2 to server1&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;scp&#34;&gt;&#xA;  scp&#xA;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Run from server1&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;div class=&#34;codeblock&#34;&gt;&#xA;  &lt;div class=&#34;codeblock-actions&#34;&gt;&#xA;    &lt;button type=&#34;button&#34;&#xA;            class=&#34;codeblock-action codeblock-action--wrap&#34;&#xA;            data-wrap-toggle&#xA;            data-icon-button&#xA;            aria-pressed=&#34;false&#34;&#xA;            title=&#34;Enable soft wrap&#34;&#xA;            data-wrap-title=&#34;Enable soft wrap&#34;&#xA;            data-nowrap-title=&#34;Disable soft wrap&#34;&gt;&#xA;      &lt;svg viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;path d=&#34;M4 6h16M4 10h12a4 4 0 0 1 0 8h-2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34;/&gt;&#xA;        &lt;path d=&#34;M14 18l-2-2m2 2l-2 2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;/&gt;&#xA;      &lt;/svg&gt;&#xA;    &lt;/button&gt;&#xA;&#xA;    &lt;button type=&#34;button&#34;&#xA;            class=&#34;codeblock-action codeblock-action--copy&#34;&#xA;            data-copy-code&#xA;            data-icon-button&#xA;            title=&#34;Copy code&#34;&#xA;            data-copied-title=&#34;COPIED&#34;&gt;&#xA;      &lt;svg class=&#34;icon-copy&#34; viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;rect x=&#34;9&#34; y=&#34;9&#34; width=&#34;13&#34; height=&#34;13&#34; rx=&#34;2&#34; ry=&#34;2&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34;&gt;&lt;/rect&gt;&#xA;        &lt;path d=&#34;M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34;&gt;&lt;/path&gt;&#xA;      &lt;/svg&gt;&#xA;      &lt;svg class=&#34;icon-check&#34; viewBox=&#34;0 0 24 24&#34; aria-hidden=&#34;true&#34; focusable=&#34;false&#34;&gt;&#xA;        &lt;path d=&#34;M20 6L9 17l-5-5&#34; stroke=&#34;currentColor&#34; stroke-width=&#34;2&#34; fill=&#34;none&#34; stroke-linecap=&#34;round&#34; stroke-linejoin=&#34;round&#34;&gt;&lt;/path&gt;&#xA;      &lt;/svg&gt;&#xA;    &lt;/button&gt;&#xA;  &lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp user2@server2:/src/file /dst/   &lt;span class=&#34;c1&#34;&gt;# file&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;scp -r user2@server2:/src/dir /dst/ &lt;span class=&#34;c1&#34;&gt;# directory&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rsync -av user2@server2:/src/ /dst/ &lt;span class=&#34;c1&#34;&gt;# For large volumes -&amp;gt; haven&amp;#39;t tested this yet&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</description>
     </item>
   </channel>

@@ -2,69 +2,83 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Grrru Blog</title>
-    <link>/kr/tags/</link>
+    <link>//localhost:1313/kr/tags/</link>
     <description>Recent content in Tags on Grrru Blog</description>
     <generator>Hugo</generator>
     <language>ko-KR</language>
     <managingEditor>gruns0989@naver.com (grrru)</managingEditor>
     <webMaster>gruns0989@naver.com (grrru)</webMaster>
     <copyright>Grrru (CC BY 4.0)</copyright>
-    <lastBuildDate>Tue, 03 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/kr/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 14 Mar 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="//localhost:1313/kr/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Message Broker</title>
+      <link>//localhost:1313/kr/tags/message-broker/</link>
+      <pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>//localhost:1313/kr/tags/message-broker/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Queue</title>
+      <link>//localhost:1313/kr/tags/queue/</link>
+      <pubDate>Sat, 14 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
+      <guid>//localhost:1313/kr/tags/queue/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Ai</title>
-      <link>/kr/tags/ai/</link>
+      <link>//localhost:1313/kr/tags/ai/</link>
       <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/ai/</guid>
+      <guid>//localhost:1313/kr/tags/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>Llm</title>
-      <link>/kr/tags/llm/</link>
+      <link>//localhost:1313/kr/tags/llm/</link>
       <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/llm/</guid>
+      <guid>//localhost:1313/kr/tags/llm/</guid>
       <description></description>
     </item>
     <item>
       <title>Mcp</title>
-      <link>/kr/tags/mcp/</link>
+      <link>//localhost:1313/kr/tags/mcp/</link>
       <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/mcp/</guid>
+      <guid>//localhost:1313/kr/tags/mcp/</guid>
       <description></description>
     </item>
     <item>
       <title>JSON-RPC</title>
-      <link>/kr/tags/json-rpc/</link>
+      <link>//localhost:1313/kr/tags/json-rpc/</link>
       <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/json-rpc/</guid>
+      <guid>//localhost:1313/kr/tags/json-rpc/</guid>
       <description></description>
     </item>
     <item>
       <title>Bandit</title>
-      <link>/kr/tags/bandit/</link>
+      <link>//localhost:1313/kr/tags/bandit/</link>
       <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/bandit/</guid>
+      <guid>//localhost:1313/kr/tags/bandit/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>/kr/tags/linux/</link>
+      <link>//localhost:1313/kr/tags/linux/</link>
       <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/linux/</guid>
+      <guid>//localhost:1313/kr/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Overthewire</title>
-      <link>/kr/tags/overthewire/</link>
+      <link>//localhost:1313/kr/tags/overthewire/</link>
       <pubDate>Tue, 13 Jan 2026 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/overthewire/</guid>
+      <guid>//localhost:1313/kr/tags/overthewire/</guid>
       <description></description>
     </item>
     <item>
       <title>Scp</title>
-      <link>/kr/tags/scp/</link>
+      <link>//localhost:1313/kr/tags/scp/</link>
       <pubDate>Sun, 28 Dec 2025 00:00:00 +0000</pubDate><author>gruns0989@naver.com (grrru)</author>
-      <guid>/kr/tags/scp/</guid>
+      <guid>//localhost:1313/kr/tags/scp/</guid>
       <description></description>
     </item>
   </channel>

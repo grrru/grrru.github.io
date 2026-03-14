@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="ko-KR" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <script>
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+      }
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>RabbitMQ | Grrru Blog</title>
+
+<link rel="stylesheet" href="/css/style.2156fe4f98507f9874cbb7a070da556df265efd09400f2cf3e4b21b8f0c6dddc.css"><link rel="stylesheet" href="/css/pygments-friendly.8a524ea06b3e0ded4ac287fa92ac82550c9f0fe09820b2787e3a1484ba27a28b.css">
+      <script defer src="/js/main.3a35234d925ee11ffb302a37a387cfdb9ae838561b2df6f26dc6898328c9f0d3.js"></script>
+      <script defer src="/js/toc-toggle.254c2c086d255a5bbfa1f805b9d1314faaa1bbfee8ac7a44aca92f996d06dc54.js"></script>
+
+
+</head>
+<body>
+  <header>
+    <div class="site-header"><div class="site-brand">
+    <a class="title" href="/kr/">
+      <h1>Grrru Blog</h1>
+    </a>
+  </div>
+
+  <nav class="site-nav"><a href="/kr/">Home</a>
+     <a href="/kr/blog/">Blog</a>
+    <a href="/kr/tags/">Tags</a></nav>
+  <button class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
+    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5" />
+      <line x1="12" y1="1" x2="12" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="23" />
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+      <line x1="1" y1="12" x2="3" y2="12" />
+      <line x1="21" y1="12" x2="23" y2="12" />
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+    </svg>
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  </button>
+</div>
+
+  </header>
+  <main>
+    <article class="post"><header class="post-header">
+    <h1 class="post-title">RabbitMQ</h1>
+    <p class="post-meta">
+      <time datetime="2026-03-14">
+        March 14, 2026
+      </time>
+    </p>
+  </header>
+  <div class="toc-wrapper">
+    <button id="toc-toggle-button" type="button" aria-expanded="false" title="Toggle Contents">
+      Contents <span id="toc-toggle-arrow">▼</span>
+    </button>
+    <div id="toc-container" role="navigation" aria-label="Table of Contents">
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-rabbitmq란">1. RabbitMQ란?</a></li>
+    <li><a href="#2-핵심-구성요소">2. 핵심 구성요소</a>
+      <ul>
+        <li><a href="#connection과-channel의-관계">Connection과 Channel의 관계</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-exchange-종류">3. Exchange 종류</a>
+      <ul>
+        <li><a href="#31-default-exchange-nameless-exchange">3.1 Default Exchange (Nameless Exchange)</a></li>
+        <li><a href="#32-direct-exchange">3.2 Direct Exchange</a></li>
+        <li><a href="#33-fanout-exchange">3.3 Fanout Exchange</a></li>
+        <li><a href="#34-topic-exchange">3.4 Topic Exchange</a></li>
+        <li><a href="#35-headers-exchange">3.5 Headers Exchange</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-binding">4. Binding</a>
+      <ul>
+        <li><a href="#default-exchange-이외에는-binding이-필수">Default Exchange 이외에는 Binding이 필수</a></li>
+        <li><a href="#queuebind-파라미터">QueueBind 파라미터</a></li>
+        <li><a href="#하나의-queue에-여러-binding">하나의 Queue에 여러 Binding</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-queue-선언과-속성">5. Queue 선언과 속성</a>
+      <ul>
+        <li><a href="#주요-속성">주요 속성</a></li>
+        <li><a href="#amqptable-queue-arguments">amqp.Table (Queue Arguments)</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-메시지-발행과-소비">6. 메시지 발행과 소비</a>
+      <ul>
+        <li><a href="#메시지-발행-publish">메시지 발행 (Publish)</a></li>
+        <li><a href="#메시지-소비-consume">메시지 소비 (Consume)</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-acknowledgement와-qos">7. Acknowledgement와 QoS</a>
+      <ul>
+        <li><a href="#ack--reject--nack">Ack / Reject / Nack</a></li>
+        <li><a href="#qos-prefetch">QoS (Prefetch)</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-dead-letter-exchange-dlx">8. Dead Letter Exchange (DLX)</a>
+      <ul>
+        <li><a href="#default-exchange를-dlx로-사용하기">Default Exchange를 DLX로 사용하기</a></li>
+      </ul>
+    </li>
+    <li><a href="#9-ttl-time-to-live">9. TTL (Time-To-Live)</a>
+      <ul>
+        <li><a href="#큐-단위-ttl">큐 단위 TTL</a></li>
+        <li><a href="#메시지-단위-ttl">메시지 단위 TTL</a></li>
+      </ul>
+    </li>
+    <li><a href="#10-dlx--ttl을-활용한-지연-재시도-패턴">10. DLX + TTL을 활용한 지연 재시도 패턴</a>
+      <ul>
+        <li><a href="#문제-상황">문제 상황</a></li>
+        <li><a href="#해결-ttl-기반-지연-큐">해결: TTL 기반 지연 큐</a></li>
+        <li><a href="#구현">구현</a></li>
+        <li><a href="#메시지-흐름-전체-요약">메시지 흐름 전체 요약</a></li>
+      </ul>
+    </li>
+    <li><a href="#11-policy-vs-queue-arguments">11. Policy vs Queue Arguments</a>
+      <ul>
+        <li><a href="#queue-arguments-코드에서-설정">Queue Arguments (코드에서 설정)</a></li>
+        <li><a href="#policy-rabbitmq-서버에서-설정">Policy (RabbitMQ 서버에서 설정)</a></li>
+        <li><a href="#어떤-걸-사용해야-할까">어떤 걸 사용해야 할까?</a></li>
+      </ul>
+    </li>
+    <li><a href="#12-참고-자료">12. 참고 자료</a></li>
+  </ul>
+</nav>
+    </div>
+  </div>
+  
+
+  <div class="post-content">
+    <h1 id="rabbitmq-개념-정리">
+  RabbitMQ 개념 정리
+</h1>
+<h2 id="1-rabbitmq란">
+  1. RabbitMQ란?
+</h2>
+<p>RabbitMQ는 AMQP(Advanced Message Queuing Protocol) 기반의 오픈소스 메시지 브로커다. Producer가 메시지를 보내면 RabbitMQ가 이를 큐에 저장하고, Consumer가 큐에서 메시지를 꺼내 처리하는 구조다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Producer → [Exchange] → [Queue] → Consumer</span></span></code></pre></div></div>
+<p>메시지 브로커를 사이에 두면 Producer와 Consumer가 서로 직접 통신하지 않아도 되므로, 두 시스템 간의 결합도를 낮추고 비동기 처리가 가능해진다.</p>
+<hr>
+<h2 id="2-핵심-구성요소">
+  2. 핵심 구성요소
+</h2>
+<table>
+  <thead>
+      <tr>
+          <th>구성요소</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Connection</strong></td>
+          <td>애플리케이션과 RabbitMQ 서버 간의 TCP 연결</td>
+      </tr>
+      <tr>
+          <td><strong>Channel</strong></td>
+          <td>Connection 위의 가상 연결. 하나의 Connection에서 여러 Channel을 열 수 있다</td>
+      </tr>
+      <tr>
+          <td><strong>Exchange</strong></td>
+          <td>Producer가 메시지를 보내는 대상. 라우팅 규칙에 따라 큐로 메시지를 전달한다</td>
+      </tr>
+      <tr>
+          <td><strong>Queue</strong></td>
+          <td>메시지가 저장되는 버퍼. Consumer가 여기서 메시지를 꺼내 처리한다</td>
+      </tr>
+      <tr>
+          <td><strong>Binding</strong></td>
+          <td>Exchange와 Queue를 연결하는 규칙. Routing Key를 기준으로 매칭한다</td>
+      </tr>
+      <tr>
+          <td><strong>Routing Key</strong></td>
+          <td>메시지를 발행할 때 지정하는 키. Exchange가 이 키를 보고 어떤 큐로 보낼지 결정한다</td>
+      </tr>
+  </tbody>
+</table>
+
+<h3 id="connection과-channel의-관계">
+  Connection과 Channel의 관계
+</h3>
+<p>Connection은 TCP 소켓이라 생성 비용이 크다. Channel은 Connection 내부의 경량 논리 채널로, 실제 작업(큐 선언, 메시지 발행/소비)은 Channel 단위로 수행한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// Dial accepts a string in the AMQP URI format and returns a new Connection</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// over TCP using PlainAuth.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">conn</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">amqp</span><span class="p">.</span><span class="nf">Dial</span><span class="p">(</span><span class="s">&#34;amqp://user:pass@localhost:5672&#34;</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">defer</span><span class="w"> </span><span class="nx">conn</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">conn</span><span class="p">.</span><span class="nf">Channel</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">defer</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span></span></span></code></pre></div></div>
+<hr>
+<h2 id="3-exchange-종류">
+  3. Exchange 종류
+</h2>
+<h3 id="31-default-exchange-nameless-exchange">
+  3.1 Default Exchange (Nameless Exchange)
+</h3>
+<p>이름이 빈 문자열(<code>&quot;&quot;</code>)인 특수한 Exchange다. 모든 큐는 자동으로 <strong>큐 이름과 동일한 Routing Key</strong>로 Default Exchange에 바인딩된다. 별도 Exchange 선언 없이 큐 이름만으로 메시지를 보낼 수 있어 가장 간단한 방식이다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// Default Exchange를 사용하여 &#34;task_queue&#34;에 직접 메시지 전송</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">           </span><span class="c1">// exchange: 빈 문자열 = Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w">  </span><span class="c1">// routing key = 큐 이름</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="nx">Body</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;hello&#34;</span><span class="p">)},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<h3 id="32-direct-exchange">
+  3.2 Direct Exchange
+</h3>
+<p>Routing Key가 정확히 일치하는 큐에만 메시지를 전달한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Exchange(direct) --[routing_key=&#34;error&#34;]--&gt; error_queue
+</span></span><span class="line"><span class="cl">                 --[routing_key=&#34;info&#34;]---&gt; info_queue</span></span></code></pre></div></div>
+<h3 id="33-fanout-exchange">
+  3.3 Fanout Exchange
+</h3>
+<p>Routing Key를 무시하고 바인딩된 <strong>모든 큐</strong>에 메시지를 복사하여 전달한다. 브로드캐스트 용도.</p>
+<h3 id="34-topic-exchange">
+  3.4 Topic Exchange
+</h3>
+<p>Routing Key에 와일드카드 패턴 매칭을 사용한다.</p>
+<ul>
+<li><code>*</code> : 정확히 한 단어</li>
+<li><code>#</code> : 0개 이상의 단어</li>
+</ul>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">routing_key=&#34;order.created&#34;  →  &#34;order.*&#34; 패턴의 큐에 매칭
+</span></span><span class="line"><span class="cl">routing_key=&#34;order.item.shipped&#34; → &#34;order.#&#34; 패턴의 큐에 매칭</span></span></code></pre></div></div>
+<h3 id="35-headers-exchange">
+  3.5 Headers Exchange
+</h3>
+<p>Routing Key 대신 메시지 헤더의 key-value 쌍으로 라우팅한다. 잘 사용되지 않는다.</p>
+<hr>
+<h2 id="4-binding">
+  4. Binding
+</h2>
+<p>Binding은 Exchange와 Queue를 연결하는 규칙이다. Exchange는 메시지를 받았을 때 Binding을 참조하여 어떤 Queue로 라우팅할지 결정한다.</p>
+<h3 id="default-exchange-이외에는-binding이-필수">
+  Default Exchange 이외에는 Binding이 필수
+</h3>
+<p>Default Exchange는 모든 큐를 <code>routing_key = queue_name</code>으로 자동 바인딩해주므로 별도 설정이 필요 없다. 하지만 그 외의 Exchange를 사용하려면 <strong>Exchange 선언 → Queue 선언 → Binding</strong> 세 단계를 직접 구성해야 한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// 1. Exchange 선언</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">ExchangeDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;direct&#34;</span><span class="p">,</span><span class="w">       </span><span class="c1">// type: direct, fanout, topic, headers</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">true</span><span class="p">,</span><span class="w">           </span><span class="c1">// durable</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">          </span><span class="c1">// autoDelete</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">          </span><span class="c1">// internal</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">          </span><span class="c1">// noWait</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">            </span><span class="c1">// args</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// 2. Queue 선언</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="s">&#34;error_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="s">&#34;info_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// 3. Binding: Exchange와 Queue를 routing key로 연결</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;error_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;error&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;info_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;info&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span></span></span></code></pre></div></div>
+<p>위 설정의 결과:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Publisher --[routing_key=&#34;error&#34;]--&gt; log_exchange ---&gt; error_queue
+</span></span><span class="line"><span class="cl">Publisher --[routing_key= &#34;info&#34;]--&gt; log_exchange ---&gt; info_queue</span></span></code></pre></div></div>
+<h3 id="queuebind-파라미터">
+  QueueBind 파라미터
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;error_queue&#34;</span><span class="p">,</span><span class="w">  </span><span class="c1">// queue: 바인딩할 큐 이름</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;error&#34;</span><span class="p">,</span><span class="w">        </span><span class="c1">// key: 라우팅에 사용할 binding key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// exchange: 바인딩할 Exchange 이름</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">          </span><span class="c1">// noWait</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">            </span><span class="c1">// args</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p>여기서 두 번째 인자인 binding key의 의미는 Exchange 타입에 따라 달라진다:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Exchange 타입</th>
+          <th>Binding Key 역할</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Direct</td>
+          <td>Routing Key와 정확히 일치할 때 라우팅</td>
+      </tr>
+      <tr>
+          <td>Topic</td>
+          <td>와일드카드 패턴으로 매칭 (<code>order.*</code>, <code>log.#</code> 등)</td>
+      </tr>
+      <tr>
+          <td>Fanout</td>
+          <td>무시됨 (바인딩된 모든 큐에 전달)</td>
+      </tr>
+      <tr>
+          <td>Headers</td>
+          <td>무시됨 (헤더 값으로 매칭)</td>
+      </tr>
+  </tbody>
+</table>
+
+<h3 id="하나의-queue에-여러-binding">
+  하나의 Queue에 여러 Binding
+</h3>
+<p>하나의 큐에 여러 binding key를 연결할 수 있다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;all_logs&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;error&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;all_logs&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;warn&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueBind</span><span class="p">(</span><span class="s">&#34;all_logs&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;info&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;log_exchange&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span></span></span></code></pre></div></div>
+<p>이러면 <code>all_logs</code> 큐는 <code>&quot;error&quot;</code>, <code>&quot;warn&quot;</code>, <code>&quot;info&quot;</code> 세 가지 routing key의 메시지를 모두 수신한다.</p>
+<hr>
+<h2 id="5-queue-선언과-속성">
+  5. Queue 선언과 속성
+</h2>
+<p><code>QueueDeclare</code>는 <strong>멱등(idempotent)</strong> 연산이다.</p>
+<p>동일한 이름과 속성으로 여러 번 호출해도 이미 존재하면 기존 큐를 반환한다. 단, 이름은 같은데 속성이 다르면 에러가 발생한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">q</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// name: 큐 이름</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">true</span><span class="p">,</span><span class="w">         </span><span class="c1">// durable: 서버 재시작 후에도 유지</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// autoDelete: 마지막 consumer 해제 시 자동 삭제 여부</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// exclusive: 선언한 connection에서만 접근 가능 여부</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// noWait: 서버 응답을 기다리지 않고 바로 리턴</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">          </span><span class="c1">// args: 추가 인자 (amqp.Table)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<h3 id="주요-속성">
+  주요 속성
+</h3>
+<table>
+  <thead>
+      <tr>
+          <th>속성</th>
+          <th>설명</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>durable</code></td>
+          <td><code>true</code>면 RabbitMQ 재시작 후에도 큐가 남아있다. 메시지 자체의 영속성은 <code>DeliveryMode</code>로 별도 설정해야 한다</td>
+      </tr>
+      <tr>
+          <td><code>autoDelete</code></td>
+          <td>Consumer가 모두 해제되면 큐를 자동 삭제한다</td>
+      </tr>
+      <tr>
+          <td><code>exclusive</code></td>
+          <td>선언한 Connection만 사용 가능하고, Connection 종료 시 큐도 삭제된다</td>
+      </tr>
+  </tbody>
+</table>
+
+<h3 id="amqptable-queue-arguments">
+  amqp.Table (Queue Arguments)
+</h3>
+<p>큐 선언 시 마지막 인자인 <code>amqp.Table</code>은 <code>map[string]interface{}</code> 타입으로, 큐의 부가 기능을 설정한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w">             </span><span class="nb">int32</span><span class="p">(</span><span class="mi">60000</span><span class="p">),</span><span class="w">   </span><span class="c1">// 메시지 TTL (밀리초)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">              </span><span class="c1">// DLX 지정</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;main_queue&#34;</span><span class="p">,</span><span class="w">    </span><span class="c1">// DLX routing key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-max-length&#34;</span><span class="p">:</span><span class="w">              </span><span class="nb">int32</span><span class="p">(</span><span class="mi">10000</span><span class="p">),</span><span class="w">    </span><span class="c1">// 큐 최대 메시지 수</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<p><code>x-</code> 접두사가 붙은 키는 RabbitMQ가 인식하는 <a href="https://www.rabbitmq.com/docs/queues#optional-arguments">공식 큐 인자</a>다.</p>
+<hr>
+<h2 id="6-메시지-발행과-소비">
+  6. 메시지 발행과 소비
+</h2>
+<h3 id="메시지-발행-publish">
+  메시지 발행 (Publish)
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">cancel</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nf">WithTimeout</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">defer</span><span class="w"> </span><span class="nf">cancel</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">body</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">           </span><span class="c1">// exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// routing key</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// mandatory: 라우팅 실패 시 에러 반환 여부</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// immediate: 즉시 소비 불가능 시 에러 반환 여부 (deprecated)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">DeliveryMode</span><span class="p">:</span><span class="w"> </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Persistent</span><span class="p">,</span><span class="w"> </span><span class="c1">// 메시지를 디스크에 저장</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">ContentType</span><span class="p">:</span><span class="w">  </span><span class="s">&#34;application/json&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">Body</span><span class="p">:</span><span class="w">         </span><span class="nx">body</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p><code>DeliveryMode</code>를 <code>amqp.Persistent</code>(= 2)로 설정하면 메시지가 디스크에 저장되어 RabbitMQ가 재시작되어도 유실되지 않는다. 단, <code>durable</code> 큐와 함께 사용해야 의미가 있다.</p>
+<h3 id="메시지-소비-consume">
+  메시지 소비 (Consume)
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">msgs</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">Consume</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// queue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">           </span><span class="c1">// consumer tag (빈 문자열이면 서버가 자동 생성)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// auto-ack: false면 수동 확인 필요</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// exclusive: consumer 하나가 Queue를 독점</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// no-local</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w">        </span><span class="c1">// no-wait</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">nil</span><span class="p">,</span><span class="w">          </span><span class="c1">// args</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">for</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">msgs</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w"> </span><span class="c1">// false = requeue 안 함</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">continue</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nf">Ack</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w"> </span><span class="c1">// false = 이 메시지만 확인 (multiple=false)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<hr>
+<h2 id="7-acknowledgement와-qos">
+  7. Acknowledgement와 QoS
+</h2>
+<h3 id="ack--reject--nack">
+  Ack / Reject / Nack
+</h3>
+<blockquote>
+<p><code>amqp.Delivery</code> 구조체의 메서드</p>
+</blockquote>
+<table>
+  <thead>
+      <tr>
+          <th>메서드</th>
+          <th>동작</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>d.Ack(multiple)</code></td>
+          <td>메시지 처리 완료. <code>multiple=true</code>면 이 메시지까지의 모든 미확인 메시지를 한번에 확인</td>
+      </tr>
+      <tr>
+          <td><code>d.Reject(requeue)</code></td>
+          <td>메시지 거부. <code>requeue=true</code>면 큐에 다시 넣고, <code>false</code>면 버리거나 DLX로 보낸다</td>
+      </tr>
+      <tr>
+          <td><code>d.Nack(multiple, requeue)</code></td>
+          <td><code>Reject</code>의 확장판. 여러 메시지를 한번에 거부할 수 있다</td>
+      </tr>
+  </tbody>
+</table>
+
+<p>Queue는 Consumer에게 전달된 메시지가 잘 처리되었는지 확인하는 이유는 <code>at-least-once delivery</code>를 보장하기 위함이다.<br>
+Consumer가 메시지를 받고난 직후 Consumer 프로세스가 죽을 수도 있고, 내부 로직에서 에러가 발생해 메시지가 처리되지 못하고 손실될 수도 있다.<br>
+이를 방지하기 위해 RabbitMQ에서는 Ack를 받기 전까지 그 메시지를 <strong>미확인(unacked)</strong> 상태로 들고 있는다.</p>
+<h3 id="qos-prefetch">
+  QoS (Prefetch)
+</h3>
+<p><code>Qos</code>는 Consumer가 한 번에 받아올 수 있는 미확인 메시지 수를 제한한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">Qos</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="mi">1</span><span class="p">,</span><span class="w">     </span><span class="c1">// prefetch count: 한 번에 1개만 받음</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w">     </span><span class="c1">// prefetch size: 제한 없음 (바이트 단위)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="c1">// global: false면 이 channel의 consumer에만 적용</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p><strong><code>prefetch count = 1</code></strong>: Consumer가 이전 메시지의 Ack를 보내기 전까지 새 메시지를 받지 않는다. 이는 메시지를 순차적으로 하나씩 처리하게 만든다.</p>
+<blockquote>
+<p><strong>주의</strong>: <code>Qos=1</code>인 상태에서 메시지 처리 중 <code>time.Sleep</code> 등으로 오래 블로킹하면, 다른 메시지들도 함께 대기하게 되는 문제가 발생한다. 이 문제의 해결책은 <a href="/kr/blog/rabbitmq/#10-dlx--ttl%ec%9d%84-%ed%99%9c%ec%9a%a9%ed%95%9c-%ec%a7%80%ec%97%b0-%ec%9e%ac%ec%8b%9c%eb%8f%84-%ed%8c%a8%ed%84%b4">10장</a>에서 다룬다.</p>
+</blockquote>
+<hr>
+<h2 id="8-dead-letter-exchange-dlx">
+  8. Dead Letter Exchange (DLX)
+</h2>
+<p>메시지가 <strong>dead letter</strong> 상태가 되면 RabbitMQ가 해당 메시지를 DLX로 라우팅한다. Dead letter가 되는 조건은 다음과 같다:</p>
+<ol>
+<li>Consumer가 <code>Reject(requeue=false)</code> 또는 <code>Nack(requeue=false)</code>로 거부</li>
+<li>메시지의 TTL이 만료</li>
+<li>큐가 <code>x-max-length</code>를 초과하여 메시지가 drop됨</li>
+</ol>
+<p>DLX는 큐 선언 시 <code>x-dead-letter-exchange</code> 인자로 지정한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;dlx_exchange&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;dead_letter_queue&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<h3 id="default-exchange를-dlx로-사용하기">
+  Default Exchange를 DLX로 사용하기
+</h3>
+<p>DLX에 빈 문자열(<code>&quot;&quot;</code>)을 지정하면 <strong>Default Exchange</strong>가 DLX가 된다. Default Exchange에서는 routing key가 곧 큐 이름이므로, 별도의 Exchange 선언이나 Binding 없이 <code>x-dead-letter-routing-key</code>에 큐 이름만 적으면 된다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">            </span><span class="c1">// Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;task_queue&#34;</span><span class="p">,</span><span class="w">  </span><span class="c1">// 이 큐로 dead letter가 전달됨</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<p>이 방식은 dead letter의 목적지가 고정된 단순한 구조에서 유용하다.</p>
+<p>공식 문서: <a href="https://www.rabbitmq.com/docs/dlx">Dead Lettering — RabbitMQ</a></p>
+<hr>
+<h2 id="9-ttl-time-to-live">
+  9. TTL (Time-To-Live)
+</h2>
+<p>TTL은 메시지가 큐에 머무를 수 있는 최대 시간을 제한한다. TTL이 만료되면 메시지는 <strong>dead letter</strong> 상태가 된다.</p>
+<h3 id="큐-단위-ttl">
+  큐 단위 TTL
+</h3>
+<p>큐 선언 시 <code>x-message-ttl</code>을 설정하면 해당 큐의 모든 메시지에 동일한 TTL이 적용된다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;delay_60s&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w"> </span><span class="nb">int32</span><span class="p">(</span><span class="mi">60000</span><span class="p">),</span><span class="w"> </span><span class="c1">// 60초 후 만료 (밀리초 단위)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<h3 id="메시지-단위-ttl">
+  메시지 단위 TTL
+</h3>
+<p>발행 시 <code>Expiration</code> 필드를 설정하면 개별 메시지에 TTL을 줄 수 있다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;some_queue&#34;</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">Expiration</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;60000&#34;</span><span class="p">,</span><span class="w"> </span><span class="c1">// 문자열로 밀리초 지정</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">Body</span><span class="p">:</span><span class="w">       </span><span class="nx">body</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span></span></span></code></pre></div></div>
+<p>두 TTL이 동시에 존재하면 <strong>더 짧은 쪽</strong>이 적용된다.</p>
+<blockquote>
+<p><strong>핵심</strong>: TTL 자체는 &ldquo;만료 후 메시지를 폐기&quot;하는 기능이다. 하지만 DLX와 결합하면, <strong>만료된 메시지가 폐기되지 않고 DLX를 통해 다른 큐로 전달</strong>된다. 이 조합이 지연 재시도 패턴의 핵심이다.</p>
+</blockquote>
+<p>공식 문서: <a href="https://www.rabbitmq.com/docs/ttl">TTL — RabbitMQ</a></p>
+<hr>
+<h2 id="10-dlx--ttl을-활용한-지연-재시도-패턴">
+  10. DLX + TTL을 활용한 지연 재시도 패턴
+</h2>
+<blockquote>
+<p><strong>참고</strong>: 사실 RabbitMQ에는 <a href="https://github.com/rabbitmq/rabbitmq-delayed-message-exchange"><code>rabbitmq_delayed_message_exchange</code></a>라는 플러그인이 있었는데, 이걸 쓰면 이 섹션에서 다루는 패턴 자체가 필요 없었다. 그런데 이 플러그인은 현재 archived 상태다..!</p>
+<p>오픈소스에서 공식적으로 권장하는 대안이 바로 DLX + TTL 조합이다. 다만 이는 단순한 지연/재시도를 상정한 것이고, 여러 큐를 사용하는 exponential backoff까지 공식적으로 권장하는 건 아니다(?). 이 섹션은 그 조합을 기반으로 backoff를 직접 구현하는 예제다.</p>
+</blockquote>
+<h3 id="문제-상황">
+  문제 상황
+</h3>
+<p>외부 API 호출 실패 시 재시도가 필요하지만, Consumer 내에서 <code>time.Sleep</code>으로 대기하면:</p>
+<ul>
+<li><code>Qos=1</code> 환경에서 해당 Consumer가 블로킹되어 다른 메시지 처리가 중단됨</li>
+<li>재시도 대기 시간이 길수록(예: exponential backoff) 전체 처리량이 급감</li>
+</ul>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="c1">// 문제가 있는 코드: sleep 동안 Consumer가 멈춘다</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">case</span><span class="w"> </span><span class="nx">ActionRetry</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">sleepSeconds</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="nx">MaxBackoff</span><span class="p">,</span><span class="w"> </span><span class="nx">tryCount</span><span class="o">*</span><span class="nx">tryCount</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Duration</span><span class="p">(</span><span class="nx">sleepSeconds</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span><span class="w">  </span><span class="c1">// 블로킹!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nf">republish</span><span class="p">(</span><span class="nx">ch</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="p">)</span></span></span></code></pre></div></div>
+<h3 id="해결-ttl-기반-지연-큐">
+  해결: TTL 기반 지연 큐
+</h3>
+<p>메시지를 TTL이 설정된 별도 큐에 넣으면, <strong>RabbitMQ가 대기 시간을 관리</strong>하고 만료 후 DLX를 통해 원래 큐로 돌려보낸다. Consumer는 블로킹 없이 즉시 다음 메시지를 처리할 수 있다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">Main Queue ←──────────────── [Default Exchange]
+</span></span><span class="line"><span class="cl">    │                              ↑
+</span></span><span class="line"><span class="cl">    │ (Retry 필요)                 │ (TTL 만료 → dead letter)
+</span></span><span class="line"><span class="cl">    ↓                              │
+</span></span><span class="line"><span class="cl">Retry Queue (TTL=3s)   ────────────┘
+</span></span><span class="line"><span class="cl">Retry Queue (TTL=9s)   ────────────┘
+</span></span><span class="line"><span class="cl">Retry Queue (TTL=27s)  ────────────┘
+</span></span><span class="line"><span class="cl">    ...
+</span></span><span class="line"><span class="cl">    ...</span></span></code></pre></div></div>
+<h3 id="구현">
+  구현
+</h3>
+<h4 id="1단계-retry-queue-정의">
+  1단계: Retry Queue 정의
+</h4>
+<p>3^n exponential backoff 전략으로 단계별 지연 큐를 정의한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="kd">const</span><span class="w"> </span><span class="nx">MaxBackoff</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">3600</span><span class="w"> </span><span class="c1">// 최대 대기시간 (초)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">// tryCount → delay(3^n): 1→3s, 2→9s, 3→27s, 4→81s, 5→243s, 6→729s, 7→2187s, 8+→3600s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">var</span><span class="w"> </span><span class="nx">RetryQueues</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">Name</span><span class="w"> </span><span class="kt">string</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">TTL</span><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="c1">// milliseconds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_3s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">3_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_9s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">9_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_27s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">27_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_81s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">81_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_243s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">243_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_729s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">729_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_2187s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">2_187_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">{</span><span class="s">&#34;retry_3600s&#34;</span><span class="p">,</span><span class="w"> </span><span class="mi">3_600_000</span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">func</span><span class="w"> </span><span class="nf">retryQueueIndex</span><span class="p">(</span><span class="nx">tryCount</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">delays</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w"> </span><span class="mi">81</span><span class="p">,</span><span class="w"> </span><span class="mi">243</span><span class="p">,</span><span class="w"> </span><span class="mi">729</span><span class="p">,</span><span class="w"> </span><span class="mi">2187</span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">tryCount</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">backoff</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">tryCount</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">backoff</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">// 3^tryCount</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">backoff</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nx">MaxBackoff</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">RetryQueues</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">delays</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">backoff</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">i</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">RetryQueues</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<h4 id="2단계-retry-인프라-선언">
+  2단계: Retry 인프라 선언
+</h4>
+<p>각 retry 큐에 TTL과 DLX를 설정한다. TTL이 만료되면 Default Exchange를 통해 메인 큐로 돌아간다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="kd">const</span><span class="w"> </span><span class="nx">MainQueue</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#34;task_queue&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">func</span><span class="w"> </span><span class="nf">declareRetryInfra</span><span class="p">(</span><span class="nx">ch</span><span class="w"> </span><span class="o">*</span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Channel</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">rq</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">RetryQueues</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">QueueDeclare</span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">rq</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w">             </span><span class="nb">int32</span><span class="p">(</span><span class="nx">rq</span><span class="p">.</span><span class="nx">TTL</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w">    </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">         </span><span class="c1">// Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="s">&#34;x-dead-letter-routing-key&#34;</span><span class="p">:</span><span class="w"> </span><span class="nx">MainQueue</span><span class="p">,</span><span class="w">  </span><span class="c1">// 만료 후 메인 큐로</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kc">nil</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<ul>
+<li><code>x-message-ttl</code>: 이 큐에 들어온 메시지가 지정된 시간(ms) 후 dead letter가 된다</li>
+<li><code>x-dead-letter-exchange: &quot;&quot;</code>: dead letter가 Default Exchange로 전달된다</li>
+<li><code>x-dead-letter-routing-key: &quot;task_queue&quot;</code>: Default Exchange에서 routing key가 큐 이름이므로, 메인 큐로 라우팅된다</li>
+</ul>
+<h4 id="3단계-retry-메시지-발행">
+  3단계: Retry 메시지 발행
+</h4>
+<p><code>tryCount</code>에 맞는 retry 큐로 메시지를 보낸다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="kd">func</span><span class="w"> </span><span class="nf">sendRetry</span><span class="p">(</span><span class="nx">ch</span><span class="w"> </span><span class="o">*</span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Channel</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="w"> </span><span class="nx">TaskPayload</span><span class="p">)</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">idx</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">retryQueueIndex</span><span class="p">(</span><span class="nx">payload</span><span class="p">.</span><span class="nx">TryCount</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">queueName</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">RetryQueues</span><span class="p">[</span><span class="nx">idx</span><span class="p">].</span><span class="nx">Name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;retry tryCount=%d → %s&#34;</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="p">.</span><span class="nx">TryCount</span><span class="p">,</span><span class="w"> </span><span class="nx">queueName</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">cancel</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nf">WithTimeout</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">(),</span><span class="w"> </span><span class="mi">4</span><span class="o">*</span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nf">cancel</span><span class="p">()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">body</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">err</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">ch</span><span class="p">.</span><span class="nf">PublishWithContext</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">        </span><span class="c1">// Default Exchange</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">queueName</span><span class="p">,</span><span class="w"> </span><span class="c1">// routing key = retry 큐 이름</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Publishing</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">DeliveryMode</span><span class="p">:</span><span class="w"> </span><span class="nx">amqp</span><span class="p">.</span><span class="nx">Persistent</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">ContentType</span><span class="p">:</span><span class="w">  </span><span class="s">&#34;application/json&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nx">Body</span><span class="p">:</span><span class="w">         </span><span class="nx">body</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">},</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<h4 id="4단계-consumer에서-호출">
+  4단계: Consumer에서 호출
+</h4>
+<p>기존의 <code>time.Sleep</code> 블로킹 코드를 <code>sendRetry</code> 호출로 대체한다.</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="k">for</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">msgs</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">payload</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">parsePayload</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nx">result</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">ActionOK</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Ack</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">ActionFailed</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w"> </span><span class="c1">// 버림 (재시도 안 함)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">ActionRetry</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">d</span><span class="p">.</span><span class="nf">Reject</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="w">          </span><span class="c1">// 현재 메시지를 큐에서 제거</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nx">payload</span><span class="p">.</span><span class="nx">TryCount</span><span class="o">++</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nf">sendRetry</span><span class="p">(</span><span class="nx">ch</span><span class="p">,</span><span class="w"> </span><span class="nx">payload</span><span class="p">)</span><span class="w">   </span><span class="c1">// TTL 큐에 넣고 즉시 리턴 → 블로킹 없음</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<h3 id="메시지-흐름-전체-요약">
+  메시지 흐름 전체 요약
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">1. Producer가 task_queue에 메시지 발행
+</span></span><span class="line"><span class="cl">2. Consumer가 메시지를 수신하여 처리
+</span></span><span class="line"><span class="cl">3. 처리 실패 (ActionRetry):
+</span></span><span class="line"><span class="cl">   a. d.Reject(false)로 원본 메시지 제거
+</span></span><span class="line"><span class="cl">   b. tryCount를 증가시키고 sendRetry 호출
+</span></span><span class="line"><span class="cl">   c. tryCount에 따라 적절한 retry 큐 선택 (예: retry_27s)
+</span></span><span class="line"><span class="cl">   d. Default Exchange를 통해 retry 큐에 메시지 발행
+</span></span><span class="line"><span class="cl">4. retry 큐에서 TTL동안 대기 (e.g. 27s)
+</span></span><span class="line"><span class="cl">5. TTL 만료 → dead letter 발생
+</span></span><span class="line"><span class="cl">6. x-dead-letter-exchange=&#34;&#34;로 Default Exchange에 전달
+</span></span><span class="line"><span class="cl">7. x-dead-letter-routing-key=&#34;task_queue&#34;로 메인 큐에 도착
+</span></span><span class="line"><span class="cl">8. Consumer가 다시 수신 → 2번으로 돌아감</span></span></code></pre></div></div>
+<hr>
+<h2 id="11-policy-vs-queue-arguments">
+  11. Policy vs Queue Arguments
+</h2>
+<p>큐의 TTL, DLX 등을 설정하는 방법은 크게 두 가지다.</p>
+<h3 id="queue-arguments-코드에서-설정">
+  Queue Arguments (코드에서 설정)
+</h3>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl"><span class="nx">amqp</span><span class="p">.</span><span class="nx">Table</span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-message-ttl&#34;</span><span class="p">:</span><span class="w">          </span><span class="nb">int32</span><span class="p">(</span><span class="mi">60000</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="s">&#34;x-dead-letter-exchange&#34;</span><span class="p">:</span><span class="w"> </span><span class="s">&#34;&#34;</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
+<ul>
+<li>큐 선언 시 코드에서 직접 지정</li>
+<li>큐가 이미 존재하고 속성이 다르면 에러 (큐를 삭제 후 재생성해야 변경 가능)</li>
+<li>코드와 설정이 한 곳에 있어 관리가 쉬움</li>
+</ul>
+<h3 id="policy-rabbitmq-서버에서-설정">
+  Policy (RabbitMQ 서버에서 설정)
+</h3>
+<p>RabbitMQ Management UI나 CLI에서 패턴 매칭으로 여러 큐에 일괄 적용:</p>
+<div class="codeblock">
+  <div class="codeblock-actions">
+    <button type="button"
+            class="codeblock-action codeblock-action--wrap"
+            data-wrap-toggle
+            data-icon-button
+            aria-pressed="false"
+            title="Enable soft wrap"
+            data-wrap-title="Enable soft wrap"
+            data-nowrap-title="Disable soft wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 10h12a4 4 0 0 1 0 8h-2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M14 18l-2-2m2 2l-2 2" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button type="button"
+            class="codeblock-action codeblock-action--copy"
+            data-copy-code
+            data-icon-button
+            title="Copy code"
+            data-copied-title="COPIED">
+      <svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <svg class="icon-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+  </div><div class="highlight"><pre tabindex="0" class="chroma"><code><span class="line"><span class="cl">rabbitmqctl set_policy my-ttl <span class="s2">&#34;^retry_.*&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="s1">&#39;{&#34;message-ttl&#34;: 60000, &#34;dead-letter-exchange&#34;: &#34;&#34;}&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --apply-to queues</span></span></code></pre></div></div>
+<ul>
+<li>코드 변경 없이 서버에서 런타임에 변경 가능</li>
+<li>패턴으로 여러 큐에 동시 적용 가능</li>
+<li>Queue Arguments와 Policy가 둘 다 있으면 <strong>둘 중 더 보수적인 값</strong>이 적용됨</li>
+</ul>
+<h3 id="어떤-걸-사용해야-할까">
+  어떤 걸 사용해야 할까?
+</h3>
+<table>
+  <thead>
+      <tr>
+          <th>상황</th>
+          <th>추천</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>큐마다 TTL이 다르다 (재시도 큐 등)</td>
+          <td><strong>Queue Arguments</strong> — 큐별로 다른 설정을 코드에서 한 곳에 관리</td>
+      </tr>
+      <tr>
+          <td>동일한 설정을 다수의 큐에 적용</td>
+          <td><strong>Policy</strong> — 패턴 하나로 일괄 적용</td>
+      </tr>
+      <tr>
+          <td>운영 중 설정을 자주 바꿔야 한다</td>
+          <td><strong>Policy</strong> — 재배포 없이 변경 가능</td>
+      </tr>
+  </tbody>
+</table>
+
+<p>이 문서에서 다룬 지연 재시도 패턴처럼 각 큐의 TTL이 모두 다른 경우에는, Policy로 설정하면 관리 포인트가 코드와 서버 두 곳으로 분리되므로 Queue Arguments로 코드에서 통합 관리하는 편이 낫다.<br>
+근데 공식 문서에는 Policy를 강력 추천하긴 한다.</p>
+<hr>
+<h2 id="12-참고-자료">
+  12. 참고 자료
+</h2>
+<ul>
+<li><a href="https://www.rabbitmq.com/docs">RabbitMQ Official Documentation</a></li>
+<li><a href="https://www.rabbitmq.com/docs/queues#optional-arguments">Queues — Optional Arguments</a></li>
+<li><a href="https://www.rabbitmq.com/docs/dlx">Dead Lettering</a></li>
+<li><a href="https://www.rabbitmq.com/docs/ttl">TTL (Time-To-Live)</a></li>
+<li><a href="https://www.rabbitmq.com/docs/parameters#policies">Policies and Parameters</a></li>
+<li><a href="https://www.rabbitmq.com/tutorials/amqp-concepts">AMQP 0-9-1 Model Explained</a></li>
+<li><a href="https://github.com/rabbitmq/amqp091-go">Go AMQP Client (amqp091-go)</a></li>
+</ul>
+
+  </div>
+
+  <footer class="post-footer">
+  <div class="post-footer-row"><div class="post-tags"><a rel="nofollow" href="/kr/tags/message-broker/">#message broker</a><a rel="nofollow" href="/kr/tags/queue/">#queue</a></div></div>
+</footer>
+</article>
+
+  </main>
+  <footer>
+    <div class="footer-controls"><nav class="footer-links" aria-label="Social links"><a href="/kr/index.xml" title="RSS" aria-label="RSS"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+          </svg></a><a href="https://github.com/grrru" title="GitHub" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2A10 10 0 0 0 8.84 21.5c.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.12-1.47-1.12-1.47-.92-.63.07-.62.07-.62 1.01.08 1.54 1.04 1.54 1.04.9 1.55 2.37 1.1 2.94.84.09-.66.35-1.1.64-1.36-2.22-.25-4.55-1.12-4.55-4.96 0-1.1.39-2 1.03-2.7-.1-.26-.45-1.3.1-2.72 0 0 .85-.27 2.78 1.03A9.6 9.6 0 0 1 12 6.84a9.6 9.6 0 0 1 2.53.34c1.93-1.3 2.78-1.03 2.78-1.03.55 1.42.2 2.46.1 2.72.64.7 1.03 1.6 1.03 2.7 0 3.85-2.33 4.71-4.56 4.96.36.31.68.92.68 1.85v2.74c0 .27.18.59.69.48A10 10 0 0 0 12 2z"></path>
+          </svg></a><a href="https://www.linkedin.com/in/grrru/" title="LinkedIn" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.94 8.5a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8zM5.3 9.9h3.3V20H5.3V9.9zm5.2 0h3.2v1.4h.05c.45-.84 1.55-1.73 3.2-1.73 3.42 0 4.05 2.25 4.05 5.17V20h-3.3v-4.7c0-1.12-.02-2.56-1.56-2.56-1.57 0-1.81 1.22-1.81 2.48V20h-3.3V9.9z"></path>
+          </svg></a><a href="mailto:gruns0989@naver.com" title="Email" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+            <path d="m3 7 9 6 9-6"></path>
+          </svg></a></nav><span class="lang-dropdown footer-lang">
+      <button class="lang-toggle" type="button" aria-label="Select language" aria-expanded="false">
+        <span class="lang-name">한국어</span>
+        <svg class="lang-arrow" width="12" height="12" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16.1338 6.16015C16.3217 5.95783 16.6375 5.94599 16.8399 6.13378C17.0421 6.32166 17.054 6.6375 16.8662 6.83984L10.3662 13.8398L10.2891 13.9082C10.2053 13.9675 10.1043 14 9.99999 14C9.86101 14 9.72836 13.9417 9.63377 13.8398L3.13374 6.83984L3.07221 6.75976C2.95129 6.56111 2.98312 6.29824 3.16011 6.13378C3.33708 5.96954 3.60085 5.95776 3.78999 6.09277L3.86616 6.16015L9.99999 12.7666L16.1338 6.16015Z"></path></svg>
+      </button>
+      <span class="lang-menu" role="menu"><a href="/en/blog/rabbitmq/" role="menuitem" class="">
+            <span class="lang-item-name">English</span>
+            <span class="lang-item-check"></span>
+          </a><a href="/kr/blog/rabbitmq/" role="menuitem" class="lang-active">
+            <span class="lang-item-name">한국어</span>
+            <span class="lang-item-check"></span>
+          </a></span>
+    </span></div><p>&copy; 2026 Grrru Blog — Powered by <a href="https://gohugo.io/" target="_blank">Hugo</a> &amp; <a href="https://github.com/binbinsh/hugo-trainsh" target="_blank">hugo-trainsh</a></p>
+
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        function getEffectiveTheme() {
+          var stored = localStorage.getItem('theme');
+          if (stored) return stored;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+
+        themeToggle.addEventListener('click', function() {
+          var current = getEffectiveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+        });
+      }
+
+      
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script></body>
+</html>
