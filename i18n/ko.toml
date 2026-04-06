@@ -29,10 +29,10 @@ other = "최근 글"
 other = "글 검색"
 
 [type_to_search]
-other = "검색어를 입력하세요..."
+other = "Type to search..."
 
 [powered_by]
-other = "{{ .Hugo }}와 {{ .Theme }} 기반"
+other = "Built with {{ .Hugo }}"
 
 [toc]
 other = "목차"

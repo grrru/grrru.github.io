@@ -4,7 +4,7 @@ draft: true
 title: Python 비동기 프로그래밍
 categories: python
 tags:
-  - "\basyncio"
+  - "asyncio"
   - python
 author: grrru
 ---

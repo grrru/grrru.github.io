@@ -7,13 +7,20 @@ enableRobotsTXT = true
 summaryLength = 28
 
 [params]
-description = "기술 메모와 실험 기록을 정리하는 Hugo 블로그"
+description = "grrru log"
 author = "grrru"
-mainSections = ["posts"]
+mainSections = ["blog"]
+  [params.social]
+  github = "https://github.com/grrru"
+  linkedin = "https://www.linkedin.com/in/grrru/"
+  email = "gruns0989@naver.com"
 
 [taxonomies]
 tag = "tags"
 category = "categories"
+
+[permalinks]
+blog = "/posts/:slug/"
 
 [outputs]
 home = ["HTML", "RSS", "JSON"]

@@ -123,3 +123,15 @@ html.retro-fonts-loading body {
 .codeblock-action--wrap.is-active {
   color: var(--accent-color);
 }
+
+html[data-theme="light"] .chroma .c,
+html[data-theme="light"] .chroma .ch,
+html[data-theme="light"] .chroma .cm,
+html[data-theme="light"] .chroma .c1,
+html[data-theme="light"] .chroma .cs,
+html[data-theme="light"] .chroma .cp,
+html[data-theme="light"] .chroma .cpf,
+html[data-theme="light"] .chroma .sd,
+html[data-theme="light"] .chroma .sh {
+  color: #6c6f85;
+}
