@@ -135,3 +135,10 @@ html[data-theme="light"] .chroma .sd,
 html[data-theme="light"] .chroma .sh {
   color: #6c6f85;
 }
+
+.codeblock pre,
+.codeblock code,
+.highlight pre,
+.highlight code {
+  font-size: 0.95rem;
+}
