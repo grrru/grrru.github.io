@@ -1,0 +1,53 @@
+baseURL = "https://example.org/"
+languageCode = "ko-kr"
+defaultContentLanguage = "ko"
+title = "grrru.log"
+theme = "hugo-trainsh"
+enableRobotsTXT = true
+summaryLength = 28
+
+[params]
+description = "기술 메모와 실험 기록을 정리하는 Hugo 블로그"
+author = "grrru"
+mainSections = ["posts"]
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[caches]
+  [caches.images]
+    dir = ":cacheDir/images"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.parser.attribute]
+      block = true
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    noClasses = false
+    lineNumbersInTable = false
+    anchorLineNos = false
+    tabWidth = 2
+
+[[menus.main]]
+name = "Home"
+url = "/"
+weight = 10
+
+[[menus.main]]
+name = "Blog"
+url = "/blog/"
+weight = 20
+
+[[menus.main]]
+name = "Tags"
+url = "/tags/"
+weight = 30

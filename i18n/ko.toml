@@ -1,0 +1,137 @@
+[home]
+other = "Home"
+
+[archive]
+other = "Archive"
+
+[blog]
+other = "Blog"
+
+[tags]
+other = "Tags"
+
+[tag_archive]
+other = "Tag"
+
+[more_posts]
+other = "글 더 보기"
+
+[more_tags]
+other = "태그 더 보기"
+
+[popular_tags]
+other = "인기 태그"
+
+[recent_posts]
+other = "최근 글"
+
+[search_posts]
+other = "글 검색"
+
+[type_to_search]
+other = "검색어를 입력하세요..."
+
+[powered_by]
+other = "{{ .Hugo }}와 {{ .Theme }} 기반"
+
+[toc]
+other = "목차"
+
+[published_on]
+other = "게시일"
+
+[upvote_hint]
+other = "추천하려면 클릭"
+
+[upvote_title]
+other = "이 글 추천"
+
+[upvote_count]
+other = "추천 수"
+
+[link_to_section]
+other = "이 섹션 링크"
+
+[code_plain_text]
+other = "plain text"
+
+[toggle_word_wrap]
+other = "줄바꿈 전환"
+
+[wrap]
+other = "WRAP"
+
+[copy_code]
+other = "코드 복사"
+
+[copy]
+other = "COPY"
+
+[nav_primary]
+other = "기본 탐색"
+
+[language_switcher]
+other = "언어"
+
+[toggle_theme]
+other = "테마 전환"
+
+[social_linkedin]
+other = "LinkedIn"
+
+[social_github]
+other = "GitHub"
+
+[social_x]
+other = "X"
+
+[email]
+other = "Email"
+
+[no_results]
+other = "검색 결과가 없습니다"
+
+[upvoted_title]
+other = "추천됨"
+
+[copied]
+other = "COPIED"
+
+[nowrap]
+other = "NOWRAP"
+
+[no_posts_yet]
+other = "아직 글이 없습니다"
+
+[filtering_for]
+other = "필터:"
+
+[remove_all_filters]
+other = "필터 모두 제거"
+
+[remove_tag]
+other = "태그 제거"
+
+[home_most_recent_posts]
+other = "최근 글"
+
+[subscribe_via]
+other = "{{ .Links }}로 구독"
+
+[or_just_say_hello]
+other = "또는 편하게 연락 주세요."
+
+[or_just_say_hello_on]
+other = "또는 여기로 연락 주세요:"
+
+[follow_on]
+other = "{{ .Links }} 팔로우"
+
+[or_just_say_hello_via]
+other = "{{ .Link }}로 편하게 연락 주세요."
+
+[enable_soft_wrap]
+other = "자동 줄바꿈 켜기"
+
+[disable_soft_wrap]
+other = "자동 줄바꿈 끄기"

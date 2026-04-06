@@ -1,0 +1,12 @@
+{{ $result := transform.HighlightCodeBlock . }}
+{{ $lang := or .Type "text" }}
+<div class="codeblock" data-codeblock data-lang="{{ $lang }}">
+  <div class="codeblock__actions">
+    <span class="codeblock__lang">{{ $lang }}</span>
+    <button class="codeblock__button" type="button" data-code-copy>Copy</button>
+    <button class="codeblock__button" type="button" data-code-expand hidden>Wrap</button>
+  </div>
+  <div class="codeblock__body" data-code-body>
+    {{ $result.Wrapped }}
+  </div>
+</div>

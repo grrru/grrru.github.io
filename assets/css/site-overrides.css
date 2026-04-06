@@ -1,0 +1,125 @@
+@font-face {
+  font-family: "Site D2Coding";
+  src:
+    local("D2CodingLigature Nerd Font"),
+    local("D2CodingLigatureNerdFont-Regular"),
+    local("D2Coding"),
+    url("/fonts/D2CodingLigatureNerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Site D2Coding";
+  src:
+    local("D2CodingLigature Nerd Font Bold"),
+    local("D2CodingLigatureNerdFont-Bold"),
+    local("D2Coding Bold"),
+    url("/fonts/D2CodingLigatureNerdFont-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Site CodeNewRoman";
+  src:
+    local("CodeNewRoman Nerd Font"),
+    local("CodeNewRomanNerdFont-Regular"),
+    local("CodeNewRoman"),
+    url("/fonts/CodeNewRomanNerdFont-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-main: "Site D2Coding", "D2CodingLigature Nerd Font", "D2Coding", "Site CodeNewRoman", "CodeNewRoman Nerd Font", "CodeNewRoman", monospace;
+  --font-secondary: "Site D2Coding", "D2CodingLigature Nerd Font", "D2Coding", "Site CodeNewRoman", "CodeNewRoman Nerd Font", "CodeNewRoman", monospace;
+  --font-mono: "Site D2Coding", "D2CodingLigature Nerd Font", "D2Coding", "Site CodeNewRoman", "CodeNewRoman Nerd Font", "CodeNewRoman", "JetBrains Mono", "SF Mono", monospace;
+  --background-color: #eff1f5;
+  --heading-color: #1e1e2e;
+  --text-color: #4c4f69;
+  --link-color: #1e66f5;
+  --visited-color: #8839ef;
+  --accent-color: #7287fd;
+  --code-background-color: #dce0e8;
+  --code-color: #4c4f69;
+  --blockquote-color: #6c6f85;
+  --border-color: #bcc0cc;
+  --muted-color: #7c7f93;
+  --selection-bg: #bcd2ff;
+  --selection-text: #1e1e2e;
+  --shadow-color: rgba(76, 79, 105, 0.12);
+  --input-bg: #ffffff;
+  --hover-bg: rgba(30, 102, 245, 0.07);
+}
+
+[data-theme="dark"] {
+  --background-color: #11111b;
+  --heading-color: #f5e0dc;
+  --text-color: #cdd6f4;
+  --link-color: #89b4fa;
+  --visited-color: #cba6f7;
+  --accent-color: #f5c2e7;
+  --code-background-color: #181825;
+  --code-color: #cdd6f4;
+  --blockquote-color: #a6adc8;
+  --border-color: #313244;
+  --muted-color: #9399b2;
+  --selection-bg: #45475a;
+  --selection-text: #f5e0dc;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --input-bg: #1e1e2e;
+  --hover-bg: rgba(137, 180, 250, 0.10);
+}
+
+[data-theme="retro"] {
+  --background-color: #eff1f5;
+  --heading-color: #1e1e2e;
+  --text-color: #4c4f69;
+  --link-color: #1e66f5;
+  --visited-color: #8839ef;
+  --accent-color: #7287fd;
+  --code-background-color: #dce0e8;
+  --code-color: #4c4f69;
+  --blockquote-color: #6c6f85;
+  --border-color: #bcc0cc;
+  --muted-color: #7c7f93;
+  --selection-bg: #bcd2ff;
+  --selection-text: #1e1e2e;
+  --shadow-color: rgba(76, 79, 105, 0.12);
+  --input-bg: #ffffff;
+  --hover-bg: rgba(30, 102, 245, 0.07);
+}
+
+html.retro-fonts-loading body {
+  opacity: 1;
+}
+
+.theme-toggle .icon-retro {
+  display: none !important;
+}
+
+[data-theme="light"] .theme-toggle .icon-sun,
+:root:not([data-theme="dark"]) .theme-toggle .icon-sun {
+  display: block;
+}
+
+[data-theme="light"] .theme-toggle .icon-moon,
+:root:not([data-theme="dark"]) .theme-toggle .icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle .icon-moon {
+  display: block;
+}
+
+.codeblock-action--wrap.is-active {
+  color: var(--accent-color);
+}

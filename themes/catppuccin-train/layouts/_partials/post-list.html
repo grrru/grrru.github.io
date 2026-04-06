@@ -1,0 +1,13 @@
+{{- $pages := . | default (slice) -}}
+<ul class="blog-posts">
+  {{- range $pages -}}
+    <li>
+      <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+      {{ with .Date }}
+        <time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006-01-02" }}</time>
+      {{ end }}
+    </li>
+  {{- else -}}
+    <li class="empty-state">표시할 글이 없습니다.</li>
+  {{- end -}}
+</ul>

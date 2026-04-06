@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<head>
+  <script>
+    (function() {
+      function resolveTheme() {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          return stored;
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      var stored = localStorage.getItem('theme');
+      var theme = resolveTheme();
+      if (stored !== theme) {
+        localStorage.setItem('theme', theme);
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <header>
+    {{ partial "header.html" . }}
+  </header>
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  <footer>
+    {{ partial "footer.html" . }}
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function resolveTheme() {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          return stored;
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      var themeToggle = document.querySelector('.theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          var current = resolveTheme();
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          try { window.dispatchEvent(new Event('themechange')); } catch (_) {}
+        });
+      }
+
+      var dropdown = document.querySelector('.lang-dropdown');
+      if (dropdown) {
+        var langToggle = dropdown.querySelector('.lang-toggle');
+
+        langToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('open');
+          langToggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+        });
+
+        document.addEventListener('click', function(e) {
+          if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('open');
+            langToggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script>
+
+  {{- if .Store.Get "hasMermaid" -}}
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+    function getTheme() {
+      var stored = localStorage.getItem('theme');
+      if (stored === 'dark') return 'dark';
+      if (stored === 'light') return 'default';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+    }
+    mermaid.initialize({ startOnLoad: false, securityLevel: 'loose', theme: getTheme() });
+    mermaid.run({ querySelector: '.mermaid' });
+  </script>
+  {{- end -}}
+</body>
+</html>

@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+  </header>
+
+  <div class="tags-section">
+    {{ range .Pages }}
+      <a href="{{ .RelPermalink }}">#{{ .LinkTitle }} ({{ len .Pages }})</a>
+    {{ else }}
+      <span class="empty-state">등록된 태그가 없습니다.</span>
+    {{ end }}
+  </div>
+{{ end }}

@@ -1,0 +1,10 @@
+{{- $page := .page }}
+{{- with index site.Menus .menuID }}
+  <ul class="site-nav__list">
+    {{- range . }}
+      <li>
+        <a class="site-nav__link" href="{{ .URL }}"{{ if $page.IsMenuCurrent .Menu . }} aria-current="page"{{ end }}>{{ .Name }}</a>
+      </li>
+    {{- end }}
+  </ul>
+{{- end }}

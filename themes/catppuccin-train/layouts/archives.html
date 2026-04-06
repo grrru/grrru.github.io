@@ -1,0 +1,23 @@
+{{ define "main" }}
+  {{ $posts := where site.RegularPages "Section" "posts" }}
+  <header class="page-header blog-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+    <div class="page-description">연도별로 정리한 전체 글 목록입니다.</div>
+  </header>
+
+  <section class="archive-list">
+    {{ range ($posts.GroupByDate "2006") }}
+      <section class="archive-year">
+        <h2 class="archive-year__title">{{ .Key }}</h2>
+        {{ range .Pages.ByDate.Reverse }}
+          <div class="archive-item">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01-02" }}</time>
+            <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+          </div>
+        {{ end }}
+      </section>
+    {{ else }}
+      <div class="empty-state">아카이브에 표시할 글이 없습니다.</div>
+    {{ end }}
+  </section>
+{{ end }}
