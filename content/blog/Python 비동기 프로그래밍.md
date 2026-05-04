@@ -70,7 +70,7 @@ asyncio.run(do_jobs()) # 약 1초
 > **협력적 멀티태스킹 (Cooperative Multitasking)**: 실행 중인 작업(coroutine)이 스스로 양보(yield)하여 넘겨주는 방식 -> `asyncio`
 > **선점적 멀티태스킹 (Preemptive Multitasking)**: 시간이 지나면 다른 작업에 의해 뺏기는 방식 -> `threading`
 
-## 2. async, await, yield
+## 2. async, await, yield 키워드
 
 ### `async`
 
