@@ -10,7 +10,9 @@ author: grrru
 
 > 일할 때 유용했던 git 잡기술 정리
 
-## tag
+## 1. tag
+
+### tag 생성
 
 ```bash
 git tag -l # tag list 보기
@@ -20,6 +22,14 @@ git tag v1.2.0 # tag 생성
 git push origin v1.2.0 # 생성한 tag push
 ```
 
+### tag 덮어쓰기
+
+```bash
+git tag -f v1
+git push origin v1
+```
+
+### prune
 
 - `fetch prune-tags`는 remote에서 제거된 tag를 local에서 자동으로 제거해준다.
 
@@ -30,7 +40,7 @@ git fetch --prune-tags
 local에만 있던 tag도 remote에 없으면 제거될 수 있으니 주의.
 
 
-## rebase
+## 2. rebase
 
 `git rebase -i` 뒤에 뭐가 오는건지 항상 헷갈렸는데, 어떤 상태를 base로 할 건지를 적으면 된다.
 
