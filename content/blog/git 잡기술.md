@@ -93,3 +93,20 @@ git rebase -i --autosquash HEAD~5
 ```
 
 `autosquash` 옵션은 fixup 커밋을 자동으로 찾아서 대상 커밋 아래로 옮기고 `fixup`으로 바꿔준다.
+
+## 3. remote
+
+branch 작업 완료 후 origin/main에 merge한 후에 다시 똑같은 브랜치에서 작업하고 싶을 때.
+
+```bash
+# 1. remote 끊어주기
+git branch --unset-upstream
+
+# 2. fetch
+git fetch --all --prune
+
+# 3. reset 
+git reset --hard origin/main
+```
+
+> `reset --hard`는 커밋한 적 없는 tracked 파일의 변경 사항을 복구하기 어려우므로 주의해야 한다.
