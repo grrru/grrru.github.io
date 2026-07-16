@@ -1,0 +1,43 @@
+{{ define "main" }}
+{{- $sections := default (slice "posts") .Site.Params.mainSections -}}
+{{- $isPost := in $sections .Section -}}
+{{- $toc := partial "toc.html" . -}}
+{{- $hasToc := in (printf "%s" $toc) "<li>" -}}
+
+<article class="post{{ if $hasToc }} post--with-toc{{ end }}">
+  {{- if $isPost -}}
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ .Date | time.Format "2006-01-02" }}">
+        {{ partial "date/format.html" (dict "page" . "date" .Date "context" "single") }}
+      </time>
+    </p>
+  </header>
+  {{- else -}}
+  <header class="page-header">
+    <h1 class="page-title">{{ .Title }}</h1>
+  </header>
+  {{- end -}}
+
+  {{- if $hasToc -}}
+  <details class="post-toc post-toc--mobile">
+    <summary>Contents</summary>
+    {{ $toc }}
+  </details>
+  {{- end -}}
+
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+
+  {{ partial "post/footer-meta.html" . }}
+
+  {{- if $hasToc -}}
+  <aside class="post-toc post-toc--desktop" aria-label="Contents">
+    <p class="post-toc__title">Contents</p>
+    {{ $toc }}
+  </aside>
+  {{- end -}}
+</article>
+{{ end }}

@@ -1,0 +1,22 @@
+{{- $headings := .Fragments.Headings -}}
+{{- if not $headings -}}
+  {{- return -}}
+{{- end -}}
+
+<div class="toc">
+  <ul>
+    {{- template "toc-h2-items" (dict "headings" $headings) -}}
+  </ul>
+</div>
+
+{{- define "toc-h2-items" -}}
+  {{- range .headings -}}
+    {{- if eq .Level 2 -}}
+      <li><a href="#{{ .ID }}">{{ .Title | safeHTML }}</a></li>
+    {{- else -}}
+      {{- with .Headings -}}
+        {{- template "toc-h2-items" (dict "headings" .) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
