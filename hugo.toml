@@ -50,11 +50,16 @@ url = "/"
 weight = 10
 
 [[menus.main]]
+name = "About"
+url = "/about/"
+weight = 20
+
+[[menus.main]]
 name = "Blog"
 url = "/blog/"
-weight = 20
+weight = 30
 
 [[menus.main]]
 name = "Tags"
 url = "/tags/"
-weight = 30
+weight = 40

@@ -1,5 +1,5 @@
 ---
-date: 2026-02-25
+date: 2026-06-25
 draft: true
 title: Python 비동기 프로그래밍
 categories: python
@@ -62,13 +62,43 @@ asyncio.run(do_jobs()) # 약 1초
 
 | 모델              | 방식           | GIL 영향                 |
 | ----------------- | --------------  | ----------------------- |
-| `asyncio`           | 단일 스레드, 협력적 전환  | GIL과 무관 (스레드 1개)        |
-| `threading`         | 멀티 스레드, 선점적 전환 | GIL에 의해 CPU 작업은 병렬 불가   |
+| `asyncio`           | 단일 스레드, 협력적 전환  | GIL 경쟁은 거의 없지만 Python 코드 실행에는 GIL 필요 |
+| `threading`         | 멀티 스레드, 선점적 전환 | GIL에 의해 순수 Python CPU 작업은 병렬 실행 불가 |
 | `multiprocessing`   | 멀티 프로세스, 진정한 병렬 | 프로세스별 독립 GIL |
 
 > **GIL (Global Interpreter Lock)**: `CPython`에서 한 번에 하나의 스레드만 Python 바이트코드를 실행할 수 있도록 하는 Lock.
 > **협력적 멀티태스킹 (Cooperative Multitasking)**: 실행 중인 작업(coroutine)이 스스로 양보(yield)하여 넘겨주는 방식 -> `asyncio`
 > **선점적 멀티태스킹 (Preemptive Multitasking)**: 시간이 지나면 다른 작업에 의해 뺏기는 방식 -> `threading`
+
+### GIL과 I/O
+
+GIL은 Python 스레드가 Python 바이트코드를 실행하기 위해 얻어야 하는 전역 Lock이다. 한 프로세스 안에 여러 스레드가 있어도, 한 순간에 Python 바이트코드를 실행할 수 있는 스레드는 하나뿐이다.
+
+```text
+Thread A: Python bytecode 실행 중, GIL 보유
+Thread B: Python bytecode 실행하려고 대기
+Thread C: Python bytecode 실행하려고 대기
+```
+
+다만 이것은 "하나의 스레드만 계속 실행된다"는 뜻이 아니다. GIL을 가진 스레드는 시간에 따라 바뀔 수 있다.
+
+```text
+t1: Thread A가 Python bytecode 실행
+t2: Thread B가 Python bytecode 실행
+t3: Thread A가 다시 실행
+```
+
+즉 "고정된 하나의 스레드만 실행한다"가 아니라, "동시에 하나만 실행한다"가 정확하다.
+
+I/O 작업에서는 이야기가 조금 달라진다. I/O를 시작하거나 결과를 처리하는 Python 코드는 GIL이 필요하지만, OS에 I/O를 맡기고 기다리는 동안에는 GIL을 놓을 수 있다.
+
+```text
+파일/네트워크 요청 준비: Python 코드, GIL 필요
+OS에 I/O 요청 후 대기: GIL을 놓을 수 있음
+I/O 완료 후 응답 처리: Python 코드, GIL 필요
+```
+
+그래서 I/O 위주의 프로그램은 `threading`이나 `asyncio`로 동시성을 얻을 수 있다. 반대로 순수 Python CPU-bound 작업은 대부분의 시간이 Python 바이트코드 실행에 쓰이므로, 스레드를 늘려도 GIL 때문에 병렬 실행 이점이 제한적이다.
 
 ## 2. async, await, yield 키워드
 
@@ -109,7 +139,7 @@ async for item in stream():
 `await` 키워드는 `async` 함수 안에서만 사용 가능하며 다음 역할을 한다.
 
 1. 대상(coroutine, Task, Future)을 실행한다.
-2. 결과가 준비될 떄까지 현재 coroutine을 일시 중단하고, 이벤트 루프에 제어권을 반환한다.
+2. 결과가 준비될 때까지 현재 coroutine을 일시 중단하고, 이벤트 루프에 제어권을 반환한다.
 
 ```python
 import asyncio
@@ -176,7 +206,16 @@ asyncio.run(main())
 
 ## 3. 이벤트 루프
 
-이벤트 루프는 `asyncio`의 핵심이다. 실행 준비가 된 coroutine을 골라서 실행하고 I/O 대기가 필요하면 다른 coroutine으로 전환하여 실행한다. 이벤트 루프는 강제로 제어권을 뻇어오지 않는다. 다른 코루틴이 `await`해야 루프가 큐에서 다음 작업을 꺼낼 수 있다.
+이벤트 루프는 `asyncio`의 핵심이다. 실행 준비가 된 coroutine을 골라서 실행하고 I/O 대기가 필요하면 다른 coroutine으로 전환하여 실행한다. 이벤트 루프는 강제로 제어권을 뺏어오지 않는다. 다른 코루틴이 `await`해야 루프가 큐에서 다음 작업을 꺼낼 수 있다.
+
+`asyncio`는 Python 표준 라이브러리 모듈이고, 이벤트 루프는 런타임에 생성되는 객체다. 이벤트 루프는 coroutine 자체를 직접 관리한다기보다, coroutine을 감싼 `Task`/`Future`를 스케줄링한다.
+
+```text
+coroutine = 실행 가능한 비동기 함수의 상태 객체
+Task      = coroutine을 이벤트 루프에 올려 실행/관리하는 wrapper
+Future    = 나중에 완료될 결과를 표현하는 객체
+event loop = Task/Future를 스케줄링하는 관리자
+```
 
 ### Coroutine 객체 상태
 
@@ -185,7 +224,7 @@ asyncio.run(main())
 - `CORO_SUSPENDED`: `await`에서 일시 중지된 상태
 - `CORO_CLOSED`: 실행이 완료된 상태
 
-이벤트 루프가 coroutine의 상태 전환을 관리한다. `await`에서 SUSPENDED되면 다른 coroutine을 RUNNING으로 전환하는 등...
+이벤트 루프가 Task를 스케줄링하면서 coroutine의 상태 전환이 일어난다. `await`에서 SUSPENDED되면 다른 coroutine을 RUNNING으로 전환하는 등...
 
 ### 이벤트 루프 사이클
 
@@ -219,6 +258,59 @@ asyncio.run(main())
 - `task_b`의 sleep 완료 -> print B-2 -> `task_a`의 sleep 완료 -> print A-2
 
 > `await`로 coroutine이 중단되면 이벤트 루프가 **실행 가능한 다른 coroutine**으로 전환한다. 스레드가 잠 드는 것이 아니라, 같은 스레드 내에서 다른 작업을 처리하는 것.
+
+### `await` 이후 작업은 누가 수행할까?
+
+`await`는 "항상 다른 스레드가 대신 실행한다"는 뜻이 아니다. 현재 coroutine을 일시 중단하고 이벤트 루프에 제어권을 돌려주는 지점에 가깝다. 실제 작업을 누가 진행하는지는 `await` 대상에 따라 다르다.
+
+| 대상 | 처리 방식 |
+| --- | --- |
+| `await asyncio.sleep(1)` | 이벤트 루프가 타이머를 등록하고, 시간이 지나면 Task를 다시 실행 |
+| 네트워크 I/O | 보통 OS의 non-blocking socket을 이벤트 루프가 감시 |
+| 파일 I/O, blocking 함수 | 필요한 경우 thread pool executor에 위임 |
+| 다른 coroutine | 이벤트 루프가 해당 coroutine/Task를 실행하다가 다시 `await` 지점에서 전환 |
+
+예를 들어 네트워크 I/O는 보통 이벤트 루프가 OS에 "읽을 수 있게 되면 알려줘"라고 등록해둔다. 그동안 이벤트 루프는 다른 Task를 실행할 수 있다. 반면 파일 I/O나 동기 함수처럼 이벤트 루프를 막을 수 있는 작업은 `asyncio.to_thread()` 같은 방식으로 thread pool에 넘길 수 있다.
+
+```python
+result = await asyncio.to_thread(blocking_func)
+```
+
+이 경우 `blocking_func`는 thread pool의 worker thread에서 실행되고, 이벤트 루프는 결과가 준비될 때까지 다른 Task를 실행할 수 있다.
+
+### CPU-bound 작업과 `await`
+
+`async def`로 정의했다고 해서 CPU-bound 작업이 자동으로 비동기 처리되는 것은 아니다.
+
+```python
+import asyncio
+
+
+async def cpu_bound():
+    total = 0
+    for i in range(10**9):
+        total += i
+    return total
+
+
+async def main():
+    await asyncio.gather(cpu_bound(), cpu_bound())
+
+
+asyncio.run(main())
+```
+
+위 코드는 `gather`로 두 coroutine을 등록하지만, `cpu_bound()` 안에 `await`가 없다. 그래서 하나의 coroutine이 CPU를 오래 점유하는 동안 이벤트 루프는 다른 coroutine으로 전환할 수 없다.
+
+중요한 점은 `await cpu_bound()`가 "CPU 작업을 다른 실행 주체에게 맡긴다"는 뜻이 아니라는 것이다. `await`는 대상 coroutine을 실행하다가, 그 안에서 다시 `await`를 만나면 그때 이벤트 루프에 제어권을 넘길 수 있다는 뜻이다.
+
+CPU-bound 작업을 이벤트 루프 밖으로 빼려면 `asyncio.to_thread()`를 사용할 수 있다.
+
+```python
+result = await asyncio.to_thread(sync_cpu_bound)
+```
+
+하지만 순수 Python CPU 연산은 thread pool로 보내도 GIL 때문에 병렬 실행 이점이 제한적이다. CPU 병렬 처리가 목적이라면 보통 `multiprocessing`이나 `ProcessPoolExecutor`가 더 적합하다.
 
 ### `asyncio.run()` 동작
 

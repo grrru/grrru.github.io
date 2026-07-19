@@ -1,0 +1,26 @@
+{{ define "main" }}
+<article class="resume">
+  <header class="resume-header">
+    <img
+      class="resume-avatar"
+      src="https://github.com/grrru.png?size=192"
+      alt="{{ .Title }}"
+      width="96"
+      height="96"
+    >
+    <div>
+      <h1 class="resume-name">{{ .Title }}</h1>
+      <p class="resume-headline">Backend Developer · South Korea</p>
+      <nav class="resume-links" aria-label="Profile links">
+        <a href="mailto:{{ site.Params.social.email }}">Email</a>
+        <a href="{{ site.Params.social.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="{{ site.Params.social.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="post-content resume-content">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}
