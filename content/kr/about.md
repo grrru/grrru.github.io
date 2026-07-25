@@ -3,8 +3,8 @@ title: NamSeok Kim
 layout: about
 role: Backend Developer
 location: South Korea
-locale: en
-page_language: en
+locale: ko
+page_language: kr
 ---
 
 <section class="about-section" aria-labelledby="experience-title">
@@ -25,10 +25,10 @@ page_language: en
           </div>
         </header>
         <ul class="about-work-list">
-          <li>Develop and operate backend services for Smart Lens.</li>
-          <li>Implemented an asynchronous image deletion workflow using RabbitMQ.</li>
-          <li>Built production runtime diagnostics with Go's <code>runtime/trace.FlightRecorder</code>.</li>
-          <li>Built reusable automation for dependency security remediation and CI failure triage.</li>
+          <li>Smart Lens 백엔드 서비스 개발 및 운영</li>
+          <li>RabbitMQ 기반 비동기 이미지 삭제 처리 흐름 구현</li>
+          <li>Go의 <code>runtime/trace.FlightRecorder</code>를 활용한 운영 환경 런타임 진단 기능 구축</li>
+          <li>Dependency 보안 취약점 수정 및 CI 실패 원인 분석 자동화 도구 개발</li>
         </ul>
       </div>
     </article>
@@ -45,9 +45,9 @@ page_language: en
           </div>
         </header>
         <ul class="about-work-list">
-          <li>Maintained backend services for hotel food and beverage POS systems.</li>
-          <li>Developed complex MSSQL reports using multi-table joins and multi-level aggregations.</li>
-          <li>Analyzed execution plans and improved high-volume report processing across the database and application layers.</li>
+          <li>호텔 식음 POS 시스템 백엔드 서비스 개발 및 운영</li>
+          <li>다중 테이블 JOIN 및 단계별 집계를 포함한 MSSQL 리포트 쿼리 개발</li>
+          <li>실행 계획 분석을 통한 데이터베이스·애플리케이션 계층의 대용량 리포트 처리 개선</li>
         </ul>
       </div>
     </article>
@@ -70,9 +70,9 @@ page_language: en
         </div>
       </header>
       <ul class="about-work-list">
-        <li>Built a FastAPI recommendation service using Korean Sentence-Transformer embeddings and cosine similarity, combining reservations, likes, and preferred categories into a weighted user profile.</li>
-        <li>Designed a Redis Sorted Set-based on-site waitlist with live rank calculation, duplicate-entry prevention, status and cancellation handling, expiration, and scheduled database synchronization.</li>
-        <li>Developed review and comment APIs with create, update, soft-delete, image upload, domain exception handling, and controller and service tests.</li>
+        <li>한국어 Sentence-Transformer 임베딩과 코사인 유사도를 활용한 FastAPI 추천 서비스 구현 및 예약·좋아요·선호 카테고리의 가중합을 통한 사용자 프로필 벡터 구성</li>
+        <li>Redis Sorted Set 기반 현장 대기열 설계 및 실시간 순위 계산, 중복 등록 방지, 상태 변경·취소, 만료, DB 동기화 처리</li>
+        <li>리뷰·댓글 작성·수정·논리 삭제, 이미지 업로드, 도메인 예외 처리와 컨트롤러·서비스 테스트 구현</li>
       </ul>
     </div>
   </article>
@@ -159,14 +159,14 @@ page_language: en
   <div class="about-education">
     <article class="about-education-entry">
       <div>
-        <h3>Engineer Architecture (건축기사)</h3>
+        <h3>건축기사</h3>
         <p>HRDKorea</p>
       </div>
       <p class="about-period">2023</p>
     </article>
     <article class="about-education-entry">
       <div>
-        <h3>Engineer Information Processing (정보처리기사)</h3>
+        <h3>정보처리기사</h3>
         <p>HRDKorea</p>
       </div>
       <p class="about-period">2024</p>

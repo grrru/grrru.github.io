@@ -1,5 +1,5 @@
 baseURL = "https://example.org/"
-languageCode = "ko-kr"
+locale = "ko-KR"
 defaultContentLanguage = "ko"
 title = "grrru.log"
 theme = "hugo-trainsh"
