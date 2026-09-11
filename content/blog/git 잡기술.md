@@ -94,6 +94,12 @@ git rebase -i --autosquash HEAD~5
 
 `autosquash` 옵션은 fixup 커밋을 자동으로 찾아서 대상 커밋 아래로 옮기고 `fixup`으로 바꿔준다.
 
+### reword
+
+commit message만 바꾸고 싶을 때 사용한다.
+
+위와 마찬가지로 `git rebase -i`를 사용하고 `pick`를 `reword` (줄여서 `r`도 가능)로 넣어주면 다음 화면에서 commit message 수정 가능하다.
+
 ## 3. remote
 
 branch 작업 완료 후 origin/main에 merge한 후에 다시 똑같은 브랜치에서 작업하고 싶을 때.
