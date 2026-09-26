@@ -26,8 +26,8 @@
   --color-darkmode-text-light: #B4AFB6;
 
   /* === Font Families === */
-  --font-primary: Heebo, sans-serif;
-  --font-secondary: Signika, sans-serif;
+  --font-primary: Noto Sans KR, sans-serif;
+  --font-secondary: Signika, "Noto Sans KR", sans-serif;
 
   /* === Font Sizes === */
   --text-base: 16px;
