@@ -99,11 +99,11 @@ jobs:
             --remember 30 \
             -t staticrypt/password_template.html \
             --template-title "Note" \
-            --template-instructions "비공개 노트입니다." \
-            --template-placeholder "비밀번호" \
-            --template-button "열기" \
-            --template-remember "30일 동안 기억하기" \
-            --template-error "비밀번호가 틀렸어요." \
+            --template-instructions "Private notes." \
+            --template-placeholder "Password" \
+            --template-button "Unlock" \
+            --template-remember "Remember me for 30 days" \
+            --template-error "Wrong password." \
             --template-color-primary "#222222" \
             --template-color-secondary "#f4f4f4"
 

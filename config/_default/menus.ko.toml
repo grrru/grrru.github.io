@@ -1,33 +1,33 @@
-############# Korean navigation ##############
+############# Korean site navigation (UI 문구는 영어) ##############
 
 # main menu
 [[main]]
-name = "홈"
+name = "Home"
 url = "/"
 weight = 1
 
 [[main]]
-name = "블로그"
+name = "Blog"
 url = "/blog/"
 weight = 2
 
 [[main]]
-name = "카테고리"
+name = "Categories"
 url = "/categories/"
 weight = 3
 
 [[main]]
-name = "태그"
+name = "Tags"
 url = "/tags/"
 weight = 4
 
 # footer menu
 [[footer]]
-name = "블로그"
+name = "Blog"
 url = "/blog/"
 weight = 1
 
 [[footer]]
-name = "태그"
+name = "Tags"
 url = "/tags/"
 weight = 2

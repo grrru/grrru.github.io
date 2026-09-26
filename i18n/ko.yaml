@@ -1,18 +1,20 @@
-home: 홈
-read_more: 더 읽기
-send: 보내기
-related_posts: 관련 글
-categories: 카테고리
-tags: 태그
-toc: 목차
-share: 공유
-search_input_placeholder: 글 검색...
-search_no_results: 검색 결과가 없어요
-search_initial_message: 검색어를 입력하세요
-search_navigate: 이동
-search_select: 선택
-search_close: 닫기
-previous: 이전
-pagination: 페이지
-email: 이메일
-submit: 제출
+# UI 문구는 한국어(ko) 사이트에서도 영어로 쓴다. 한국어는 콘텐츠에만 쓴다.
+# (en.yaml 과 같은 값. 키를 추가할 때 두 파일을 같이 고친다)
+home: Home
+read_more: Read More
+send: Send
+related_posts: Related Posts
+categories: Categories
+tags: Tags
+toc: Table of Contents
+share: Share
+search_input_placeholder: Search Post...
+search_no_results: No results for
+search_initial_message: Type something to search..
+search_navigate: to navigate
+search_select: to select
+search_close: to close
+previous: Previous
+pagination: Pagination
+email: Email
+submit: Submit
