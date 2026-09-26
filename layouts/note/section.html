@@ -1,5 +1,6 @@
 {{ define "main" }}
-  {{- /* note 글들은 build.list=never 라서 .Pages 에 잡히지 않는다(태그/RSS/검색 노출 방지).
+  {{- /* blog/list.html 과 같은 마크업. 단 note 글들은 build.list=never 라서
+         .RegularPages 에 잡히지 않으므로(태그/RSS/검색 노출 방지)
          이 섹션의 content 디렉터리를 직접 읽어 GetPage 로 목록을 만든다. */ -}}
   {{- $dir := path.Dir (strings.TrimPrefix (printf "%s/" hugo.WorkingDir) .File.Filename) -}}
   {{- $pages := slice -}}
@@ -17,28 +18,27 @@
 
   {{ partial "page-header" . }}
 
-  <section class="section-sm">
+
+  <section class="section">
     <div class="container">
-      <div class="row justify-center">
-        <div class="lg:col-10">
-          {{ with .Content }}<div class="content mb-10">{{ . }}</div>{{ end }}
-          <ul>
-            {{ range sort $pages "Date" "desc" }}
-              <li
-                class="border-border dark:border-darkmode-border flex flex-wrap items-baseline justify-between gap-2 border-b py-4">
-                <a
-                  class="text-text-dark hover:text-primary dark:text-darkmode-text-dark text-lg font-semibold"
-                  href="{{ .RelPermalink }}">
-                  {{ .Title }}
-                </a>
-                <time
-                  class="text-text-light dark:text-darkmode-text-light text-sm"
-                  datetime="{{ .Date | time.Format `2006-01-02` }}">
-                  {{ .Date | time.Format "2006-01-02" }}
-                </time>
-              </li>
+      <div class="row gx-5">
+        <!-- blog posts -->
+        <div class="lg:col-8">
+          <div class="row">
+            {{ $paginator:= .Paginate (sort $pages "Date" "desc") }}
+            {{ range $paginator.Pages }}
+              <div class="md:col-6 mb-14">
+                {{ partial "components/blog-card" . }}
+              </div>
             {{ end }}
-          </ul>
+          </div>
+          {{ partial "components/pagination.html" . }}
+        </div>
+        <!-- sidebar -->
+        <div class="lg:col-4">
+          <!-- widget -->
+          {{ $widget:= site.Params.widgets.sidebar }}
+          {{ partialCached "widgets/widget-wrapper" ( dict "Widgets" $widget "Scope" . ) }}
         </div>
       </div>
     </div>
