@@ -1,61 +1,145 @@
-baseURL = "https://example.org/"
-locale = "ko-KR"
-defaultContentLanguage = "ko"
+baseURL = "https://grrru.github.io/"
 title = "grrru.log"
-theme = "hugo-trainsh"
+timeZone = "Asia/Seoul"
 enableRobotsTXT = true
+hasCJKLanguage = true
 summaryLength = 28
 
-[params]
-description = "grrru log"
-author = "grrru"
-mainSections = ["blog"]
-  [params.social]
-  github = "https://github.com/grrru"
-  linkedin = "https://www.linkedin.com/in/grrru/"
-  email = "gruns0989@naver.com"
+# 한국어가 기본 언어(URL prefix 없음). 영어 콘텐츠(content/english)가 준비되면 "en" 을 지운다.
+defaultContentLanguage = "ko"
+defaultContentLanguageInSubdir = false
+disableLanguages = ["en"]
+
+[module]
+  [[module.imports]]
+    path = "github.com/adityatelange/hugo-PaperMod"
+
+[pagination]
+  pagerSize = 10
+
+[permalinks.page]
+  blog = "/posts/:slug/"
+  note = "/note/:slug/"
 
 [taxonomies]
-tag = "tags"
-category = "categories"
+  category = "categories"
+  tag = "tags"
 
-[permalinks]
-blog = "/posts/:slug/"
-note = "/note/:slug/"
-
+# JSON: PaperMod 검색 인덱스(/index.json)
 [outputs]
-home = ["HTML", "RSS", "JSON"]
-
-[caches]
-  [caches.images]
-    dir = ":cacheDir/images"
+  home = ["HTML", "RSS", "JSON"]
 
 [markup]
-  [markup.goldmark]
-    [markup.goldmark.parser.attribute]
-      block = true
-    [markup.goldmark.renderer]
-      unsafe = true
+  [markup.goldmark.renderer]
+    unsafe = true
   [markup.highlight]
-    codeFences = true
-    guessSyntax = true
-    lineNos = false
     noClasses = false
-    lineNumbersInTable = false
-    anchorLineNos = false
-    tabWidth = 2
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
 
-[[menus.main]]
-name = "Home"
-url = "/"
-weight = 10
+############################ Languages ############################
+# UI 문구는 영어(i18n/ko.yaml), 한국어는 콘텐츠에만 쓴다.
+[languages.ko]
+  label = "한국어"
+  locale = "ko-kr"
+  contentDir = "content/korean"
+  weight = 1
 
-[[menus.main]]
-name = "Blog"
-url = "/blog/"
-weight = 20
+  [[languages.ko.menus.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[languages.ko.menus.main]]
+    name = "About"
+    url = "/about/"
+    weight = 2
+  [[languages.ko.menus.main]]
+    name = "Blog"
+    url = "/blog/"
+    weight = 3
+  [[languages.ko.menus.main]]
+    name = "Categories"
+    url = "/categories/"
+    weight = 4
+  [[languages.ko.menus.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 5
+  [[languages.ko.menus.main]]
+    name = "Search"
+    url = "/search/"
+    weight = 6
 
-[[menus.main]]
-name = "Tags"
-url = "/tags/"
-weight = 30
+[languages.en]
+  label = "English"
+  locale = "en-us"
+  contentDir = "content/english"
+  weight = 2
+
+  [[languages.en.menus.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[languages.en.menus.main]]
+    name = "About"
+    url = "/about/"
+    weight = 2
+  [[languages.en.menus.main]]
+    name = "Blog"
+    url = "/blog/"
+    weight = 3
+  [[languages.en.menus.main]]
+    name = "Categories"
+    url = "/categories/"
+    weight = 4
+  [[languages.en.menus.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 5
+  [[languages.en.menus.main]]
+    name = "Search"
+    url = "/search/"
+    weight = 6
+
+############################# Params ##############################
+[params]
+  env = "production"
+  author = "grrru"
+  description = "I’m a backend developer based in Korea."
+  mainSections = ["blog"]
+  defaultTheme = "auto"
+  DateFormat = "2006-01-02"
+
+  ShowToc = true
+  TocOpen = false
+  ShowCodeCopyButtons = true
+  ShowBreadCrumbs = true
+  ShowPostNavLinks = true
+  ShowReadingTime = false
+  ShowShareButtons = false
+  disableSpecial1stPost = true
+
+  [params.homeInfoParams]
+    Title = "Namseok.Kim"
+    Content = "I’m a backend developer based in Korea."
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/grrru"
+  [[params.socialIcons]]
+    name = "linkedin"
+    url = "https://www.linkedin.com/in/grrru/"
+  [[params.socialIcons]]
+    name = "email"
+    url = "mailto:gruns0989@naver.com"
+
+  # 검색(Fuse.js)
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1000
+    threshold = 0.4
+    minMatchCharLength = 0
+    keys = ["title", "permalink", "summary", "content"]

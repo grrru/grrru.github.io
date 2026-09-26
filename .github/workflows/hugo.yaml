@@ -53,6 +53,13 @@ jobs:
           rm "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
           echo "${HOME}/hugo" >> "${GITHUB_PATH}"
 
+      # PaperMod 테마는 Hugo Modules(Go)로 받아온다
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: false
+
       - name: Build
         run: |
           hugo \
@@ -76,16 +83,22 @@ jobs:
             --remember 30 \
             -t staticrypt/password_template.html \
             --template-title "Note" \
-            --template-instructions "비공개 노트입니다." \
-            --template-placeholder "비밀번호" \
-            --template-button "열기" \
-            --template-remember "30일 동안 기억하기" \
-            --template-error "비밀번호가 틀렸어요." \
+            --template-placeholder "Password" \
+            --template-button "Unlock" \
+            --template-remember "Remember me for 30 days" \
+            --template-error "Wrong password." \
             --template-color-primary "#222222" \
             --template-color-secondary "#f4f4f4"
 
       - name: Verify notes are encrypted
         run: |
+          # note 밖의 파일(sitemap, 검색 인덱스, RSS, 태그 등)이 note 를 가리키면 배포 중단
+          refs=$(grep -rl '/note/' public --exclude-dir=note || true)
+          if [ -n "${refs}" ]; then
+            echo "::error::Files outside public/note reference /note/:"
+            echo "${refs}"
+            exit 1
+          fi
           [ -d public/note ] || exit 0
           # 암호화 안 된 note HTML 이 하나라도 있으면 배포 중단
           leaked=$(find public/note -type f -name '*.html' -exec grep -L 'class="staticrypt-html"' {} + || true)
