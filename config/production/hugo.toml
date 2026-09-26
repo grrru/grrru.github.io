@@ -1,6 +1,0 @@
-# production 빌드(hugo, CI)에서는 content/note 를 아예 제외한다.
-# 로컬 `hugo server`(development 환경)에서는 note 도 보인다.
-[[module.mounts]]
-source = "content"
-target = "content"
-files = ["! note/**"]

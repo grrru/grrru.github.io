@@ -61,6 +61,40 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --cacheDir "${{ runner.temp }}/hugo_cache"
 
+      - name: Encrypt notes
+        env:
+          STATICRYPT_PASSWORD: ${{ secrets.NOTE_PASSWORD }}
+        run: |
+          [ -d public/note ] || exit 0
+          if [ -z "${STATICRYPT_PASSWORD}" ]; then
+            echo "::warning::NOTE_PASSWORD secret is not set; notes are not published."
+            rm -rf public/note
+            exit 0
+          fi
+          npx -y staticrypt@3.5.4 public/note -r -d public \
+            --short \
+            --remember 30 \
+            -t staticrypt/password_template.html \
+            --template-title "Note" \
+            --template-instructions "비공개 노트입니다." \
+            --template-placeholder "비밀번호" \
+            --template-button "열기" \
+            --template-remember "30일 동안 기억하기" \
+            --template-error "비밀번호가 틀렸어요." \
+            --template-color-primary "#222222" \
+            --template-color-secondary "#f4f4f4"
+
+      - name: Verify notes are encrypted
+        run: |
+          [ -d public/note ] || exit 0
+          # 암호화 안 된 note HTML 이 하나라도 있으면 배포 중단
+          leaked=$(find public/note -type f -name '*.html' -exec grep -L 'class="staticrypt-html"' {} + || true)
+          if [ -n "${leaked}" ]; then
+            echo "::error::Unencrypted note pages found:"
+            echo "${leaked}"
+            exit 1
+          fi
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
