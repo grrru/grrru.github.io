@@ -1,0 +1,12 @@
+{{- $page := .page -}}
+{{- $taxonomy := .taxonomy | default "tags" -}}
+
+{{- with $page.GetTerms $taxonomy -}}
+  {{- if gt (len .) 0 -}}
+<div class="post-tags">
+  {{- range . -}}
+    <a rel="nofollow" href="{{ .RelPermalink }}">#{{ .LinkTitle | lower }}</a>
+  {{- end -}}
+</div>
+  {{- end -}}
+{{- end -}}

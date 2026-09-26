@@ -1,0 +1,61 @@
+baseURL = "https://example.org/"
+locale = "ko-KR"
+defaultContentLanguage = "ko"
+title = "grrru.log"
+theme = "hugo-trainsh"
+enableRobotsTXT = true
+summaryLength = 28
+
+[params]
+description = "grrru log"
+author = "grrru"
+mainSections = ["blog"]
+  [params.social]
+  github = "https://github.com/grrru"
+  linkedin = "https://www.linkedin.com/in/grrru/"
+  email = "gruns0989@naver.com"
+
+[taxonomies]
+tag = "tags"
+category = "categories"
+
+[permalinks]
+blog = "/posts/:slug/"
+note = "/note/:slug/"
+
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+[caches]
+  [caches.images]
+    dir = ":cacheDir/images"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.parser.attribute]
+      block = true
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    noClasses = false
+    lineNumbersInTable = false
+    anchorLineNos = false
+    tabWidth = 2
+
+[[menus.main]]
+name = "Home"
+url = "/"
+weight = 10
+
+[[menus.main]]
+name = "Blog"
+url = "/blog/"
+weight = 20
+
+[[menus.main]]
+name = "Tags"
+url = "/tags/"
+weight = 30

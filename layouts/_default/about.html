@@ -1,0 +1,53 @@
+{{ define "main" }}
+<article class="resume">
+  <header class="resume-header">
+    <img
+      class="resume-avatar"
+      src="https://github.com/grrru.png?size=192"
+      alt="{{ .Title }}"
+      width="96"
+      height="96"
+    >
+    <div class="resume-intro">
+      <div class="resume-intro-top">
+        <p class="resume-kicker">{{ .Params.role }}</p>
+        <nav class="resume-language" aria-label="Language">
+          {{- if eq .Params.page_language "en" }}
+            <span aria-current="page">EN</span>
+          {{- else }}
+            <a href="{{ "/about/" | relURL }}" hreflang="en" lang="en">EN</a>
+          {{- end }}
+          <span aria-hidden="true">/</span>
+          {{- if eq .Params.page_language "kr" }}
+            <span aria-current="page">KR</span>
+          {{- else }}
+            <a href="{{ "/kr/about/" | relURL }}" hreflang="ko" lang="ko">KR</a>
+          {{- end }}
+        </nav>
+      </div>
+      <h1 class="resume-name">{{ .Title }}</h1>
+      <div class="resume-meta" aria-label="Current profile">
+        <span>{{ .Params.location }}</span>
+      </div>
+      <nav class="resume-links" aria-label="Profile links">
+        <a href="mailto:{{ site.Params.social.email }}">Email</a>
+        <a href="{{ site.Params.social.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="{{ site.Params.social.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </nav>
+    </div>
+  </header>
+
+  <nav class="resume-index" aria-label="About sections">
+    <a href="#experience-title">Experience</a>
+    <a href="#project-title">Projects</a>
+    <a href="#case-studies-title">Studies</a>
+    <a href="#skills-title">Skills</a>
+    <a href="#certifications-title">Certifications</a>
+    <a href="#education-title">Education</a>
+  </nav>
+
+  <div class="post-content resume-content">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}
