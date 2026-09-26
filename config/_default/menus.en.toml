@@ -8,19 +8,30 @@ url = "/"
 weight = 1
 
 [[main]]
-name = "Blog"
-url = "/blog/"
+name = "About"
+url = "/about/"
 weight = 2
 
 [[main]]
-name = "Categories"
-url = "/categories/"
+name = "Blog"
+url = "/blog/"
 weight = 3
 
 [[main]]
+name = "Pages"
+weight = 4
+
+[[main]]
+parent = "Pages"
+name = "Categories"
+url = "/categories/"
+weight = 1
+
+[[main]]
+parent = "Pages"
 name = "Tags"
 url = "/tags/"
-weight = 4
+weight = 2
 
 # footer menu
 [[footer]]
