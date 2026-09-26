@@ -3,3 +3,5 @@ public/
 .DS_Store
 .obsidian/
 content/
+node_modules/
+resources/

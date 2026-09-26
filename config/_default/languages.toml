@@ -1,0 +1,15 @@
+################ Korean language (default) ##################
+# 기본 언어. URL prefix 없음: /posts/..., /note/...
+[ko]
+label = "한국어"
+locale = "ko-kr"
+contentDir = "content/korean"
+weight = 1
+
+################ English language ##################
+# hugo.toml 의 disableLanguages 에서 "en" 을 빼면 활성화된다. URL: /en/posts/...
+[en]
+label = "English"
+locale = "en-us"
+contentDir = "content/english"
+weight = 2

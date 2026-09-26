@@ -1,0 +1,27 @@
+{{/* override: note 는 build.list=never 지만 taxonomy 개수에는 잡힌다. note 를 뺀 글 수로 세고, 0개인 term 은 숨긴다 */}}
+<!-- tags -->
+{{ if isset site.Taxonomies "tags" }}
+  {{ if not (eq (len site.Taxonomies.tags) 0) }}
+    <div class="mb-8">
+      <h5 class="mb-6">{{ T "tags" | default "Tags" }}</h5>
+      <div class="bg-light dark:bg-darkmode-light rounded p-6">
+        <ul>
+          {{ range $name, $items := site.Taxonomies.tags }}
+            {{ $visible := where $items.Pages "Section" "ne" "note" }}
+            {{ if $visible }}
+            <li class="inline-block">
+              <a
+                class="hover:bg-primary dark:bg-darkmode-body dark:hover:bg-darkmode-primary dark:hover:text-text-dark {{ if (and (eq $.Page.Kind `term`) (eq $.Page.Type `tags`) (eq $.Page.Title .Page.Title)) }}
+                  active
+                {{ end }} m-1 block rounded bg-white px-3 py-1 hover:text-white"
+                href="{{ .Page.RelPermalink }}">
+                {{ .Page.Title }}
+              </a>
+            </li>
+            {{ end }}
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+  {{ end }}
+{{ end }}

@@ -1,0 +1,34 @@
+############# English navigation ##############
+# URL 은 언어 prefix(/en) 없이 적는다. 테마가 relLangURL 로 붙여준다.
+
+# main menu
+[[main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[main]]
+name = "Blog"
+url = "/blog/"
+weight = 2
+
+[[main]]
+name = "Categories"
+url = "/categories/"
+weight = 3
+
+[[main]]
+name = "Tags"
+url = "/tags/"
+weight = 4
+
+# footer menu
+[[footer]]
+name = "Blog"
+url = "/blog/"
+weight = 1
+
+[[footer]]
+name = "Tags"
+url = "/tags/"
+weight = 2

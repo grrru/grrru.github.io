@@ -1,0 +1,29 @@
+{{ define "main" }}
+  {{- /* blog/single.html 에서 작성자/공유/관련 글/댓글을 뺀 버전 */ -}}
+  <section class="section pt-7">
+    <div class="container">
+      <div class="row justify-center">
+        <article class="lg:col-10">
+          <h1 class="h2 mb-4">
+            {{ .Title }}
+          </h1>
+          <ul class="mb-4">
+            <li class="mr-4 inline-block">
+              <a href="{{ .Parent.RelPermalink }}">
+                <i class="fa-regular fa-folder mr-2"></i>{{ .Parent.Title }}
+              </a>
+            </li>
+            <li class="mr-4 inline-block">
+              <i class="fa-regular fa-clock mr-2"></i>
+              {{ time.Format ":date_long" .Date }}
+            </li>
+          </ul>
+          <div class="content mb-10">
+            {{ partial "toc.html" (dict "Class" "blog" "Collapsed" false "TableOfContents" .TableOfContents ) }}
+            {{ .Content }}
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+{{ end }}

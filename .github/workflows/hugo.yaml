@@ -53,8 +53,31 @@ jobs:
           rm "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
           echo "${HOME}/hugo" >> "${GITHUB_PATH}"
 
+      # Hugoplate 테마와 모듈은 Hugo Modules(Go)로 받아온다
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: false
+
+      # Tailwind CSS (css.TailwindCSS 가 node_modules/.bin/tailwindcss 를 쓴다)
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Build
         run: |
+          node scripts/themeGenerator.js
           hugo \
             --gc \
             --minify \
@@ -86,6 +109,13 @@ jobs:
 
       - name: Verify notes are encrypted
         run: |
+          # note 밖의 파일(sitemap, 검색 인덱스, RSS, 태그 등)이 note 를 가리키면 배포 중단
+          refs=$(grep -rl '/note/' public --exclude-dir=note || true)
+          if [ -n "${refs}" ]; then
+            echo "::error::Files outside public/note reference /note/:"
+            echo "${refs}"
+            exit 1
+          fi
           [ -d public/note ] || exit 0
           # 암호화 안 된 note HTML 이 하나라도 있으면 배포 중단
           leaked=$(find public/note -type f -name '*.html' -exec grep -L 'class="staticrypt-html"' {} + || true)
