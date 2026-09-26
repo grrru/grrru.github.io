@@ -1,20 +1,35 @@
 # UI 문구는 한국어(ko) 사이트에서도 영어로 쓴다. 한국어는 콘텐츠에만 쓴다.
-# (en.yaml 과 같은 값. 키를 추가할 때 두 파일을 같이 고친다)
-home: Home
-read_more: Read More
-send: Send
-related_posts: Related Posts
-categories: Categories
-tags: Tags
-toc: Table of Contents
-share: Share
-search_input_placeholder: Search Post...
-search_no_results: No results for
-search_initial_message: Type something to search..
-search_navigate: to navigate
-search_select: to select
-search_close: to close
-previous: Previous
-pagination: Pagination
-email: Email
-submit: Submit
+# (PaperMod i18n/en.yaml 과 같은 값)
+- id: prev_page
+  translation: "Prev"
+
+- id: next_page
+  translation: "Next"
+
+- id: read_time
+  translation:
+    one : "1 min"
+    other: "{{ .Count }} min"
+
+- id: words
+  translation:
+    one : "word"
+    other: "{{ .Count }} words"
+
+- id: toc
+  translation: "Table of Contents"
+
+- id: translations
+  translation: "Translations"
+
+- id: home
+  translation: "Home"
+
+- id: edit_post
+  translation: "Edit"
+
+- id: code_copy
+  translation: "copy"
+
+- id: code_copied
+  translation: "copied!"

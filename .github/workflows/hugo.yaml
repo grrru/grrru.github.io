@@ -53,31 +53,15 @@ jobs:
           rm "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
           echo "${HOME}/hugo" >> "${GITHUB_PATH}"
 
-      # Hugoplate 테마와 모듈은 Hugo Modules(Go)로 받아온다
+      # PaperMod 테마는 Hugo Modules(Go)로 받아온다
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: stable
           cache: false
 
-      # Tailwind CSS (css.TailwindCSS 가 node_modules/.bin/tailwindcss 를 쓴다)
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Build
         run: |
-          node scripts/themeGenerator.js
           hugo \
             --gc \
             --minify \
