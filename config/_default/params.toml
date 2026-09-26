@@ -76,7 +76,8 @@ content = "<span class='text-center block'>♥️ Loving Hugoplate? <a class='un
 # seo module: https://github.com/gethugothemes/hugo-modules/tree/master/seo-tools/basic-seo
 [metadata]
 keywords = ["backend", "go", "python", "kubernetes"]
-description = "백엔드 개발자 grrru의 기술 블로그"
+# 비워두면 페이지 description → 글 요약(.Summary) 순으로 쓰인다
+description = ""
 author = "grrru"
 twitter = ""
 image = "images/og-image.png"
