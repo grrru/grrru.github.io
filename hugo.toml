@@ -118,6 +118,7 @@ disableLanguages = ["en"]
   ShowPostNavLinks = true
   ShowReadingTime = false
   ShowShareButtons = false
+  comments = true
   disableSpecial1stPost = true
 
   [params.homeInfoParams]

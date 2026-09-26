@@ -1,0 +1,35 @@
+{{- /* giscus: GitHub Discussions 기반 댓글. 설정값은 https://giscus.app 에서 생성 */ -}}
+<div class="giscus" style="margin-top: 40px;"></div>
+<script>
+  (function () {
+    const giscusTheme = () => (document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+
+    const s = document.createElement("script");
+    s.src = "https://giscus.app/client.js";
+    s.setAttribute("data-repo", "grrru/grrru.github.io");
+    s.setAttribute("data-repo-id", "R_kgDOR6925g");
+    s.setAttribute("data-category", "Announcements");
+    s.setAttribute("data-category-id", "DIC_kwDOR6925s4DGbiw");
+    s.setAttribute("data-mapping", "pathname");
+    s.setAttribute("data-strict", "1");
+    s.setAttribute("data-reactions-enabled", "1");
+    s.setAttribute("data-emit-metadata", "0");
+    s.setAttribute("data-input-position", "top");
+    s.setAttribute("data-theme", giscusTheme());
+    s.setAttribute("data-lang", "ko");
+    s.setAttribute("data-loading", "lazy");
+    s.crossOrigin = "anonymous";
+    s.async = true;
+    document.querySelector(".giscus").appendChild(s);
+
+    // PaperMod 테마 토글(<html data-theme>)을 따라 giscus 테마 변경
+    new MutationObserver(() => {
+      const iframe = document.querySelector("iframe.giscus-frame");
+      if (!iframe) return;
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme() } } },
+        "https://giscus.app"
+      );
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  })();
+</script>
