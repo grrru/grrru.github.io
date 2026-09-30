@@ -106,7 +106,7 @@ disableLanguages = ["en"]
 [params]
   env = "production"
   author = "grrru"
-  description = "한국어로 정리한 백엔드 개발, Go, Linux, 분산 시스템과 개발 기록."
+  description = "I’m a backend developer based in Korea."
   mainSections = ["blog"]
   defaultTheme = "auto"
   DateFormat = "2006-01-02"
@@ -123,7 +123,7 @@ disableLanguages = ["en"]
 
   [params.homeInfoParams]
     Title = "Namseok.Kim"
-    Content = "한국어로 정리한 백엔드 개발, Go, Linux, 분산 시스템과 개발 기록."
+    Content = "I’m a backend developer based in Korea."
 
   [[params.socialIcons]]
     name = "github"
