@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HUGO_VERSION: 0.160.0
+      DART_SASS_VERSION: 1.105.1
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -53,7 +54,13 @@ jobs:
           rm "hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
           echo "${HOME}/hugo" >> "${GITHUB_PATH}"
 
-      # PaperMod 테마는 Hugo Modules(Go)로 받아온다
+      - name: Install Dart Sass
+        run: |
+          curl -fsSL "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-linux-x64.tar.gz" -o "${RUNNER_TEMP}/dart-sass.tar.gz"
+          tar -C "${RUNNER_TEMP}" -xzf "${RUNNER_TEMP}/dart-sass.tar.gz"
+          echo "${RUNNER_TEMP}/dart-sass" >> "${GITHUB_PATH}"
+
+      # Chirpy 테마와 Bootstrap은 Hugo Modules(Go)로 받아온다
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -67,46 +74,6 @@ jobs:
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --cacheDir "${{ runner.temp }}/hugo_cache"
-
-      - name: Encrypt notes
-        env:
-          STATICRYPT_PASSWORD: ${{ secrets.NOTE_PASSWORD }}
-        run: |
-          [ -d public/note ] || exit 0
-          if [ -z "${STATICRYPT_PASSWORD}" ]; then
-            echo "::warning::NOTE_PASSWORD secret is not set; notes are not published."
-            rm -rf public/note
-            exit 0
-          fi
-          npx -y staticrypt@3.5.4 public/note -r -d public \
-            --short \
-            --remember 30 \
-            -t staticrypt/password_template.html \
-            --template-title "Note" \
-            --template-placeholder "Password" \
-            --template-button "Unlock" \
-            --template-remember "Remember me for 30 days" \
-            --template-error "Wrong password." \
-            --template-color-primary "#222222" \
-            --template-color-secondary "#f4f4f4"
-
-      - name: Verify notes are encrypted
-        run: |
-          # note 밖의 파일(sitemap, 검색 인덱스, RSS, 태그 등)이 note 를 가리키면 배포 중단
-          refs=$(grep -rl '/note/' public --exclude-dir=note || true)
-          if [ -n "${refs}" ]; then
-            echo "::error::Files outside public/note reference /note/:"
-            echo "${refs}"
-            exit 1
-          fi
-          [ -d public/note ] || exit 0
-          # 암호화 안 된 note HTML 이 하나라도 있으면 배포 중단
-          leaked=$(find public/note -type f -name '*.html' -exec grep -L 'class="staticrypt-html"' {} + || true)
-          if [ -n "${leaked}" ]; then
-            echo "::error::Unencrypted note pages found:"
-            echo "${leaked}"
-            exit 1
-          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

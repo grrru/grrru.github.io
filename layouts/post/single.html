@@ -1,0 +1,170 @@
+{{/* Chirpy post layout: 기존 작성자/분류를 유지하고 라이선스를 새로 부여하지 않는다. */}}
+{{ define "main" }}
+  {{ $enable_toc := and (.Params.toc | default site.Params.toc) (gt (len .TableOfContents) 100) }}
+  {{ $lang := .Site.Language.Lang }}
+  {{ $page := . }}
+
+  <article class="px-1" data-toc="{{ $enable_toc }}">
+    <header>
+      <h1 data-toc-skip>{{ .Title }}</h1>
+      {{ with .Description }}
+        <p class="post-desc fw-light mb-4">{{ . }}</p>
+      {{ end }}
+
+      <div class="post-meta text-muted">
+        <!-- published date -->
+        <span>
+          {{ i18n "post.posted" }}
+          {{ partial "datetime.html" (dict "date" .Date "tooltip" true "lang" $lang) }}
+        </span>
+
+        <!-- lastmod date -->
+        {{ if and (ne .Lastmod .Date) (.Lastmod) }}
+          <span>
+            {{ i18n "post.updated" }}
+            {{ partial "datetime.html" (dict "date" .Lastmod "tooltip" true "lang" $lang) }}
+          </span>
+        {{ end }}
+
+        {{ with .Params.image }}
+          {{ $src := $page.Resources.GetMatch ( .path | default . ) }}
+          {{ $src = printf "src=\"%s\"" $src.RelPermalink }}
+          {{ $class := "class=\"preview-img" }}
+          {{ if .no_bg }}{{ $class = printf "%s no-bg\"" $class }}{{ else }}{{ $class = printf "%s\"" $class }}{{ end }}
+          {{ $alt := printf "alt=\"%s\"" ( .alt | default "Preview Image" ) }}
+
+          {{ $lqip := "" }}
+          {{ with .lqip }}{{ $lqip = printf "lqip=\"%s\"" . }}{{ end }}
+
+          <div class="mt-3 mb-3">
+            <img {{ $src | safeHTMLAttr }} {{ $class | safeHTMLAttr }} {{ $alt | safeHTMLAttr }} w="1200" h="630" {{ $lqip | safeHTMLAttr }}>
+            {{- with .alt -}}
+              <figcaption class="text-center pt-2 pb-2">{{ . }}</figcaption>
+            {{- end -}}
+          </div>
+        {{ end }}
+
+        <div class="d-flex justify-content-between">
+          <!-- author(s) -->
+          <span>
+            {{ $authors := .Params.author | default .Params.authors | default .Site.Params.author | default .Site.Params.authors }}
+            {{ if not (reflect.IsSlice $authors) }}
+              {{ $authors = slice $authors }}
+            {{ end }}
+            {{ $authorsData := index hugo.Data.authors .Site.Language.Locale | default hugo.Data.authors }}
+
+
+            {{ i18n "post.written_by" }}
+
+            <em>
+              {{ if $authors }}
+                {{ range $i, $author := $authors }}
+                  {{ with $authorsData }}
+                    {{ with (index . $author) }}
+                      {{ if .url }}
+                        <a href="{{ .url }}">{{ .name }}</a>
+                      {{ else }}
+                        {{ .name }}
+                      {{ end }}
+                    {{ end }}
+                  {{ else }}
+                    {{ $author }}
+                  {{ end }}
+                  {{ if not (eq $i (sub (len $authors) 1)) }}{{ "</em>, <em>" | safeHTML }}{{ end }}
+                {{ end }}
+              {{ else }}
+                <a href="{{ index $.Site.Params.Social.links 0 }}">{{ $.Site.Params.Social.name }}</a>
+              {{ end }}
+            </em>
+          </span>
+
+          <div>
+            <!-- pageviews -->
+            {{ if and $.Site.Params.pageviews.provider $.Site.Params.analytics (index $.Site.Params.analytics $.Site.Params.pageviews.provider) }}
+              <span>
+                <em id="pageviews">
+                  <i class="fas fa-spinner fa-spin small"></i>
+                </em>
+                {{ i18n "post.pageview_measure" }}
+              </span>
+            {{ end }}
+
+            <!-- read time -->
+            {{ partial "read-time.html" (dict "content" .Content "prompt" true "lang" $lang) }}
+
+          </div>
+        </div>
+      </div>
+    </header>
+
+    {{ if $enable_toc }}
+      <div id="toc-bar" class="d-flex align-items-center justify-content-between invisible">
+        <span class="label text-truncate">{{ .Title }}</span>
+        <button type="button" class="toc-trigger btn me-1">
+          <i class="fa-solid fa-list-ul fa-fw"></i>
+        </button>
+      </div>
+
+      <button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm">
+        <span class="label ps-2 pe-1">{{ i18n "panel.toc" }}</span>
+        <i class="fa-solid fa-angle-right fa-fw"></i>
+      </button>
+
+      <dialog id="toc-popup" class="p-0">
+        <div class="header d-flex flex-row align-items-center justify-content-between">
+          <div class="label text-truncate py-2 ms-4">{{ .Title }}</div>
+          <button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75">
+            <i class="fas fa-close"></i>
+          </button>
+        </div>
+        <div id="toc-popup-content" class="px-4 py-3 pb-4">{{ .TableOfContents }}</div>
+      </dialog>
+    {{ end }}
+
+    <div class="content">
+      {{ partial "refactor-content.html" . }}
+    </div>
+
+    <div class="post-tail-wrapper text-muted">
+      <!-- categories -->
+      {{ with .Params.categories }}
+        <div class="post-meta mb-3">
+          <i class="far fa-folder-open fa-fw me-1"></i>
+          {{ range $i, $category := $.GetTerms "categories" }}
+            {{ if $i }}, {{ end }}
+            <a href="{{ $category.RelPermalink }}">{{ $category.Title }}</a>
+          {{ end }}
+        </div>
+      {{ end }}
+
+      <!-- tags -->
+      {{ with .Params.tags }}
+        <div class="post-tags">
+          <i class="fa fa-tags fa-fw me-1"></i>
+          {{ range . }}
+            <a
+              href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/"
+              class="post-tag no-text-decoration"
+            >
+              {{- . -}}
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+
+      <div class="post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2">
+
+      </div>
+    </div>
+  </article>
+{{ end }}
+
+{{ define "panel" }}
+  {{ partial "toc.html" . }}
+{{ end }}
+
+{{ define "tail" }}
+  {{ partial "related-posts.html" . }}
+  {{ partial "post-nav.html" . }}
+  {{ partial "comment.html" . }}
+{{ end }}

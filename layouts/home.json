@@ -1,0 +1,7 @@
+{{- $index := slice -}}
+{{- range where site.RegularPages "Type" "in" site.Params.mainSections -}}
+  {{- if not .Params.searchHidden -}}
+    {{- $index = $index | append (dict "title" .Title "desc" (partial "post-description.html" .) "section" .Section "tags" .Params.tags "categories" .Params.categories "contents" (.Content | replaceRE `(?s)<span class="lnt">.*?</span>` "" | plainify) "permalink" .Permalink) -}}
+  {{- end -}}
+{{- end -}}
+{{- $index | jsonify -}}

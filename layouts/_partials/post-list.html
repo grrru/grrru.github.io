@@ -1,0 +1,109 @@
+  {{ $all_posts := where .Site.RegularPages "Type" "post" }}
+  {{ $all_pinned := where $all_posts "Params.pin" true }}
+  {{ $all_normal := where $all_posts "Params.pin" "!=" true }}
+
+  {{ $posts := slice }}
+  {{ $pinned_size := 0 }}
+
+  <!-- Get pinned posts on current page -->
+  {{ $paginator := .Paginate $all_posts }}
+  {{ $visible_start := sub $paginator.PageNumber 1 | mul $paginator.PagerSize }}
+  {{ $visible_end := add $visible_start $paginator.PagerSize }}
+
+  {{ if gt (len $all_pinned) $visible_start }}
+    {{ if gt (len $all_pinned) $visible_end }}
+      {{ $pinned_size = $paginator.PagerSize }}
+    {{ else }}
+      {{ $pinned_size = sub (len $all_pinned) $visible_start }}
+    {{ end }}
+
+    {{ range first $pinned_size (after $visible_start $all_pinned) }}
+      {{ $posts = $posts | append . }}
+    {{ end }}
+  {{ end }}
+
+  <!-- Get normal posts on current page -->
+  {{ $normal_size := sub $paginator.PagerSize $pinned_size }}
+
+  {{ if gt $normal_size 0 }}
+    {{ $normal_start := 0 }}
+    {{ if gt $pinned_size 0 }}
+      {{ $normal_start = 0 }}
+    {{ else }}
+      {{ $normal_start = sub $visible_start (len $all_pinned) }}
+    {{ end }}
+
+    {{ range first $normal_size (after $normal_start $all_normal) }}
+      {{ $posts = $posts | append . }}
+    {{ end }}
+  {{ end }}
+
+  <div id="post-list" class="flex-grow-1 px-xl-1">
+    {{ range $posts }}
+      <article class="card-wrapper card">
+        <a href="{{ .RelPermalink }}" class="post-preview row g-0 flex-md-row-reverse">
+          {{ $card_body_col := "12" }}
+
+          {{ if .Params.image }}
+            {{ $src := .Params.image.path | default .Params.image }}
+            {{ if not (findRE "//" $src) }}
+              {{ $src = .Resources.GetMatch ( .Params.image.path | default .Params.image ) }}
+              {{ $src = $src.RelPermalink }}
+            {{ end }}
+
+            {{ $alt := .Params.image.alt | default "Preview Image" | htmlEscape }}
+            {{ $lqip := "" }}
+            {{ if .Params.image.lqip }}
+              {{ $lqip = printf `lqip="%s"` .Params.image.lqip }}
+            {{ end }}
+
+            <div class="col-md-5">
+              <img src="{{ $src }}" alt="{{ $alt }}" {{ $lqip | safeHTMLAttr }}>
+            </div>
+
+            {{ $card_body_col = "7" }}
+          {{ end }}
+
+          <div class="col-md-{{ $card_body_col }}">
+            <div class="card-body d-flex flex-column">
+              <h1 class="card-title my-2 mt-md-0">{{ .Title }}</h1>
+
+              <div class="card-text content mt-0 mb-3">
+                <p>{{ partial "post-description.html" . }}</p>
+              </div>
+
+              <div class="post-meta flex-grow-1 d-flex align-items-end">
+                <div class="me-auto">
+                  <!-- posted date -->
+                  <i class="far fa-calendar fa-fw me-1"></i>
+                  {{ partial "datetime.html" (dict "date" .Date) }}
+
+                  <!-- categories -->
+                  {{ if .Params.categories }}
+                    <i class="far fa-folder-open fa-fw me-1"></i>
+                    <span class="categories">
+                      {{ delimit .Params.categories ", " }}
+                    </span>
+                  {{ end }}
+                </div>
+
+                {{ if .Params.pin }}
+                  <div class="pin ms-1">
+                    <i class="fas fa-thumbtack fa-fw"></i>
+                    <span>{{ i18n "post.pin_prompt" }}</span>
+                  </div>
+                {{ end }}
+              </div>
+              <!-- .post-meta -->
+            </div>
+            <!-- .card-body -->
+          </div>
+        </a>
+      </article>
+    {{ end }}
+  </div>
+  <!-- #post-list -->
+
+  {{ if gt $paginator.TotalPages 1 }}
+    {{ partial "post-paginator.html" . }}
+  {{ end }}

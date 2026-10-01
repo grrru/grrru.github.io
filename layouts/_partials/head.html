@@ -1,0 +1,102 @@
+{{/* Chirpy head: Hugo Data API 대응 및 브라우저 확대 허용. */}}
+{{ $origin := cond (eq .Site.Params.assets.self_host true) "basic" "cors" }}
+{{ $data := index hugo.Data.origin $origin }}
+{{- $jsOpts := dict
+  "target" "es2015"
+  "minify" (eq hugo.Environment "production")
+-}}
+{{- $themeOpts := merge $jsOpts (dict "global" "Theme") -}}
+{{- $theme := resources.Get "js/modules/theme.js" | js.Build $themeOpts -}}
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  {{ template "_internal/opengraph.html" . }}
+  {{ template "_internal/twitter_cards.html" . }}
+  {{ template "_internal/schema.html" . }}
+
+  <title>
+    {{ if ne .Kind "home" }}
+      {{ .Title | safeHTML }} |
+    {{ end }}
+    {{ site.Title }}
+  </title>
+
+  {{ partialCached "favicons.html" . }}
+
+  <!-- Resource Hints -->
+  {{ if not site.Params.assets.self_host }}
+    {{ range hugo.Data.origin.cors.resource_hints }}
+      {{ $url := .url }}
+      {{ range .links }}
+        <link rel="{{ .rel }}" href="{{ $url }}" {{ if isset . "opts" }}{{ delimit .opts " " | safeHTMLAttr }}{{ end }}>
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  <!-- Bootstrap -->
+  {{ if not hugo.IsProduction }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  {{ end }}
+
+  <!-- Theme style -->
+  {{ $opts := dict
+    "transpiler" "dartsass"
+    "targetPath" "css/main.css"
+    "enableSourceMap" true
+  }}
+  {{ $sass := resources.Get "scss/main.bundle.scss" }}
+  {{ $style := $sass | toCSS $opts | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.Permalink }}">
+
+  <!-- Web Font -->
+  <link rel="stylesheet" href="{{ $data.webfonts | relURL }}">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ $data.fontawesome.css | relURL }}">
+
+  <!-- 3rd-party Dependencies -->
+  {{ if .Params.toc | default site.Params.toc }}
+    <link rel="stylesheet" href="{{ $data.toc.css | relURL }}">
+  {{ end }}
+
+  {{ if or (eq .Type "post") (eq .Type "page") (eq .Kind "home") }}
+    <link rel="stylesheet" href="{{ $data.lazy_polyfill.css | relURL }}">
+  {{ end }}
+
+  {{ if or (eq .Type "page") (eq .Type "post") }}
+    <!-- Image Popup -->
+    <link rel="stylesheet" href="{{ $data.glightbox.css | relURL }}">
+  {{ end }}
+
+  <!-- Scripts -->
+  <script src="{{ $theme.RelPermalink }}"></script>
+
+  {{ partial "js-selector.html" . }}
+
+  {{ if hugo.IsProduction }}
+    <!-- PWA -->
+    {{ if site.Params.pwa.enabled }}
+      <script
+        defer
+        src="{{ "/app.min.js" | relURL }}?baseurl={{ site.BaseURL }}&register={{ site.Params.pwa.cache.enabled }}"
+      ></script>
+    {{ end }}
+
+    <!-- Web Analytics -->
+    {{ range $platform, $config := site.Params.analytics }}
+      {{ if and $config.id (ne $config.id "") }}
+        {{ partial (printf "analytics/%s.html" $platform) . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ partial "metadata-hook.html" . }}
+</head>

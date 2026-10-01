@@ -1,5 +1,0 @@
-{{- /* 언어를 지정하지 않은 코드블럭(```)도 하이라이터를 거치게 해서
-       다른 코드블럭과 같은 테마(monokai)가 적용되도록 한다.
-       언어별 hook(render-codeblock-mermaid.html 등)이 있으면 그쪽이 우선한다. */ -}}
-{{- $lang := .Type | default "text" -}}
-{{- transform.Highlight (strings.TrimSuffix "\n" .Inner) $lang .Options -}}

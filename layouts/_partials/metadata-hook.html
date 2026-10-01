@@ -1,0 +1,36 @@
+{{- $description := (partial "post-description.html" .) | default site.Params.description -}}
+<meta name="description" content="{{ $description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+{{- if .Params.robotsNoIndex }}
+<meta name="robots" content="noindex, nofollow">
+{{- else }}
+<meta name="robots" content="index, follow">
+{{- end }}
+{{- with .OutputFormats.Get "RSS" }}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .Permalink }}">
+{{- end }}
+{{- /* Google Search Console 소유권 확인 */ -}}
+<meta name="google-site-verification" content="JmewS6Wf1Tfg-69X5gqTR4OszQ5CULVGfC-U6tTni28">
+
+{{- /* 본문/제목은 Pretendard, 코드는 D2Coding 웹폰트를 사용한다. */ -}}
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wan2land/d2coding/d2coding-full.css" crossorigin>
+<style>
+  :root {
+    --bs-font-monospace: "D2Coding", monospace;
+  }
+  body,
+  h1, h2, h3, h4, h5, h6,
+  header .post-desc,
+  #toc-bar .label,
+  #search-results a,
+  #toc-popup .header .label,
+  #toc-popup #toc-popup-content,
+  #toc-solo-trigger .label {
+    font-family: "Pretendard Variable", Pretendard, sans-serif;
+  }
+  code, pre, kbd, samp {
+    font-family: var(--bs-font-monospace);
+  }
+</style>

@@ -1,33 +1,43 @@
-{{- /* override: Hugo v0.158 deprecation 대응 (.Language.LanguageDirection/LanguageCode -> Direction/Locale).
-       PaperMod 업스트림에서 고쳐지면 이 파일을 지운다. 그 외 내용은 PaperMod d376885 원본 그대로. */ -}}
-{{- if lt hugo.Version "0.146.0" }}
-{{- errorf "=> hugo v0.146.0 or greater is required for hugo-PaperMod to build " }}
-{{- end -}}
+<!doctype html>
+<html lang="{{ site.Language.Lang }}" dir="{{ site.Language.Direction | default "ltr" }}">
+  {{ partial "head.html" . }}
+  <body>
+    {{ partial "sidebar.html" . }}
+    <div id="main-wrapper" class="d-flex justify-content-center">
+      <div class="container d-flex flex-column px-xxl-5">
+        {{ partial "topbar.html" . }}
+        <div class="row flex-grow-1">
+          <main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            {{ block "main" . }}{{ end }}
+          </main>
 
-<!DOCTYPE html>
-{{- $theme := site.Params.defaultTheme | default "auto" }}
-{{- if eq $theme "dark" }}
-<html lang="{{ site.Language }}" dir="{{ .Language.Direction | default "auto" }}" data-theme="dark">
-{{- else if eq $theme "light" }}
-<html lang="{{ site.Language }}" dir="{{ .Language.Direction | default "auto" }}" data-theme="light">
-{{- else }}
-<html lang="{{ site.Language }}" dir="{{ .Language.Direction | default "auto" }}" data-theme="auto">
-{{- end }}
+          <!-- panel -->
+          <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted">
+            <div class="access">
+              {{ partialCached "update-list.html" . }}
+              {{ partialCached "trending-tags.html" . }}
+            </div>
+            {{ block "panel" . }}{{ end }}
+          </aside>
+        </div>
 
-<head>
-    {{- partial "head.html" . }}
-</head>
+        <div class="row">
+          <!-- tail -->
+          <div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            {{ block "tail" . }}{{ end }}
+            {{ partialCached "footer.html" . }}
+          </div>
+        </div>
+        {{ partial "search-results.html" . }}
+      </div>
 
-{{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) }}
-<body class="list" id="top">
-{{- else }}
-<body id="top">
-{{- end }}
-    {{ partialCached "header.html" . .Page -}}
-    <main class="main">
-        {{- block "main" . }}{{ end }}
-    </main>
-    {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
-</body>
+      <aside aria-label="Scroll to Top">
+        <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow">
+          <i class="fas fa-angle-up"></i>
+        </button>
+      </aside>
+    </div>
 
+    <div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div>
+  </body>
 </html>

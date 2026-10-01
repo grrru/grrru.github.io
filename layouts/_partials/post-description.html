@@ -1,0 +1,4 @@
+{{- /* 자동 요약에 코드 블록의 줄 번호가 섞이지 않도록 제거한다. */ -}}
+{{- $summary := .Summary | replaceRE `(?s)<span class="lnt">.*?</span>` "" | plainify -}}
+{{- $description := .Description | default $summary -}}
+{{- return ($description | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace) -}}
