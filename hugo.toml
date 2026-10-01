@@ -14,7 +14,7 @@ disableLanguages = ["en"]
     path = "github.com/geekifan/hugo-theme-chirpy"
 
 [pagination]
-  pagerSize = 10
+  pagerSize = 5
 
 [permalinks.page]
   blog = "/posts/:slug/"
@@ -69,8 +69,8 @@ disableLanguages = ["en"]
     pre = "fa-circle-info"
     weight = 2
   [[languages.ko.menus.main]]
-    name = "Blog"
-    url = "/blog/"
+    name = "Archives"
+    url = "/archives/"
     pre = "fa-archive"
     weight = 3
   [[languages.ko.menus.main]]
