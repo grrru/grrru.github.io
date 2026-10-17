@@ -5,9 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
-  # grrru/blog-content 에 push 되면 호출됨
+  # 콘텐츠 또는 Cue 저장소의 변경 알림
   repository_dispatch:
-    types: [content-updated]
+    types: [content-updated, cue-updated]
 
 permissions:
   contents: read
@@ -66,6 +66,27 @@ jobs:
         with:
           go-version: stable
           cache: false
+
+      - name: Validate Cue revision
+        if: github.event_name == 'repository_dispatch' && github.event.action == 'cue-updated'
+        env:
+          CUE_SHA: ${{ github.event.client_payload.sha }}
+        run: |
+          [[ "$CUE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Cue update requires a full commit SHA.' >&2; exit 1; }
+
+      - name: Checkout Cue frontend
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ vars.CUE_REPOSITORY }}
+          ref: ${{ github.event.action == 'cue-updated' && github.event.client_payload.sha || 'main' }}
+          ssh-key: ${{ secrets.CUE_DEPLOY_KEY }}
+          path: .cue-source
+          persist-credentials: false
+
+      - name: Export Cue to /cue/
+        env:
+          CUE_API_BASE: ${{ vars.CUE_API_BASE }}
+        run: python3 .cue-source/tools/export_web.py -out static/cue
 
       - name: Build
         run: |
