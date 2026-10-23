@@ -84,8 +84,6 @@ jobs:
           persist-credentials: false
 
       - name: Export Cue to /cue/
-        env:
-          CUE_API_BASE: ${{ vars.CUE_API_BASE }}
         run: python3 .cue-source/tools/export_web.py -out static/cue
 
       - name: Build
