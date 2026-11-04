@@ -71,13 +71,15 @@ post:
       succeed: Link copied successfully!
 
 # Date time format.
-# See: <http://strftime.net/>, <https://day.js.org/docs/en/display/format>
+# 키 이름은 테마를 따르지만, Hugo는 strftime이 아닌 Go 레이아웃을 쓴다.
+# dayjs는 영어 locale로 다시 그리므로(js-selector.html) 같은 모양으로 맞춘다.
+# See: <https://pkg.go.dev/time#Layout>, <https://day.js.org/docs/en/display/format>
 df:
   post:
-    strftime: "%b %e, %Y"
+    strftime: "Jan 2, 2006"
     dayjs: "ll"
   archives:
-    strftime: "%b"
+    strftime: "Jan"
     dayjs: "MMM"
 
 # categories page

@@ -1,0 +1,13 @@
+{{ $locales := index hugo.Data.locales .lang }}
+{{ $dateFormat := default "02/01/2006" (i18n "df.post.strftime") }}
+{{ $dayjsFormat := default "DD/MM/YYYY" (i18n "df.post.dayjs") }}
+
+<time
+  {{ if .class }}class="{{ .class }}"{{ end }}
+  data-ts="{{ .date.Unix }}"
+  data-df="{{ $dayjsFormat }}"
+  {{ if .tooltip }}data-bs-toggle="tooltip" data-bs-placement="bottom"{{ end }}
+>
+  {{/* time.Format은 사이트 언어(ko)로 월 이름을 바꾸므로 영어 그대로 쓰는 Go 메서드를 쓴다. */}}
+  {{ .date.Format $dateFormat }}
+</time>

@@ -1,0 +1,108 @@
+{{ $origin := cond (eq .Site.Params.assets.self_host true) "basic" "cors" }}
+{{ $data := index hugo.Data.origin $origin }}
+{{ $is_home := false }}
+{{ if or (eq .RelPermalink "/") (eq .RelPermalink (relLangURL "/")) (eq .RelPermalink (.Site.Home.RelPermalink)) }}
+  {{ $is_home = true }}
+{{ end }}
+{{ $is_categories := and (eq .Kind "taxonomy") (eq .Type "categories") }}
+{{ $is_category := and (eq .Kind "term") (eq .Type "categories") }}
+{{ $is_tags := and (eq .Kind "taxonomy") (eq .Type "tags") }}
+{{ $is_tag := and (eq .Kind "term") (eq .Type "tags") }}
+{{ $is_post := eq .Type "post"}}
+{{ $is_page := eq .Layout "page"}}
+{{ $is_archives := eq .Layout "archives"}}
+{{- $jsOpts := dict
+  "target" "es2015"
+  "minify" (eq hugo.Environment "production")
+-}}
+
+{{ $urls := slice }}
+
+<!-- layout specified -->
+{{ if or (eq .Type "post") (eq .Layout "page") $is_home }}
+  {{ with $data.lazyPolyfill.js }}
+    {{ $urls = $urls | append . }}
+  {{ end }}
+
+  {{ if not $is_home }}
+    <!-- image lazy-loading & popup & clipboard -->
+    {{ with $data.glightbox.js }}
+      {{ $urls = $urls | append . }}
+    {{ end }}
+    {{ with $data.clipboard.js }}
+      {{ $urls = $urls | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if or $is_home (eq .Type "post") (eq .Layout "archives") (eq .Type "categories") (eq .Type "tags") }}
+  {{/* UI는 영어이므로 날짜도 영어로 그린다. ko locale을 불러오지 않으면 dayjs.locale("ko")는 무시되고 en이 유지된다. */}}
+  {{ $locale := "en" }}
+  
+  {{ with $data.dayjs.js.common }}
+    {{ $urls = $urls | append . }}
+  {{ end }}
+  {{ with replace $data.dayjs.js.locale ":LOCALE" $locale }}
+    {{ $urls = $urls | append . }}
+  {{ end }}
+  {{ with $data.dayjs.js.relativeTime }}
+    {{ $urls = $urls | append . }}
+  {{ end }}
+  {{ with $data.dayjs.js.localizedFormat }}
+    {{ $urls = $urls | append . }}
+  {{ end }}
+{{ end }}
+
+{{ if or (strings.Contains .Content "<h2") (strings.Contains .Content "<h3") }}
+  {{ if and site.Params.toc (default true .Params.toc) }}
+    {{ with $data.toc.js }}
+      {{ $urls = $urls | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if .Params.mermaid }}
+  {{ with $data.mermaid.js }}
+    {{ $urls = $urls | append . }}
+  {{ end }}
+{{ end }}
+
+{{ range $urls }}
+  <script src="{{ . }}"></script>
+{{ end }}
+
+{{ $js := "commons" }}
+{{ if $is_home }}
+  {{ $js = "home" }}
+{{ else if $is_categories }}
+  {{ $js = "categories" }}
+{{ else if $is_post }}
+  {{ $js = "post" }}
+{{ else if $is_page }}
+  {{ $js = "page" }}
+{{ else if or $is_archives $is_category $is_tag }}
+  {{ $js = "misc" }}
+{{ end }}
+
+{{- $script := resources.Get (printf "js/%s.js" $js) | js.Build $jsOpts -}}
+<script defer src="{{ $script.RelPermalink }}"></script>
+
+{{ if .Params.math }}
+  <!-- MathJax -->
+  {{ $mathjaxConfig := resources.Get "js/mathjax.js" | minify | fingerprint }}
+  <script src="{{ $mathjaxConfig.RelPermalink }}" defer></script>
+  <script async src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" src="{{ $data.mathjax.js }}" defer></script>
+{{ end }}
+
+<!-- Pageviews -->
+{{ if eq .Type "post" }}
+  {{ $provider := site.Params.pageviews.provider }}
+  {{ if and $provider (ne $provider "") }}
+    {{ if eq $provider "goatcounter" }}
+      {{ if and site.Params.analytics.goatcounter.id (ne site.Params.analytics.goatcounter.id "") }}
+        {{ partial (printf "pageviews/%s.html" $provider) . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

@@ -51,6 +51,7 @@
     "transpiler" "dartsass"
     "targetPath" "css/main.css"
     "enableSourceMap" true
+    "silenceDependencyDeprecations" true
   }}
   {{ $sass := resources.Get "scss/main.bundle.scss" }}
   {{ $style := $sass | toCSS $opts | minify | fingerprint }}
