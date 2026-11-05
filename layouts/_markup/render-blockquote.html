@@ -1,0 +1,27 @@
+{{- /*
+  Obsidian 콜아웃(> [!info])을 Chirpy 프롬프트(blockquote.prompt-*)로 렌더링한다.
+  Chirpy는 tip/info/warning/danger 네 종류만 있어서 Obsidian 타입을 여기에 묶는다.
+  알 수 없는 타입은 info로 처리한다.
+  기존 방식(> 내용 다음 줄에 {.prompt-info})은 아래 else 분기에서 그대로 동작한다.
+*/ -}}
+{{- $prompts := dict
+  "note" "info" "info" "info" "abstract" "info" "summary" "info" "tldr" "info"
+  "todo" "info" "example" "info" "quote" "info" "cite" "info"
+  "tip" "tip" "hint" "tip" "important" "tip" "success" "tip" "check" "tip" "done" "tip"
+  "warning" "warning" "caution" "warning" "attention" "warning"
+  "question" "warning" "help" "warning" "faq" "warning"
+  "danger" "danger" "error" "danger" "bug" "danger"
+  "failure" "danger" "fail" "danger" "missing" "danger"
+-}}
+{{- if eq .Type "alert" -}}
+<blockquote class="prompt-{{ index $prompts .AlertType | default "info" }}">
+  {{- with .AlertTitle }}<p><strong>{{ . }}</strong></p>
+{{ end -}}
+  {{ .Text -}}
+</blockquote>
+{{ else -}}
+<blockquote
+  {{- range $k, $v := .Attributes }}{{ printf " %s=%q" $k (string $v) | safeHTMLAttr }}{{ end -}}
+>{{ .Text -}}
+</blockquote>
+{{ end -}}
