@@ -103,6 +103,9 @@ disableLanguages = ["en"]
   mainSections = ["post"]
   toc = true
 
+  [params.analytics.google]
+    id = "G-N901K0SJG0"
+
   [params.assets]
     self_host = false
 
