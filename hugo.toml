@@ -13,6 +13,11 @@ disableLanguages = ["en"]
   [[module.imports]]
     path = "github.com/geekifan/hugo-theme-chirpy"
 
+  # Obsidian 첨부 폴더(content/attachments)를 assets로 노출해 테마의 이미지 훅이 찾게 한다.
+  [[module.mounts]]
+    source = "content/attachments"
+    target = "assets/attachments"
+
 [pagination]
   pagerSize = 5
 
