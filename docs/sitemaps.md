@@ -19,6 +19,9 @@ python3 -m unittest discover -s tools -p 'test_*.py'
 After a local Hugo build, run `python3 tools/export_sitemaps.py public` to
 reproduce the deployment output.
 
+`layouts/robots.txt` advertises the original XML and text sitemap so crawlers
+can discover both without relying on a manual Search Console submission.
+
 The alternate URLs were introduced to diagnose Search Console's persistent
 fetch failure. A successful live URL test is not proof that the scheduled
 sitemap processor has accepted a file; check the Sitemaps report separately.
