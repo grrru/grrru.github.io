@@ -1,11 +1,11 @@
-"""Export alternate sitemap formats from Hugo's generated URL list."""
+"""Validate Hugo's canonical sitemap and RSS search exclusions."""
 
 import argparse
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
 
-def export_sitemaps(publish_dir: Path) -> None:
+def validate_sitemaps(publish_dir: Path) -> None:
     source = (publish_dir / "sitemap.xml").read_bytes()
     root = ET.fromstring(source)
     namespace = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
@@ -29,14 +29,10 @@ def export_sitemaps(publish_dir: Path) -> None:
         if excluded:
             raise ValueError(f"RSS includes URLs excluded from the sitemap: {excluded}")
 
-    (publish_dir / "sitemap-pages.xml").write_bytes(source)
-    (publish_dir / "sitemap.txt").write_text(
-        "\n".join(urls) + "\n", encoding="utf-8"
-    )
-    print(f"Exported XML and text alternatives for {len(urls)} sitemap URLs")
+    print(f"Validated {len(urls)} sitemap URLs and RSS search exclusions")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("publish_dir", type=Path, nargs="?", default=Path("public"))
-    export_sitemaps(parser.parse_args().publish_dir)
+    validate_sitemaps(parser.parse_args().publish_dir)

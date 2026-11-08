@@ -42,7 +42,7 @@ jobs:
           path: content
           fetch-depth: 0
 
-      - name: Test sitemap exports
+      - name: Test sitemap validation
         run: python3 -m unittest discover -s tools -p 'test_*.py'
 
       - name: Setup Pages
@@ -97,8 +97,8 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/" \
             --cacheDir "${{ runner.temp }}/hugo_cache"
 
-      - name: Export alternative sitemaps
-        run: python3 tools/export_sitemaps.py public
+      - name: Validate sitemap and RSS
+        run: python3 tools/validate_sitemaps.py public
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
