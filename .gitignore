@@ -4,3 +4,4 @@ public/
 .obsidian/
 content/
 resources/
+__pycache__/
