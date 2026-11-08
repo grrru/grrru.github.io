@@ -19,6 +19,16 @@ def export_sitemaps(publish_dir: Path) -> None:
     if not urls or any(not url for url in urls):
         raise ValueError("The sitemap must contain non-empty URLs")
 
+    feed_path = publish_dir / "index.xml"
+    if feed_path.is_file():
+        feed_urls = {
+            item.findtext("link", "").strip()
+            for item in ET.parse(feed_path).findall("channel/item")
+        }
+        excluded = sorted(feed_urls - set(urls))
+        if excluded:
+            raise ValueError(f"RSS includes URLs excluded from the sitemap: {excluded}")
+
     (publish_dir / "sitemap-pages.xml").write_bytes(source)
     (publish_dir / "sitemap.txt").write_text(
         "\n".join(urls) + "\n", encoding="utf-8"

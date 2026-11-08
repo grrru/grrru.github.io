@@ -1,5 +1,4 @@
-{{- /* override: Hugo v0.158 deprecation 대응 (.Language.LanguageCode -> Locale).
-       PaperMod 업스트림에서 고쳐지면 이 파일을 지운다. 그 외 내용은 PaperMod d376885 원본 그대로. */ -}}
+{{- /* Hugo Locale 대응 및 검색 제외 페이지의 RSS 노출 방지. */ -}}
 {{- $authorEmail := "" }}
 {{- with site.Params.author }}
   {{- if reflect.IsMap . }}
@@ -29,6 +28,7 @@
 {{- $pages = $pctx.Pages }}
 {{- end }}
 {{- $pages = where $pages "Params.hiddenInRss" "!=" true -}}
+{{- $pages = where $pages "Params.robotsNoIndex" "!=" true -}}
 {{- $limit := site.Config.Services.RSS.Limit }}
 {{- if ge $limit 1 }}
 {{- $pages = $pages | first $limit }}

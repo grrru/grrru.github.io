@@ -16,6 +16,12 @@ class ExportSitemapsTest(unittest.TestCase):
         with TemporaryDirectory() as directory:
             output = Path(directory)
             (output / "sitemap.xml").write_bytes(source)
+            (output / "index.xml").write_text(
+                '<rss version="2.0"><channel><item>'
+                '<link>https://example.com/</link>'
+                '</item></channel></rss>',
+                encoding="utf-8",
+            )
 
             export_sitemaps(output)
 
@@ -42,6 +48,24 @@ class ExportSitemapsTest(unittest.TestCase):
 
                 self.assertFalse((output / "sitemap-pages.xml").exists())
                 self.assertFalse((output / "sitemap.txt").exists())
+
+    def test_rejects_rss_urls_excluded_from_the_sitemap(self):
+        with TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "sitemap.xml").write_text(
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                '<url><loc>https://example.com/</loc></url></urlset>',
+                encoding="utf-8",
+            )
+            (output / "index.xml").write_text(
+                '<rss version="2.0"><channel><item>'
+                '<link>https://example.com/about/</link>'
+                '</item></channel></rss>',
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "RSS"):
+                export_sitemaps(output)
 
 
 if __name__ == "__main__":
